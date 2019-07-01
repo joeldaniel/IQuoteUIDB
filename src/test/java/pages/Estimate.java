@@ -22,9 +22,14 @@ import base.DBUtil;
 import base.Testbase;
 import utilities.CommonFunctions;
 import utilities.ReadData;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent; 
 
 public class Estimate extends Testbase{
-	
+	static String CommonOriginalHandle=null;
 	
 	
 	public static void ClickonNewEstimate()throws Exception
@@ -100,6 +105,7 @@ public class Estimate extends Testbase{
 		
 
 	}
+	
 	public void Qtypage(int Estimateid)
 	{
 		try
@@ -165,27 +171,52 @@ public class Estimate extends Testbase{
 	}
 	public static void SaveEstimate() throws Exception
 	{
-
-		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
-		CommonFunctions.waitForPageLoad(driver);
-
-		Thread.sleep(2000);
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 120000);
-		CommonFunctions.waitUntilElementisClickable(driver, By.xpath("//label[text()='Calculate']"), 120000);
-		//CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[@class='diagram-zoom']"));
-		int val =driver.findElements(By.xpath(OR.getProperty("Engineering_Tab_zoom_Logo"))).size();
-		if (val>0)
+		if(driver.findElements(By.xpath("//div[@class='wv']//button[2]")).size()>0)
 		{
-			System.out.println("Estimate saved successfully");
-		}
-		else
-		{
-			System.out.println("Failed to save");
-			//System.err.println("Failed to save");
+			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
+			CommonFunctions.waitForPageLoad(driver);
 
+			Thread.sleep(2000);
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 120000);
+			CommonFunctions.waitUntilElementisClickable(driver, By.xpath("//label[text()='Calculate']"), 120000);
+			//CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[@class='diagram-zoom']"));
+			int val =driver.findElements(By.xpath(OR.getProperty("Engineering_Tab_zoom_Logo"))).size();
+			if (val>0)
+			{
+				System.out.println("Estimate saved successfully");
+			}
+			else
+			{
+				System.out.println("Failed to save");
+				//System.err.println("Failed to save");
+
+			}
 		}
+		
 		//	TakeScreenShot.ScreenShotWindow(driver,"NegotiationPageEstimateNumber");  
 	
+	}
+	public static void CreateOption(int Option) throws InterruptedException {
+		if(Option>1) {
+			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+		   	 Thread.sleep(1000);
+		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Option')]")));
+		   	 driver.findElement(By.xpath("//li[contains(text(),'New Option')]")).click();
+		   	 Estimate.Navigate_to_ProductTab();
+		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
+		   	 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+		   	 Thread.sleep(1000);
+		   	 System.out.println("//li[contains(text(),'Option "+(Option-1)+"')]//following::li"+0+"");
+		   	driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).click();
+		   	System.out.println("Option : "+Option);
+			
+		}
+		else {
+			System.out.println("Option : 1");
+		}
+		
+		
 	}
 	public static void CalculateEstimate() throws Exception
 	{
@@ -252,7 +283,7 @@ public class Estimate extends Testbase{
 		}
 
 	}
-	public static String SaveEstimateNumber(String Sheet, String Scenario, String Testcase, String EstimateNumber )throws Exception
+	public static String SaveEstimateNumber()throws Exception
 
 	{
 
@@ -262,8 +293,36 @@ public class Estimate extends Testbase{
 		return sEstimateNumber;
 	}
 	
-	public static void NegotiaionAndPrint() throws Exception
+	public static void SwitchToSecondWindow(WebDriver driver) throws Exception
 	{
+		String  originalHandle = driver.getWindowHandle();
+		String sWindowTitle =driver.getTitle();
+		Set<String> availableWindows = driver.getWindowHandles();
+
+		if (!availableWindows.isEmpty()) {
+
+			for (String windowId : availableWindows)
+			{
+				
+				
+				if(driver.getWindowHandle().equals(originalHandle))
+				{
+					driver.switchTo().window(windowId);
+					Thread.sleep(1000);
+					System.out.println(driver.getTitle());	
+					break;
+				}	
+				else 
+				{
+					driver.switchTo().window(originalHandle).getTitle().equals(sWindowTitle);
+				}
+			}			
+		}
+	}
+	public static void NegotiaionAndPrint(String filename) throws Exception
+	{
+		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+filename;
+		Robot robot = new Robot();
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
 		int val =driver.findElements(By.xpath(OR.getProperty("OtherFunctions_Label"))).size();
 		if (val>0)
@@ -278,15 +337,52 @@ public class Estimate extends Testbase{
 		Thread.sleep(3000);
 		CommonFunctions.SetOriginalWindowHandle(driver);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
-
-
-		Thread.sleep(20000);
+		Thread.sleep(6000);
 		
-		java.awt.Robot robot = new java.awt.Robot();
-		Thread.sleep(3000);
-	
+		robot.keyPress(KeyEvent.VK_TAB);
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_TAB);
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_S);
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		
+		robot.keyPress(KeyEvent.VK_TAB);
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_TAB);
+		Thread.sleep(2000);
+		robot.keyRelease(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_TAB);
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		 robot.keyRelease(KeyEvent.VK_ENTER);
+		setClipboardData(filelocation);
+		Thread.sleep(2000);
+		 robot.keyPress(KeyEvent.VK_CONTROL);
+         robot.keyPress(KeyEvent.VK_V);
+         robot.keyRelease(KeyEvent.VK_V);
+         robot.keyRelease(KeyEvent.VK_CONTROL);
+         Thread.sleep(2000);
+         robot.keyPress(KeyEvent.VK_TAB);
+         Thread.sleep(2000);
+         robot.keyPress(KeyEvent.VK_TAB);
+         Thread.sleep(2000);
+         robot.keyPress(KeyEvent.VK_TAB);
+         robot.keyRelease(KeyEvent.VK_TAB);
+         robot.keyPress(KeyEvent.VK_ENTER);
+         robot.keyRelease(KeyEvent.VK_ENTER);
+		//driver.switchTo().frame("print-preview-app");
+		
+		
+		
+		
+
 	}
-	
+	public static void setClipboardData(String string) {
+		//StringSelection is a class that can be used for copy and paste operations.
+		   StringSelection stringSelection = new StringSelection(string);
+		   Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+		}
 	public static void UncheckUnwantedCharacteristics(List<String> listCharname)
 	{
 
@@ -883,7 +979,7 @@ public class Estimate extends Testbase{
 				    	 Thread.sleep(5000);
 				    	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Quantity')]")));
 				    	 driver.findElement(By.xpath("//li[contains(text(),'New Quantity')]")).click();
-				    	
+				    	System.out.println("fwer");
 			            for (int q=0;q<Qtyval.size();q++) {
 			            	
 					    	 System.out.println("//span[contains(text(),'"+Name.get(q)+"')]//..//following-sibling::div//input");
@@ -891,7 +987,7 @@ public class Estimate extends Testbase{
 					    	 System.out.println("//span[contains(text(),'"+proname+"')]//..//following-sibling::div//input");
 					    	 List<WebElement> qty=driver.findElements(By.xpath("//span[contains(text(),'"+proname+"')]//..//following-sibling::div//input"));
 					    	String temp=Qtyval.get(q);
-					    	
+					    	temp.replace(".0", "");
 					    	System.out.println(qty.size());
 					    	//int g=qty.size()-1;
 					    	Thread.sleep(2000);
@@ -930,7 +1026,7 @@ public class Estimate extends Testbase{
 			if(driver.findElements(By.xpath("//button[@class='lkv' and @title=' ']")).size()>0){
 				driver.findElement(By.xpath("//button[@class='lkv' and @title=' ']")).click();
 				Thread.sleep(2000);
-				if(driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).isDisplayed()){
+				if(driver.findElements(By.xpath("//button[@class='lkv' and @title='OK']")).size()>0){
 					Thread.sleep(2000);
 					driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
 					
@@ -953,7 +1049,7 @@ public class Estimate extends Testbase{
 		}
 	
 	}
-	public static void ComponentandCharacteristics_ForPaperSpec(int EstimateId)
+	public static void ComponentandCharacteristics_ForPaperSpec(int EstimateId,String IdItemOption)
 	{
 		Estimatepage_Characteristics EPC = new Estimatepage_Characteristics();
 		try {
@@ -961,7 +1057,7 @@ public class Estimate extends Testbase{
 			HashMap<String, HashMap<String, String>> CreateProductandComp = new HashMap<String, HashMap<String, String>>();
 			HashMap<String, HashMap<String, String>>Characteristicsforcomp = new HashMap<String, HashMap<String, String>>();
 			ReadData val = new ReadData();
-			CreateProductandComp=val.CreateProductandComponents(EstimateId);
+			CreateProductandComp=val.CreateProductandComponents(EstimateId,IdItemOption);
 			List<String> listCompOrder = new ArrayList<String>(CreateProductandComp.keySet());
 			// List<String> CharacterCompCharacterComp = new ArrayList<String>();
 			Collections.sort(listCompOrder);
@@ -974,7 +1070,7 @@ public class Estimate extends Testbase{
 
 				Characteristicsforcomp.clear();
 				System.out.println("Component order is  :- "+Comporderval);
-				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId, Comporderval)	;
+				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
 				String XpathForComponent="//label[text()='"+CompDescp+"']";
 				Thread.sleep(3000);
@@ -1004,17 +1100,28 @@ public class Estimate extends Testbase{
 					
 					switch(FixedCharDescp)
 					{
-
+					
 					case "qttCModelGraphCarac.qttCPGraphMedia":
-						EPC.Charactertics_GraphMedia(EstimateId, Comporderval);	    
+						EPC.Charactertics_CPGraphMedia(EstimateId,IdItemOption, Comporderval);	    
 						break;			
 					case "qttCModelGraphCarac.qttCPGraphBindStitch":
-						EPC.Charactertics_CPGraphBindStitch(EstimateId, Comporderval, Characteristic);
+						EPC.Charactertics_CPGraphBindStitch(EstimateId, IdItemOption,Comporderval, Characteristic);
+						break;
+					case "qttCModelGraphCarac.qttCPGraphColorVanish":
+						EPC.Charactertics_CPGraphColorVanish(EstimateId, IdItemOption,Comporderval);
+						break;
+					case "qttCModelGraphCarac.qttCPGraphRegularCoverFormat":
+					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
+						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
+						break;
+					case "qttCModelGraphCarac.qttCPGraphHotStamping":
+						EPC.Charactertics_CPGraphHotStamping(EstimateId, IdItemOption,Comporderval, Characteristic);
 						break;
 					
 					
 					default:
 						System.out.println("Characteristic that is not present :- "+FixedCharDescp);
+						
 					}
 
 				}

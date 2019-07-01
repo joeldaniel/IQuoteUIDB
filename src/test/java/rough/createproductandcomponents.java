@@ -26,21 +26,21 @@ import java.util.Collection;
 public class createproductandcomponents extends Testbase{
 	@Test
 	public  void test() throws Exception {
+		String filename="joel.pdf";
+		
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
 		Thread.sleep(1000);
-		driver.findElement(By.xpath("//div[@class='ltv_ ltv--inline']//input[@class='numeric dot-input']")).sendKeys("12997");
+		driver.findElement(By.xpath("//div[@class='ltv_ ltv--inline']//input[@class='numeric dot-input']")).sendKeys("13078");
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("//footer[@class='lkvg']//button[@class='lkv']")).click();
 		Thread.sleep(1000);
 		Actions actions = new Actions(driver);
-		WebElement elementLocator = driver.findElement(By.xpath("//span[contains(text(),'12,997')]"));
+		WebElement elementLocator = driver.findElement(By.xpath("//span[contains(text(),'13,078')]"));
 		actions.doubleClick(elementLocator).perform();
 		Thread.sleep(5000);
 		
-		Estimate name = new Estimate();
-		
-		name.DeleteRenamedProductsandComponents();
+		Estimate.NegotiaionAndPrint(filename);
 		
 		
 	}
