@@ -1,6 +1,10 @@
 package utilities;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -12,6 +16,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -49,6 +54,36 @@ public class CommonFunctions extends Testbase {
 		{
 			return false;
 		}
+	}
+	public static void Iquote_SelectCheckbox(WebDriver driver, String XpathForLocator, String CheckBoxState) throws Exception
+	{
+		String XpathForButtonstare=XpathForLocator+"/ancestor::button[@class='ckb ']";
+		String CheckboxCurrentstate=driver.findElement(By.xpath(XpathForButtonstare)).getAttribute("aria-checked");
+		if(CheckBoxState.equals("0"))
+		{
+
+			if(CheckboxCurrentstate.equals("true"))
+			{
+				driver.findElement(By.xpath(XpathForLocator)).click();
+			}
+			else
+			{
+				System.out.println("Checkbox status is False");
+			}
+
+		}
+		else if(CheckBoxState.equals("1"))
+		{
+			if(CheckboxCurrentstate.equals("false"))
+			{
+				driver.findElement(By.xpath(XpathForLocator)).click();
+			}
+			else
+			{
+				System.out.println("Checkbox status is true");
+			}
+		}
+
 	}
 	public static void scrolltoWebElement(WebDriver driver, By locator) throws Exception
 	{
@@ -131,7 +166,7 @@ public class CommonFunctions extends Testbase {
 	{
 		try
 		{
-			WebDriverWait wait = new WebDriverWait(driver, 300);
+			WebDriverWait wait = new WebDriverWait(driver, TimeOut);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 			return true;
 		} catch (TimeoutException e) {
@@ -142,6 +177,13 @@ public class CommonFunctions extends Testbase {
 			e.printStackTrace();
 			return false;
 		}
+		
+	}
+	public static void Iquote_EnterDataintoTextfield(WebDriver driver, String XpathForLocator, String Fieldvalue) throws Exception
+	{
+		driver.findElement(By.xpath(XpathForLocator)).clear();
+		driver.findElement(By.xpath(XpathForLocator)).click(); 
+		driver.findElement(By.xpath(XpathForLocator)).sendKeys(Fieldvalue+Keys.TAB+Keys.TAB);
 		
 	}
 	public static void SendValueWithoutClear(WebDriver driver, By locator, String sValue) throws Exception
@@ -211,5 +253,44 @@ public class CommonFunctions extends Testbase {
 			System.err.println("Element did not appear even after waiting for "+TimeOut+" seconds");
 			return false;
 		}
+	}
+	public static void selectDropdownByIndex(WebDriver driver, By locator, int index) throws Exception
+	{
+		System.out.println("Selecting dropdown with locator "+locator+" by index "+index);
+		index+=1;
+		if (isElementPresent(driver, locator))
+		{
+			if (index != 0)
+			{
+				// select the multiple values from a dropdown
+				Select selectByValue = new Select(driver.findElement(locator));
+				selectByValue.selectByIndex(index);
+			} 
+			Thread.sleep(1000);
+		}
+	}
+	
+	public static String futureDateinMMddyyyyFormat (int NumberOfdaysToAdd)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DATE, NumberOfdaysToAdd);
+		String sfutureDate = sdf.format(c.getTime());
+		return sfutureDate;
+	}
+
+	public static int randInt(int min, int max) 
+	{
+
+		// Usually this can be a field rather than a method variable
+		Random rand = new Random();
+
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+
+		return randomNum;
+
 	}
 }

@@ -47,7 +47,7 @@ public class Testbase {
 		if (driver == null) {
 			
 			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Config.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
 			Config.load(fis);
 			
 			

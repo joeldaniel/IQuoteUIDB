@@ -224,8 +224,8 @@ public class Estimate extends Testbase{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
 		//driver.findElement(By.xpath("//label[text()='Calculate']")).click();
 		CommonFunctions.waitForPageLoad(driver);
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 180);
-		CommonFunctions.waitUntilElementisClickable(driver, By.xpath("//span[text()='Specification']"), 180);
+		Thread.sleep(8000);
+	
 		String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
 		System.out.println("Attribute value is :"+EngVisible);
 		if(EngVisible.equalsIgnoreCase("True"))
@@ -262,9 +262,9 @@ public class Estimate extends Testbase{
 	public static Boolean NavigateToNegotiationTab()throws Exception
 	{
 		
-		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("LabelNegotiationTab")));
+		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
 		CommonFunctions.waitForPageLoad(driver);
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 1000);
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 25);
 		driver.findElement(By.xpath("//div[@class='wv']//button[@title='Print']/following-sibling::span[3]")).click();
 		Thread.sleep(2000);
 		driver.findElement(By.xpath("//li/label[text()='Summarized view']")).click();
@@ -337,7 +337,7 @@ public class Estimate extends Testbase{
 		Thread.sleep(3000);
 		CommonFunctions.SetOriginalWindowHandle(driver);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
-		Thread.sleep(6000);
+		Thread.sleep(10000);
 		
 		robot.keyPress(KeyEvent.VK_TAB);
 		Thread.sleep(2000);
@@ -371,12 +371,7 @@ public class Estimate extends Testbase{
          robot.keyRelease(KeyEvent.VK_TAB);
          robot.keyPress(KeyEvent.VK_ENTER);
          robot.keyRelease(KeyEvent.VK_ENTER);
-		//driver.switchTo().frame("print-preview-app");
 		
-		
-		
-		
-
 	}
 	public static void setClipboardData(String string) {
 		//StringSelection is a class that can be used for copy and paste operations.
@@ -707,7 +702,7 @@ public class Estimate extends Testbase{
 			driver.findElement(By.xpath(OR.getProperty("Ne_SalespaersonCode"))).sendKeys(Keys.TAB);
 		
 			//Select Product and Product Line
-			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Production line']/following-sibling::span/span/input", ProdLine);
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Product Line']/following-sibling::span/span/input", ProdLine);
 			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Sub-line product']/following-sibling::span/span/input", Sublineprod);
 			
 			//////////Enter Agency
@@ -765,7 +760,7 @@ public class Estimate extends Testbase{
 		{
 			System.err.println("Failed in the Estimate Creation page");
 			e.printStackTrace();
-			Assert.fail("Failed in the Estimate Creation page");
+			
 		}
 	}
 	
@@ -831,6 +826,7 @@ public class Estimate extends Testbase{
 				Thread.sleep(3000);
 				
 				int sizeval=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
+				Thread.sleep(3000);
 				String xpathval="//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']["+sizeval+"]/label";
 				System.out.println("Xpath is :- "+xpathval);
 				Thread.sleep(3000);
@@ -1016,10 +1012,15 @@ public class Estimate extends Testbase{
 			        j+=1;
 			 }
 			
-			driver.findElement(By.xpath("//span[contains(text(),'Option 1')]")).click();
-				Thread.sleep(5000);
+		
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
-			driver.findElement(By.xpath("//input[@type='text' and @value='Option 1']")).sendKeys(OptionName+Keys.TAB);
+			if(!OptionName.equalsIgnoreCase("Option 1")) {
+				driver.findElement(By.xpath("//span[@class='grid__cell grid__cell--alpha grid__current gs--summarize']//span[@class='renderer'][contains(text(),'Option 1')]")).click();
+				Thread.sleep(5000);
+				driver.findElement(By.xpath("//input[@type='text' and @value='Option 1']")).sendKeys(OptionName+Keys.TAB);
+			}
+			
+			
 			//write save and handle the exception
 			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title=' ']")));
 			Thread.sleep(5000);
@@ -1045,7 +1046,7 @@ public class Estimate extends Testbase{
 		{
 			System.err.println("Not able to Enter Quantity in Quantity tab");
 			e.printStackTrace();
-			Assert.fail("Failed while entering Quatity in Quantity page");
+			
 		}
 	
 	}
@@ -1112,15 +1113,32 @@ public class Estimate extends Testbase{
 						break;
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverFormat":
 					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
+					case "qttCModelGraphCarac.qttCPGraphRegularFormatSheet":
+					case "qttCModelGraphCarac.qttCPGraphRegularOpenFormatModels":
 						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphHotStamping":
 						EPC.Charactertics_CPGraphHotStamping(EstimateId, IdItemOption,Comporderval, Characteristic);
 						break;
-					
+					case "qttCModelGraphCarac.qttCPGraphBindGlue":
+						EPC.Charactertics_CPGraphBindGlue(EstimateId, IdItemOption,Comporderval, Characteristic);
+						break;
+					case "qttCModelPS.qttCPPlant":
+						EPC.Charactertics_CPPlant(EstimateId, IdItemOption,Comporderval, Characteristic);
+						break;
+					case "qttCModelPS.qttCPGenericCPOptionDesc":
+					case "qttCModelPS.qttCPGenericCPOptionValues":
+						EPC.Charactertics_CPGenericCPOptionDesc(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelPS.qttCPNote":
+						EPC.Charactertics_CPNote(EstimateId, IdItemOption,Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
+						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
+						break;
 					
 					default:
-						System.out.println("Characteristic that is not present :- "+FixedCharDescp);
+						System.out.println("Characteristic that is not present  :- "+FixedCharDescp);
 						
 					}
 
@@ -1182,5 +1200,90 @@ public class Estimate extends Testbase{
 	        }
 		}
 		
+	}
+	
+	public static String StatusChangeTo(String EstimateStatus, String ValidateStatus, String CutomerPONum, String Inventory ) throws Exception
+	{
+
+
+		String ScreenShotStatusChange="";
+		
+		driver.findElement(By.xpath("//div[starts-with(@class,'wvtb wvtb')]//span[span[img[@class='status-flag']]]//*[@class='icon dropdown']")).click();
+		driver.findElement(By.xpath("//div[starts-with(@class,'wvtb wvtb')]//span[span[img[@class='status-flag']]]//*[@class='icon dropdown']")).click();
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//div[@class='drop-down']//span[contains(text(),'"+EstimateStatus+"')]"), 180);  
+		CommonFunctions.ClickElement(driver, By.xpath("//div[@class='drop-down']//span[contains(text(),'"+EstimateStatus+"')]"));
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//div[@class='popup__portal program__popup']/div[@class='program']"), 180);  
+
+		if (driver.findElements(By.xpath("//div[@class='popup__portal program__popup']/div[@class='program']")).size()>0)
+		{
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Customer Order no.']"), 180);
+			CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Customer Order no.']/ancestor::span[@class= 'ltv__item__label ltv_ ltv_last']/span/input"));
+			CommonFunctions.SendValue(driver, By.xpath("//label[text()='Customer Order no.']/ancestor::span[@class= 'ltv__item__label ltv_ ltv_last']/span/input"), CutomerPONum);
+
+			String Futuredate= CommonFunctions.futureDateinMMddyyyyFormat(5);
+			System.out.println("Future Date is :- "+Futuredate);
+			
+			int Deliverydatetotalval=driver.findElements(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[contains(@class,'grid__cell grid__cell--')]")).size();
+			String valueofDeliverydate=driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[contains(@class,'grid__cell grid__cell--')]["+Deliverydatetotalval+"]")).getAttribute("data-row");
+			int TotalRowsFordelivery=Integer.parseInt(valueofDeliverydate);
+			System.out.println("Total rows to select for data Change is :- "+TotalRowsFordelivery);
+			for(int i=0;i<=TotalRowsFordelivery;i++)
+			{
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']")).click();
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).click();
+				/*driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.chord(Keys.CONTROL,"a"));
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.DELETE);
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.TAB);*/
+				Thread.sleep(2000);
+				//driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).click();
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Futuredate);
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.TAB);
+				Thread.sleep(2000);
+//				driver.findElement(By.xpath("//header[text()='Deliveries']")).click();
+//				Thread.sleep(2000);
+			}
+
+			if (Inventory !=""|| Inventory !=null)
+			{
+
+				System.out.println("Entering Inventory data :"+Inventory);
+				CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']"));
+				Thread.sleep(2000);
+				//          driver.findElement(By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']/span/input[1]")).sendKeys(Inventory);
+				//              driver.findElement(By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']/span/input[1]")).sendKeys(Keys.TAB);
+				
+				
+			}
+			else
+			{
+
+				System.out.println("Inventory option is not selected");
+			}
+
+		}
+		else
+		{
+			System.err.println("Status Changing Pop-up page is not displayed");
+		}
+
+		Thread.sleep(3000);
+		CommonFunctions.ClickElement(driver,By.xpath("//b[text()='Status changing']/ancestor::div[@class='program']/div[@class='program__window']//button[@title='Confirm']"));
+		Thread.sleep(20000);
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[@class='input-wraper status']//span[contains(text(),'In Production')]"), 120000);
+		String StatusChange= driver.findElement(By.xpath(OR.getProperty("statusCheck"))).getText();
+		Thread.sleep(5000);
+		System.out.println("Value is "+StatusChange);
+		if (StatusChange.equals(ValidateStatus))
+		{
+			System.out.println("Status Changed Successfully ");
+		}
+
+		else
+		{
+			System.err.println("Status not Changed Successfully");
+		}
+		
+		return ScreenShotStatusChange;
+	
 	}
 }

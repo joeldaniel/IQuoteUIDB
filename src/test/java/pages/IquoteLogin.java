@@ -21,8 +21,8 @@ public class IquoteLogin extends Testbase{
 
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("First_ok")));
 			CommonFunctions.waitForPageLoad(driver);
-			Thread.sleep(15000);
-			if (CommonFunctions.isElementPresent(driver, By.xpath(OR.getProperty("Login_OKButton"))))
+			Thread.sleep(5000);
+			if (driver.findElements(By.xpath(OR.getProperty("Login_OKButton"))).size()>0)
 			{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Login_OKButton")));
 			}

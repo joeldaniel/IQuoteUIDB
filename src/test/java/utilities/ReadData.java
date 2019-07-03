@@ -24,9 +24,14 @@ public class ReadData extends Testbase{
 	public static HashMap<String, HashMap<String, String>> EstCharacteristicEachComponent = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> EstDetailsPaperSpec = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CharCPGraphBindStitch	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphBindGlue	 = new HashMap<String, String>();
 	public static HashMap<String, HashMap<String, String>> EstDetailsColorandVarnish = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> EstDetailsPaperFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
+	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPAGraphPageProof = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPPlant	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPNote	 = new HashMap<String, String>();
 	String DBuser=Config.getProperty("DBUsername");
 	String DBpass=Config.getProperty("DBPassWord");
 	String DBurl=Config.getProperty("DBUrl");
@@ -1070,4 +1075,258 @@ public class ReadData extends Testbase{
 		return EstDetailsPaperSpec;
 	}
 
+	public HashMap<String, String> CPPlant(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPPlant.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPPlant.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+				String CPPlantPlant=rs.getString("Plant");
+										
+			
+				CharCPPlant.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPPlant.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPPlant.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPPlant.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPPlant.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPPlant.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPPlant.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+				CharCPPlant.put("Plant", CPPlantPlant != null ? CPPlantPlant : "");
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPPlant;
+	}
+	public HashMap<String, String> CPGenericCPOptionDesc(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CPGenericCPOptionDesc.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGenericCPOptionDesc.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGenericCPOptionDescription=rs.getString("Description");
+				String CPGenericCPOptionOptions=rs.getString("Options");
+				String CPGenericCPOptionQuantity=rs.getString("Quantity");
+
+
+
+
+
+				CPGenericCPOptionDesc.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CPGenericCPOptionDesc.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CPGenericCPOptionDesc.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CPGenericCPOptionDesc.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CPGenericCPOptionDesc.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CPGenericCPOptionDesc.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CPGenericCPOptionDesc.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CPGenericCPOptionDesc.put("Description", CPGenericCPOptionDescription != null ? CPGenericCPOptionDescription : "");
+				CPGenericCPOptionDesc.put("Options", CPGenericCPOptionOptions != null ? CPGenericCPOptionOptions : "");
+				CPGenericCPOptionDesc.put("Quantity", CPGenericCPOptionQuantity != null ? CPGenericCPOptionQuantity : "");
+
+
+			
+			}
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CPGenericCPOptionDesc;
+		
+	}
+	public HashMap<String, String> CPNote(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPNote.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPNote.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CharCPNoteGraphNote=rs.getString("Note");
+
+
+
+				CharCPNote.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPNote.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPNote.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPNote.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPNote.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPNote.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPNote.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPNote.put("Note", CharCPNoteGraphNote != null ? CharCPNoteGraphNote : "");
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPNote;
+		
+	}
+	public HashMap<String, String> CPAGraphPageProof(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+		CharCPAGraphPageProof.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPAGraphPageProof.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGraphDieCutQuantity=rs.getString("Quantity");
+				String CPGraphDieCutNotes=rs.getString("Notes");
+				String CPGraphDieCutWidth=rs.getString("Width");
+				String CPGraphDieCutHeight=rs.getString("Height");
+				String CPGraphDieCutDefinedPages=rs.getString("DefinedPages");
+				String CPGraphDieCutDefinedFormat=rs.getString("DefinedFormat");
+
+
+				CharCPAGraphPageProof.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPAGraphPageProof.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPAGraphPageProof.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPAGraphPageProof.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPAGraphPageProof.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPAGraphPageProof.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPAGraphPageProof.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPAGraphPageProof.put("Quantity", CPGraphDieCutQuantity != null ? CPGraphDieCutQuantity : "");
+				CharCPAGraphPageProof.put("Notes", CPGraphDieCutNotes != null ? CPGraphDieCutNotes : "");
+				CharCPAGraphPageProof.put("Width", CPGraphDieCutWidth != null ? CPGraphDieCutWidth : "");
+				CharCPAGraphPageProof.put("Height", CPGraphDieCutHeight != null ? CPGraphDieCutHeight : "");
+				CharCPAGraphPageProof.put("DefinedPages", CPGraphDieCutDefinedPages != null ? CPGraphDieCutDefinedPages : "");
+				CharCPAGraphPageProof.put("DefinedFormat", CPGraphDieCutDefinedFormat != null ? CPGraphDieCutDefinedFormat : "");
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPAGraphPageProof;
+	
+	}
+	public HashMap<String, String> CPGraphBindGlue(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphBindGlue.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphBindGlue.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			HashMap<String, String> CharCPGraphStampingItemHM=new HashMap<String,String>(); 
+			int valkey=1;
+			while(rs.next()) {
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+
+				String CPGraphBindGlueGlueType=rs.getString("GlueType");
+				String CPGraphBindGlueIsSewn=rs.getString("IsSewn");
+				String CPGraphBindGlueNote=rs.getString("Note");
+
+
+
+				CharCPGraphBindGlue.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphBindGlue.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphBindGlue.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphBindGlue.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphBindGlue.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphBindGlue.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphBindGlue.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+
+				CharCPGraphBindGlue.put("GlueType", CPGraphBindGlueGlueType != null ? CPGraphBindGlueGlueType : "");
+				CharCPGraphBindGlue.put("IsSewn", CPGraphBindGlueIsSewn != null ? CPGraphBindGlueIsSewn : "");
+				CharCPGraphBindGlue.put("Note", CPGraphBindGlueNote != null ? CPGraphBindGlueNote : "");
+
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphBindGlue;
+	}
 }

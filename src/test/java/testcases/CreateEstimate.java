@@ -13,6 +13,7 @@ import base.Testbase;
 import pages.Desktop;
 import pages.Estimate;
 import pages.IquoteLogin;
+import utilities.CommonFunctions;
 import utilities.ReadData;
 
 public class CreateEstimate extends Testbase {
@@ -22,6 +23,7 @@ public class CreateEstimate extends Testbase {
 	public void createestimate() throws Exception {
 		
 		int Optionnum=1;
+		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
 		System.out.println("Base Est : " +Config.getProperty("EstimateIDs"));
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
@@ -30,8 +32,6 @@ public class CreateEstimate extends Testbase {
 		Estimate.CreateNewEstimate(Integer.parseInt(Config.getProperty("EstimateIDs")));
 		
 		HashSet<String> Options=new HashSet<>();
-		//HashMap<String,HashSet<String>>Products=new HashMap<String,HashSet<String>>();
-		//HashMap<String,HashMap<String,HashSet<Double>>> Quantities= new HashMap<String,HashMap<String,HashSet<Double>>>();
 		ReadData name = new ReadData();
 		Options=name.NoOfOptions(Config.getProperty("EstimateIDs"));
 		
@@ -44,12 +44,13 @@ public class CreateEstimate extends Testbase {
 			Estimate.AddQuantity(Integer.parseInt(Config.getProperty("EstimateIDs")), Option);
 			Optionnum+=1;
 		}
-		Estimate.SaveEstimate();
+		
 		Estimate.CalculateEstimate();
 		Estimate.NavigateToNegotiationTab();
 		Estimate.SaveEstimateNumber();
 		Estimate.NegotiaionAndPrint("Actual.pdf");
-		
+		System.out.println("****************************Creation Of estimate ends*****************************************");
+		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		
 		
 	}

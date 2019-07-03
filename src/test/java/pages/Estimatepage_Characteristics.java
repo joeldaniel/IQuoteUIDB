@@ -66,10 +66,12 @@ public class Estimatepage_Characteristics extends Testbase {
 			String Grammage1= PageGrammage.replace(".0", "");
 			System.out.println("Grammage is :- "+Grammage1);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).click();
-			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_Grammage")), Grammage1);
-			// driver.findElement(By.xpath(Locators.getProperty(Locators.NE_Grammage))).sendKeys(Grammage1);
+			//CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_Grammage")), Grammage1);
+			 driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Grammage1);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.DOWN);
+			Thread.sleep(2000);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.ENTER);
+			Thread.sleep(2000);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.TAB);
 
 			Thread.sleep(3000);
@@ -452,16 +454,32 @@ public class Estimatepage_Characteristics extends Testbase {
 		String PageFormatSize= EstPageFormat.get(Comporderval).get("Size");
 
 		String SFFinishedFormat=PageFinishedFormatWidth+" x "+PageFinishedFormatHeight;
-
+		String FlatFormat=PageFormatFlatWidth+" x "+PageFinishedFormatHeight;
 		Thread.sleep(5000);  
-		if(driver.findElements(By.xpath("//label[text()='Closed (WxH)']")).size()>0){
+		switch(CharacTypeDesc)
+		{
+		case "Folded Format (model)":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-		}
-		else if(driver.findElements(By.xpath("//label[text()='Finished Format (WxH)']")).size()>0){
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='Flat (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(FlatFormat+Keys.TAB);
+			break;
+		case "Leaf format ":
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+			break;
+		case "Pages Format ":
+			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			driver.findElement(By.xpath("//label[text()='Page']/parent::span/following-sibling::span/input")).sendKeys(PageFormat);
+			break;
+		case "Cover Format ":
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+			break;
+		default:
+			System.out.println("component type is not coded : "+CompTypedescp);
 		}
 		
 	
@@ -531,11 +549,32 @@ public class Estimatepage_Characteristics extends Testbase {
 					else {
 						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemSurface, "Back");
 					}
-				
+				//changing to go with index For Surface
+				//CommonFunctions.selectDropdownByIndex(driver,By.xpath(XpathWitCPGraphStampingItemSurface),Integer.parseInt(CPGraphStampingItemTypeSurface));
 				
 
 				//for Input Number
-				//CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "1st Input");
+				switch(Integer.parseInt(CPGraphStampingItemInputNumber))
+				{
+				
+				case 1:
+					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "1st Input");	    
+					break;	
+				case 2:
+					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "2nd Input");	    
+					break;	
+				case 3:
+					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "3rd Input");	    
+					break;	
+				case 4:
+					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "4th Input");	    
+					break;	
+				case 5:
+					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "5th Input");	    
+					break;	
+				default:
+					System.out.println("Value of CPGraphStampingItemInputNumber is not selected with : "+CPGraphStampingItemInputNumber);
+				}
 
 
 			}
@@ -543,5 +582,177 @@ public class Estimatepage_Characteristics extends Testbase {
 
 	
 		
+	}
+	
+	public void Charactertics_CPPlant(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPPlant = new HashMap<String, String>();
+		CharCPPlant=name.CPPlant(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+
+		String CPPlantPlant=CharCPPlant.get("Plant");
+      	String XpathWithCPPlantPlant="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//span//label[text()='Plant']/parent::span/span/span/input";
+    	    	
+    	
+    	CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWithCPPlantPlant, CPPlantPlant);
+    	
+    		
+	
+	}
+	
+	public void Charactertics_CPGenericCPOptionDesc(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPGenericCPOptionDesc = new HashMap<String, String>();
+		//String newCharteristicDescp=CharteristicDescp.replace("'", "''");
+		CharCPGenericCPOptionDesc=name.CPGenericCPOptionDesc(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		
+		String CPGenericCPOptionDesc=CharCPGenericCPOptionDesc.get("Description");
+		String CPGenericCPOptionOptions=CharCPGenericCPOptionDesc.get("Options");
+		String CPGenericCPOptionQuantity=CharCPGenericCPOptionDesc.get("Quantity");
+
+
+		String XpathForOption="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Option']/parent::span/span//input";
+		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForOption, CPGenericCPOptionOptions);
+
+		String XpathForDescp="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Description']/parent::span/span//input";
+		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForDescp, CPGenericCPOptionDesc);
+		CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForDescp, CPGenericCPOptionDesc);
+		
+		
+		String XpathForQuantity="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Quantity']/parent::span/span//input";
+		if(driver.findElements(By.xpath(XpathForQuantity)).size()>0)
+		{
+		CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForQuantity, CPGenericCPOptionQuantity);
+		}
+		else
+		{
+			System.out.println("Quantity field is not present for CPOption Desc :- "+CharteristicDescp);
+		}
+	
+	}
+	public void Charactertics_CPNote(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPNote = new HashMap<String, String>();
+		CharCPNote=name.CPNote(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+		String CPNoteNote=CharCPNote.get("Note");
+
+		String xpathforNoteText="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//div[@class='text']/textarea";
+
+		driver.findElement(By.xpath(xpathforNoteText)).click();
+		driver.findElement(By.xpath(xpathforNoteText)).sendKeys(CPNoteNote);
+		Thread.sleep(2000);
+	
+	}
+	public void Charactertics_CPAGraphPageProof(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPAGraphPageProof	 = new HashMap<String, String>();
+		CharCPAGraphPageProof=name.CPAGraphPageProof(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String CPAGraphPageProofDefinedPages=CharCPAGraphPageProof.get("DefinedPages");
+		String CPAGraphPageProofDefinedFormat=CharCPAGraphPageProof.get("DefinedFormat");
+		String CPAGraphPageProofNotes=CharCPAGraphPageProof.get("Notes");
+		String CPAGraphPageQuantity=CharCPAGraphPageProof.get("Quantity");
+		String CPAGraphPageWidth=CharCPAGraphPageProof.get("Width");
+		String CPAGraphPageHeight=CharCPAGraphPageProof.get("Height");
+
+
+		String xpathForDefinedpages="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Defined Pages']/parent::button/div";
+		String xpathForDefinedpagesButton="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Defined Pages']/parent::button";
+		String xpathForQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
+
+		String xpathForDefinedFormat="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Defined Format']/parent::button/div";
+		String xpathForDefinedFormatButton="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Defined Format']/parent::button";
+		String xpathForPagewh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Page (WxH)']/parent::span/span/input";
+		String PageWHval=CPAGraphPageWidth+" x "+CPAGraphPageHeight;
+		String XpathForNotes="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Notes']/parent::span/span/div/textarea";
+
+		//For Defined pages
+		if (CPAGraphPageProofDefinedPages.equals("0"))
+		{
+			String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
+			if(getCheckStatus.equals("true"))
+			{
+				driver.findElement(By.xpath(xpathForDefinedpages)).click();
+				Thread.sleep(2000);
+				driver.findElement(By.xpath(xpathForQuantity)).clear();
+				driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
+
+
+			}
+
+
+		}
+		else if(CPAGraphPageProofDefinedPages.equals("1"))
+		{
+			String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
+			if(getCheckStatus.equals("false"))
+			{
+				driver.findElement(By.xpath(xpathForDefinedpages)).click();
+				Thread.sleep(2000);
+				driver.findElement(By.xpath(xpathForQuantity)).clear();
+				driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
+			}
+
+		}
+		//For Defined pages
+
+		//For Defined Format
+		if(CPAGraphPageProofDefinedFormat.equals("0"))
+		{
+			String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
+			if(getCheckStatusDF.equals("true"))
+			{
+				driver.findElement(By.xpath(xpathForDefinedFormat)).click();
+				Thread.sleep(2000);
+				driver.findElement(By.xpath(xpathForPagewh)).clear();
+				driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
+			}
+		}
+		else if(CPAGraphPageProofDefinedFormat.equals("1"))
+		{
+			String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
+			if(getCheckStatusDF.equals("false"))
+			{
+				driver.findElement(By.xpath(xpathForDefinedFormat)).click();
+				Thread.sleep(2000);
+
+				driver.findElement(By.xpath(xpathForPagewh)).clear();
+				driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
+			}
+		}
+
+		//For Notes
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForNotes)).clear();
+		driver.findElement(By.xpath(XpathForNotes)).sendKeys(CPAGraphPageProofNotes);
+	
+	}
+	public void Charactertics_CPGraphBindGlue(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPGraphBindGlue = new HashMap<String, String>();
+		CharCPGraphBindGlue=name.CPGraphBindGlue(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+
+
+		String CPGraphBindGlueGlueType=CharCPGraphBindGlue.get("GlueType");
+		String CPGraphBindGlueIsSewn=CharCPGraphBindGlue.get("IsSewn");
+		String CPGraphBindGlueNote=CharCPGraphBindGlue.get("Note");
+
+
+		String XpathWitCPGraphBindGlueGlueType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Glue Type']/parent::span/span/span/input";
+		String XpathWitCPGraphBindGlueIsSewn="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Sewn']";
+		String XpathWitCPGraphBindGlueNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
+
+
+		// for Glue Type
+//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).clear(); 
+//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).sendKeys(CPGraphBindGlueGlueType+Keys.TAB); 
+		System.out.println("Glue Type is :- "+CPGraphBindGlueGlueType);
+		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindGlueGlueType, CPGraphBindGlueGlueType);
+
+		// for ISSewn
+		CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphBindGlueIsSewn, CPGraphBindGlueIsSewn);
+		// for Note
+		driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).sendKeys(CPGraphBindGlueNote+Keys.TAB);
+
+	
 	}
 }

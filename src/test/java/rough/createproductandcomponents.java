@@ -27,20 +27,20 @@ public class createproductandcomponents extends Testbase{
 	@Test
 	public  void test() throws Exception {
 		String filename="joel.pdf";
-		
+		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
 		Thread.sleep(1000);
-		driver.findElement(By.xpath("//div[@class='ltv_ ltv--inline']//input[@class='numeric dot-input']")).sendKeys("13078");
+		driver.findElement(By.xpath("//div[@class='ltv_ ltv--inline']//input[@class='numeric dot-input']")).sendKeys("13088");
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("//footer[@class='lkvg']//button[@class='lkv']")).click();
 		Thread.sleep(1000);
 		Actions actions = new Actions(driver);
-		WebElement elementLocator = driver.findElement(By.xpath("//span[contains(text(),'13,078')]"));
+		WebElement elementLocator = driver.findElement(By.xpath("//span[contains(text(),'13,088')]"));
 		actions.doubleClick(elementLocator).perform();
 		Thread.sleep(5000);
 		
-		Estimate.NegotiaionAndPrint(filename);
+		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		
 		
 	}
