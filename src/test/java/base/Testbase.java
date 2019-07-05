@@ -131,7 +131,7 @@ public class Testbase {
 	
 	@AfterSuite
 	public void tearDown() {
-		//driver.quit();
+		driver.quit();
 		 extent.flush();
 		
 	}

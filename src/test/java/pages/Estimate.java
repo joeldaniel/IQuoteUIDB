@@ -225,7 +225,7 @@ public class Estimate extends Testbase{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
 		//driver.findElement(By.xpath("//label[text()='Calculate']")).click();
 		CommonFunctions.waitForPageLoad(driver);
-		Thread.sleep(8000);
+		Thread.sleep(10000);
 	
 		String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
 		System.out.println("Attribute value is :"+EngVisible);
@@ -268,6 +268,7 @@ public class Estimate extends Testbase{
 	{
 		
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
+		Thread.sleep(2000);
 		CommonFunctions.waitForPageLoad(driver);
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 25);
 		driver.findElement(By.xpath("//div[@class='wv']//button[@title='Print']/following-sibling::span[3]")).click();
