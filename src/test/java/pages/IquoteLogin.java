@@ -9,6 +9,7 @@ public class IquoteLogin extends Testbase{
 	
 	public static void Login(String UserName,String Password) throws Exception {
 
+
 		
         System.out.println("Login Started");
         
@@ -47,6 +48,11 @@ public class IquoteLogin extends Testbase{
 		
 		
 	
+	
+	}
+	
+	public static void Login(String first,String second,String pass) {
+		System.out.println("test");
 	}
 	
 

@@ -55,6 +55,37 @@ public class CommonFunctions extends Testbase {
 			return false;
 		}
 	}
+	public static String GetValue(WebDriver driver, By locator) throws Exception
+	{
+		
+		String sValue="";
+		if(isElementPresent(driver, locator))
+		{
+			sValue=driver.findElement(locator).getAttribute("value").trim();
+		}
+		else
+		{
+			
+			Assert.fail("Not able to get value.Locator is not present "+locator);
+		}
+		System.out.println("sValue is "+ sValue);
+		return sValue;
+	}
+	public static String getAttribute(WebDriver driver, By locator, String attribute) throws Exception
+	{	
+		String sAttr = "";
+
+		if (isElementPresent(driver, locator))
+		{
+			sAttr = driver.findElement(locator).getAttribute(attribute);
+		}
+		else
+		{
+			System.err.println("Object doesn't exists");			
+		}
+
+		return sAttr;
+	}
 	public static void Iquote_SelectCheckbox(WebDriver driver, String XpathForLocator, String CheckBoxState) throws Exception
 	{
 		String XpathForButtonstare=XpathForLocator+"/ancestor::button[@class='ckb ']";

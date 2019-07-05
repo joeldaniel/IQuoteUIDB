@@ -25,7 +25,7 @@ public class checkquery  {
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		fis = new FileInputStream(
-				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPAGraphPageProof.properties");
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPFileList.properties");
 		Query.load(fis);
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Config.properties");

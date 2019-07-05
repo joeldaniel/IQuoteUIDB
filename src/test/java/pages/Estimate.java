@@ -1,5 +1,6 @@
 package pages;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -238,6 +239,10 @@ public class Estimate extends Testbase{
 		}
 
 	} 
+	public static void CloseEstimateTab() {
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']"), 180);
+		driver.findElement(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).click();
+	}
 	public static Boolean NavigateToEngineeringTab()throws Exception
 	{
 		
@@ -291,6 +296,14 @@ public class Estimate extends Testbase{
 		System.out.println("The New Estimate Number is: "+sEstimateNumber);
 		
 		return sEstimateNumber;
+	}
+	
+	public static void deleteFiles(File file) {
+		  if (file.isDirectory())
+		        for (File f : file.listFiles())
+		            deleteFiles(f);
+		    else
+		        file.delete();
 	}
 	
 	public static void SwitchToSecondWindow(WebDriver driver) throws Exception
@@ -534,7 +547,7 @@ public class Estimate extends Testbase{
 			System.out.println("Current Characteristic is :- "+AddCharacteristicsList);
 
 			driver.findElement(By.xpath("//span[@title='Add Characteristic']")).click();
-			Thread.sleep(5000);
+			Thread.sleep(8000);
 
 			int tabCounts=driver.findElements(By.xpath("//span[contains(text(),'"+Compdescp+"')]/ancestor::span[@class='ltv__item ltv_']/following-sibling::span//span[contains(@class,'tabs__tab ')]")).size();
 			System.out.println("Seraching For Char:-"+s);
@@ -973,9 +986,9 @@ public class Estimate extends Testbase{
 			            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
 			             driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 				    	 Thread.sleep(5000);
-				    	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Quantity')]")));
-				    	 driver.findElement(By.xpath("//li[contains(text(),'New Quantity')]")).click();
-				    	System.out.println("fwer");
+				    	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New quantity')]")));
+				    	 driver.findElement(By.xpath("//li[contains(text(),'New quantity')]")).click();
+				    	
 			            for (int q=0;q<Qtyval.size();q++) {
 			            	
 					    	 System.out.println("//span[contains(text(),'"+Name.get(q)+"')]//..//following-sibling::div//input");
@@ -1035,7 +1048,7 @@ public class Estimate extends Testbase{
 				}
 			}
 			else {
-				System.out.println("Save is not enable to click to overcome the freeze issue");
+				System.out.println("Save is not enable to click to overcome the freeze issu");
 			}
 			
 			
@@ -1136,9 +1149,41 @@ public class Estimate extends Testbase{
 					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
 						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
 						break;
-					
+					case "qttCModelPS.qttCPValue":
+						EPC.Charactertics_CPValue(EstimateId,IdItemOption, Comporderval, Characteristic);
+						break;
+					case "qttCModelPS.qttCPASimpleQty":
+						EPC.Charactertics_CPASimpleQty(EstimateId,IdItemOption, Comporderval, Characteristic);
+						break;
+					case "qttCModelGraphCarac.qttCPGraphFiber":
+						EPC.Charactertics_CPGraphFiber(EstimateId, IdItemOption,Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPGraphPackagingBox":
+						EPC.Charactertics_CPGraphPackBox(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelPS.qttCPFileList":
+						EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPGraphLargeFormat":
+						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPGraphGiantCoupling":
+						EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPGraphBleed":
+						EPC.Charactertics_CPGraphBleed(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						break;
+					case "qttCModelGraphCarac.qttCPGraphUnfinishedFormat":
+                        EPC.Charactertics_CPGraphUnfinishedFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
+                        break;
+                        
+                  case "qttCModelGraphCarac.qttCPGraphLaminating":
+                        EPC.Charactertics_CPGraphInitialLaminating(EstimateId,IdItemOption, Comporderval, Characteristic);
+                      break;
+                 
+
 					default:
-						System.out.println("Characteristic that is not present  :- "+FixedCharDescp);
+						System.out.println("Characteristic that is not present :- "+FixedCharDescp);
 						
 					}
 

@@ -29,7 +29,18 @@ public class ReadData extends Testbase{
 	public static HashMap<String, HashMap<String, String>> EstDetailsPaperFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphPackBox	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPFileList	 = new HashMap<String, String>();
+    public static HashMap<String, String> CharCPGraphBleed      = new HashMap<String, String>();
+    public static HashMap<String, String> CharCPGraphInitialLaminating      = new HashMap<String, String>();
+    
+    public static HashMap<String, String> CharCPGraphUnfinishedFormat = new HashMap<String, String>();
+
+	public static HashMap<String, String> CharCPGraphLargeFormat	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPAGraphPageProof = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphFiber	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPASimpleQty	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPvalueQTY = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPPlant	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPNote	 = new HashMap<String, String>();
 	String DBuser=Config.getProperty("DBUsername");
@@ -326,7 +337,8 @@ public class ReadData extends Testbase{
 		
 		ResultSet rs;
 		String Query1=Query.getProperty("Query");
-		// opening database connection to MySQL server
+		// opening database connection to MySQL serv
+		System.out.println("fwe");
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
@@ -1276,6 +1288,156 @@ public class ReadData extends Testbase{
 		return CharCPAGraphPageProof;
 	
 	}
+	public HashMap<String, String> CPGraphUnfinishedFormat(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphUnfinishedFormat.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphUnfinishedFormat.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next())
+			{
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+				String CPGraphWidth=rs.getString("Width");
+				String CPGraphHeight=rs.getString("Height");
+				String CPGraphThickness=rs.getString("Thickness");
+				String CPGraphWeight=rs.getString("Weight");
+				String CPGraphInventoryItemCode=rs.getString("InventoryItemCode");
+				String CPGraphInventoryItemDescription=rs.getString("InventoryItemDescription");
+				String CPGraphQuantity=rs.getString("Quantity");
+				String CPGraphNote=rs.getString("Note");
+
+
+				CharCPGraphUnfinishedFormat.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphUnfinishedFormat.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphUnfinishedFormat.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphUnfinishedFormat.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphUnfinishedFormat.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphUnfinishedFormat.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphUnfinishedFormat.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+				CharCPGraphUnfinishedFormat.put("Width", CPGraphWidth != null ? CPGraphWidth : "");
+				CharCPGraphUnfinishedFormat.put("Height", CPGraphHeight != null ? CPGraphHeight : "");
+				CharCPGraphUnfinishedFormat.put("Thickness", CPGraphThickness != null ? CPGraphThickness : "");
+				CharCPGraphUnfinishedFormat.put("Weight", CPGraphWeight != null ? CPGraphWeight : "");
+				CharCPGraphUnfinishedFormat.put("InventoryItemCode", CPGraphInventoryItemCode != null ? CPGraphInventoryItemCode : "");
+				CharCPGraphUnfinishedFormat.put("InventoryItemDescription", CPGraphInventoryItemDescription != null ? CPGraphInventoryItemDescription : "");
+				CharCPGraphUnfinishedFormat.put("Quantity", CPGraphQuantity != null ? CPGraphQuantity : "");
+				CharCPGraphUnfinishedFormat.put("Note", CPGraphNote != null ? CPGraphNote : "");
+
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphUnfinishedFormat;
+	}
+	
+	public HashMap<String, String> CPGraphInitialLaminating(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	{
+		CharCPGraphInitialLaminating.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphInitialLaminating.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+				String CPGraphInitialLaminatingFront=rs.getString("Front");
+				String CPGraphInitialLaminatingBack=rs.getString("Back");
+				String CPGraphInitialLaminatingNote=rs.getString("Note");
+				String CPGraphInitialLaminatingRollWidthFront=rs.getString("RollWidthFront");
+				String CPGraphInitialLaminatingRollWidthBack=rs.getString("RollWidthBack");
+
+
+
+				CharCPGraphInitialLaminating.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphInitialLaminating.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphInitialLaminating.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphInitialLaminating.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphInitialLaminating.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphInitialLaminating.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphInitialLaminating.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+
+				CharCPGraphInitialLaminating.put("Front", CPGraphInitialLaminatingFront != null ? CPGraphInitialLaminatingFront : "");
+				CharCPGraphInitialLaminating.put("Back", CPGraphInitialLaminatingBack != null ? CPGraphInitialLaminatingBack : "");
+				CharCPGraphInitialLaminating.put("Note", CPGraphInitialLaminatingNote != null ? CPGraphInitialLaminatingNote : "");
+				CharCPGraphInitialLaminating.put("RollWidthFront", CPGraphInitialLaminatingRollWidthFront != null ? CPGraphInitialLaminatingRollWidthFront : "");
+				CharCPGraphInitialLaminating.put("RollWidthBack", CPGraphInitialLaminatingRollWidthBack != null ? CPGraphInitialLaminatingRollWidthBack : "");
+
+			}
+
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphInitialLaminating;
+	}
+		
+	public HashMap<String, String> CPGraphBleed(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	{
+		CharCPGraphBleed.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphBleed.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+				String Bleed=rs.getString("Bleed");
+				CharCPGraphBleed.put("Bleed", Bleed != null ? Bleed : "");
+				
+			}
+
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphBleed;
+	}
 	public HashMap<String, String> CPGraphBindGlue(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPGraphBindGlue.clear();
@@ -1329,4 +1491,320 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphBindGlue;
 	}
+	public HashMap<String, String> CPValueQTY(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+		CharCPvalueQTY.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPValueQTY.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String Quantity=rs.getString("Qty");
+				String CPvalueidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String Value=rs.getString("Value");
+
+
+
+				CharCPvalueQTY.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPvalueQTY.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPvalueQTY.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPvalueQTY.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPvalueQTY.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPvalueQTY.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPvalueQTY.put("Qty", Quantity != null ? Quantity : "");
+				CharCPvalueQTY.put("idPSCmpCarac", CPvalueidPSCmpCarac != null ? CPvalueidPSCmpCarac : "");
+				CharCPvalueQTY.put("Value", Value != null ? Value : "");
+			
+			}
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPvalueQTY;
+	}
+
+	public HashMap<String, String> CPASimpleQty(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+		CharCPASimpleQty.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPValueQTY.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+
+				String CPASimpleQtyQuantity=rs.getString("Quantity");
+				String CPASimpleQtyNote=rs.getString("Note");
+
+
+
+				CharCPASimpleQty.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPASimpleQty.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPASimpleQty.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPASimpleQty.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPASimpleQty.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPASimpleQty.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPASimpleQty.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+
+				CharCPASimpleQty.put("Quantity", CPASimpleQtyQuantity != null ? CPASimpleQtyQuantity : "");
+				CharCPASimpleQty.put("Note", CPASimpleQtyNote != null ? CPASimpleQtyNote : "");
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPASimpleQty;
+	}
+	public HashMap<String, String> CPGraphFiber(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPGraphFiber.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphFiber.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGraphFiberGrainDirection=rs.getString("GrainDirection");
+
+
+				CharCPGraphFiber.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphFiber.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphFiber.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphFiber.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphFiber.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphFiber.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphFiber.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPGraphFiber.put("GrainDirection", CPGraphFiberGrainDirection != null ? CPGraphFiberGrainDirection : "");
+
+			
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphFiber;
+		
+	}
+	public HashMap<String, String> CPGraphPackBox(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphPackBox.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPackBag.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CPvalueidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String PackboxCharUnitsInThebox=rs.getString("UnitsInThebox");
+				String PackboxCharBoxType=rs.getString("BoxType");
+				String PackboxCharBox=rs.getString("Box");
+				String PackboxCharNote=rs.getString("Note");
+
+
+				CharCPGraphPackBox.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphPackBox.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphPackBox.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphPackBox.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphPackBox.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphPackBox.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphPackBox.put("idPSCmpCarac", CPvalueidPSCmpCarac != null ? CPvalueidPSCmpCarac : "");
+				CharCPGraphPackBox.put("UnitsInThebox", PackboxCharUnitsInThebox != null ? PackboxCharUnitsInThebox : "");
+				CharCPGraphPackBox.put("BoxType", PackboxCharBoxType != null ? PackboxCharBoxType : "");
+				CharCPGraphPackBox.put("Box", PackboxCharBox != null ? PackboxCharBox : "");
+				CharCPGraphPackBox.put("Note", PackboxCharNote != null ? PackboxCharNote : "");
+
+
+			
+			}
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphPackBox;
+		
+	}
+	public HashMap<String, String> CPFileList(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPFileList.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPFileList.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CPvalueidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String Files=rs.getString("Files");
+				String Notes=rs.getString("Notes");
+				
+
+
+				CharCPFileList.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPFileList.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPFileList.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPFileList.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPFileList.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPFileList.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPFileList.put("idPSCmpCarac", CPvalueidPSCmpCarac != null ? CPvalueidPSCmpCarac : "");
+				CharCPFileList.put("Files", Files != null ? Files : "");
+				CharCPFileList.put("Notes", Notes != null ? Notes : "");
+				
+
+
+			
+			
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPFileList;
+	}
+	
+	
+	public HashMap<String, String> CPGraphLargeFormat(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphLargeFormat.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphLargeFormat.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL server
+		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		try
+		{
+			while(rs.next()) {
+
+				String FinishedFormatWidth=rs.getString("FinishedFormatWidth");
+				String FinishedFormatHeight=rs.getString("FinishedFormatHeight");
+				String PrintingDirection=rs.getString("PrintingDirection");
+				String Note=rs.getString("Note");
+				String Margins=rs.getString("Margins");
+				String IrregularFit=rs.getString("IrregularFit");
+				String TopMargin=rs.getString("TopMargin");
+				String BottomMargin=rs.getString("BottomMargin");
+				String LeftMargin=rs.getString("LeftMargin");
+				String RightMargin=rs.getString("RightMargin");
+				String TopBleed=rs.getString("TopBleed");
+				String BottomBleed=rs.getString("BottomBleed");
+				String LeftBleed=rs.getString("LeftBleed");
+				String RightBleed=rs.getString("RightBleed");
+				String Splicing=rs.getString("Splicing");
+				String SplicingBleed=rs.getString("SplicingBleed");
+				String LayoutWidht=rs.getString("LayoutWidht");
+				String LayoutHeight=rs.getString("LayoutHeight");
+				String Utilization=rs.getString("Utilization");
+				String Numberup=rs.getString("Numberup");
+				
+				
+				CharCPGraphLargeFormat.put("FinishedFormatWidth", FinishedFormatWidth != null ? FinishedFormatWidth : "");
+				CharCPGraphLargeFormat.put("FinishedFormatHeight", FinishedFormatHeight != null ? FinishedFormatHeight : "");
+				CharCPGraphLargeFormat.put("PrintingDirection", PrintingDirection != null ? PrintingDirection : "");
+				CharCPGraphLargeFormat.put("Note", Note != null ? Note : "");
+				CharCPGraphLargeFormat.put("Margins", Margins != null ? Margins : "");
+				CharCPGraphLargeFormat.put("IrregularFit", IrregularFit != null ? IrregularFit : "");
+				CharCPGraphLargeFormat.put("TopMargin", TopMargin != null ? TopMargin : "");
+				CharCPGraphLargeFormat.put("BottomMargin", BottomMargin != null ? BottomMargin : "");
+				CharCPGraphLargeFormat.put("RightMargin", RightMargin != null ? RightMargin : "");
+				CharCPGraphLargeFormat.put("TopBleed", TopBleed != null ? TopBleed : "");
+				CharCPGraphLargeFormat.put("BottomBleed", BottomBleed != null ? BottomBleed : "");
+				CharCPGraphLargeFormat.put("LeftMargin", LeftMargin != null ? LeftMargin : "");
+				CharCPGraphLargeFormat.put("LeftBleed", LeftBleed != null ? LeftBleed : "");
+				CharCPGraphLargeFormat.put("RightBleed", RightBleed != null ? RightBleed : "");
+				CharCPGraphLargeFormat.put("Splicing", Splicing != null ? Splicing : "");
+				CharCPGraphLargeFormat.put("SplicingBleed", SplicingBleed != null ? SplicingBleed : "");
+				CharCPGraphLargeFormat.put("LayoutWidht", LayoutWidht != null ? LayoutWidht : "");
+				CharCPGraphLargeFormat.put("LayoutHeight", LayoutHeight != null ? LayoutHeight : "");
+				CharCPGraphLargeFormat.put("Utilization", Utilization != null ? Utilization : "");
+				CharCPGraphLargeFormat.put("Numberup", Numberup != null ? Numberup : "");
+				
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphLargeFormat;
+	}
+	
 }
+

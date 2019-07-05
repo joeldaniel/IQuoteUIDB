@@ -10,6 +10,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import base.Testbase;
 import utilities.CommonFunctions;
@@ -23,7 +25,7 @@ public class Estimatepage_Characteristics extends Testbase {
 	{
 		HashMap<String, HashMap<String, String>> EstPageSpec = new HashMap<String, HashMap<String, String>>();
 
-		//EstPageSpec=name.PaperSpec(Estimateid, Comporderval); 
+		//EstPageSpec=name.Papegetpec(Estimateid, Comporderval); 
 		EstPageSpec=name.CPGraphMedia(Estimateid,IdItemOption, Comporderval);
 		String OptDescp= EstPageSpec.get(Comporderval).get("OptionDescription");
 		String CompDescp1= EstPageSpec.get(Comporderval).get("ComponentDescription");
@@ -456,25 +458,25 @@ public class Estimatepage_Characteristics extends Testbase {
 		String SFFinishedFormat=PageFinishedFormatWidth+" x "+PageFinishedFormatHeight;
 		String FlatFormat=PageFormatFlatWidth+" x "+PageFinishedFormatHeight;
 		Thread.sleep(5000);  
-		switch(CharacTypeDesc)
+		switch(CharacTypeDesc.toLowerCase())
 		{
-		case "Folded Format (model)":
+		case "folded format (model)":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Flat (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(FlatFormat+Keys.TAB);
 			break;
-		case "Leaf format ":
+		case "leaf format":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			break;
-		case "Pages Format ":
+		case "pages format":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			Thread.sleep(3000);
 			driver.findElement(By.xpath("//label[text()='Page']/parent::span/following-sibling::span/input")).sendKeys(PageFormat);
 			break;
-		case "Cover Format ":
+		case "cover format":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			break;
@@ -725,6 +727,197 @@ public class Estimatepage_Characteristics extends Testbase {
 		driver.findElement(By.xpath(XpathForNotes)).sendKeys(CPAGraphPageProofNotes);
 	
 	}
+	
+	public void Charactertics_CPValue(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPvalue = new HashMap<String, String>();
+		CharCPvalue=name.CPValueQTY(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String Cpvalue=CharCPvalue.get("Value");
+
+		String XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
+		driver.findElement(By.xpath(XpathForComponent)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForComponent)).sendKeys(Cpvalue);
+
+	
+	}
+	public void Charactertics_CPASimpleQty(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPASimpleQty = new HashMap<String, String>();
+		CharCPASimpleQty=name.CPASimpleQty(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+
+
+		String CPASimpleQtyQuantity=CharCPASimpleQty.get("Quantity");
+		String CPASimpleQtyNote=CharCPASimpleQty.get("Note");
+
+
+		String XpathWitCPASimpleQtyQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
+		String XpathWitCPASimpleQtyNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
+
+
+		// for Quantity
+		driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).sendKeys(CPASimpleQtyQuantity+Keys.TAB); 
+
+		// for Note
+		driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).sendKeys(CPASimpleQtyNote+Keys.TAB);
+
+	
+	}
+	public void Charactertics_CPGraphFiber(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPGraphFiber = new HashMap<String, String>();
+		CharCPGraphFiber=name.CPGraphFiber(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String CPGraphFiberGrainDirection=CharCPGraphFiber.get("GrainDirection");
+
+
+
+		String XpathForGrainDirection="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Grain Direction']/parent::span//span/input";
+		driver.findElement(By.xpath(XpathForGrainDirection)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForGrainDirection)).sendKeys(CPGraphFiberGrainDirection+Keys.ENTER);
+		Thread.sleep(2000);
+
+	
+	}
+	public void Charactertics_CPGraphPackBox(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CharCPGraphPackBox = new HashMap<String, String>();
+		CharCPGraphPackBox=name.CPGraphPackBox(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String CPGraphPackBoxUnitsintheBox=CharCPGraphPackBox.get("UnitsInThebox");
+		String CPGraphPackBoxBoxType=CharCPGraphPackBox.get("BoxType");
+		String CPGraphPackBox=CharCPGraphPackBox.get("Box");
+		String CPGraphPackNotes=CharCPGraphPackBox.get("Note");
+
+
+		String XpathForUnitsintheBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Box']/parent::span/span/input";
+		driver.findElement(By.xpath(XpathForUnitsintheBox)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForUnitsintheBox)).sendKeys(CPGraphPackBoxUnitsintheBox+Keys.ENTER);
+
+		Thread.sleep(2000);
+		String XpathForBoxType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box Type']/parent::span/span//input";
+		driver.findElement(By.xpath(XpathForBoxType)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(CPGraphPackBoxBoxType+Keys.ENTER);
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(Keys.ENTER);
+		Thread.sleep(5000);
+		String XpathForBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box']/parent::span/span//input";
+		driver.findElement(By.xpath(XpathForBox)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForBox)).sendKeys(CPGraphPackBox+Keys.ENTER);
+
+		Thread.sleep(2000);
+		String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
+		driver.findElement(By.xpath(XpathForNote)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);
+	
+	
+	}
+	public void Charactertics_CPFileList(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+
+		HashMap<String, String> CPFileList = new HashMap<String, String>();
+		CPFileList=name.CPFileList(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String CPFileList_file=CPFileList.get("Files");
+		String CPFileList_notes=CPFileList.get("Notes");
+		
+		//write code to take files dont know how to write
+		if(CPFileList_file!=null) {
+			System.out.println("Need to write code");
+		}
+		else {
+			System.out.println("No files to upload");
+		}
+	}
+	public void Charactertics_CPGraphLargeFormat(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+		HashMap<String, String> CPGraphLargeFormat = new HashMap<String, String>();
+		CPGraphLargeFormat=name.CPGraphLargeFormat(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		String FinishedFormatWidth=CPGraphLargeFormat.get("FinishedFormatWidth");
+		String FinishedFormatHeight=CPGraphLargeFormat.get("FinishedFormatHeight");
+		String PrintingDirection=CPGraphLargeFormat.get("PrintingDirection");
+		String Note=CPGraphLargeFormat.get("Note");
+		String Margins=CPGraphLargeFormat.get("Margins");
+		String IrregularFit=CPGraphLargeFormat.get("IrregularFit");
+		String TopMargin=CPGraphLargeFormat.get("TopMargin");
+		String BottomMargin=CPGraphLargeFormat.get("BottomMargin");
+		String LeftMargin=CPGraphLargeFormat.get("LeftMargin");
+		String RightMargin=CPGraphLargeFormat.get("RightMargin");
+		String TopBleed=CPGraphLargeFormat.get("TopBleed");
+		String BottomBleed=CPGraphLargeFormat.get("BottomBleed");
+		String LeftBleed=CPGraphLargeFormat.get("LeftBleed");
+		String RightBleed=CPGraphLargeFormat.get("RightBleed");
+		String Splicing=CPGraphLargeFormat.get("Splicing");
+		String SplicingBleed=CPGraphLargeFormat.get("SplicingBleed");
+		String LayoutWidht=CPGraphLargeFormat.get("LayoutWidht");
+		String LayoutHeight=CPGraphLargeFormat.get("LayoutHeight");
+		String Utilization=CPGraphLargeFormat.get("Utilization");
+		String Numberup=CPGraphLargeFormat.get("Numberup");
+		
+		if(FinishedFormatWidth!=null && FinishedFormatHeight!=null) {
+			String SFFinishedFormat=FinishedFormatWidth+" x "+FinishedFormatHeight;
+			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).clear();
+			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+		}
+		if(Note!=null) {
+			driver.findElement(By.xpath("//label[text()='Note']/../span/input")).sendKeys(Note+Keys.TAB);
+		}
+		if(PrintingDirection!=null) {
+			Select dropDownObject = new Select(driver.findElement(By.xpath("//label[text()='Printing Direction']//following::span[@class='input-wraper simple-lookup2']")));
+			dropDownObject.selectByValue(PrintingDirection);
+		}
+		if(Integer.parseInt(Splicing)!=0 && Integer.parseInt(SplicingBleed)!=0) {
+			driver.findElement(By.xpath("//label[text()='Splicing']")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='Splicing']//following-sibling::span/input")).sendKeys(Splicing+Keys.TAB);
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='+ Bleed']//following-sibling::span/input")).sendKeys(SplicingBleed+Keys.TAB);
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//button[@title='OK']")).click();
+		}
+		WebElement ele=driver.findElement(By.xpath("//label[text()='Margins']//parent::button"));
+		String option=ele.getAttribute("aria-checked");
+		if(Margins.equals("1")) {
+			if(option.equalsIgnoreCase("true")) {
+				
+			}else {
+				ele.click();
+			}
+		}else if(Margins.equals("0")){
+			if(option.equalsIgnoreCase("true")) {
+				ele.click();
+			}else {
+				
+			}
+		}
+		WebElement ele1=driver.findElement(By.xpath("//label[text()='Irregular Fit']//parent::button"));
+		String option1=ele1.getAttribute("aria-checked");
+		String Layoutformat=LayoutWidht+" x "+LayoutHeight;
+		if(Margins.equals("1")) {
+			if(option1.equalsIgnoreCase("true")) {
+				driver.findElement(By.xpath("//label[text()='Layout format (WxH)']/../span/div/span/input")).sendKeys(Layoutformat+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Number Up']/../span/input")).sendKeys(Numberup+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Utilization']/../span/input")).sendKeys(Utilization+Keys.TAB);
+			}else {
+				ele1.click();
+			}
+		}else if(Margins.equals("0")){
+			if(option1.equalsIgnoreCase("true")) {
+				ele1.click();
+			}else {
+				
+			}
+		}
+		
+	}
+	public void charactertics_CPGraphGiantCoupling(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+		
+	}
+	
 	public void Charactertics_CPGraphBindGlue(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPGraphBindGlue = new HashMap<String, String>();
@@ -754,5 +947,129 @@ public class Estimatepage_Characteristics extends Testbase {
 		driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).sendKeys(CPGraphBindGlueNote+Keys.TAB);
 
 	
+	}
+	public void Charactertics_CPGraphUnfinishedFormat(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
+		HashMap<String, String> CharCPGraphUnfinishedFormat = new HashMap<String, String>();
+		CharCPGraphUnfinishedFormat=name.CPGraphUnfinishedFormat(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+
+		String CPGraphUnfinishedFormatWidth=CharCPGraphUnfinishedFormat.get("Width");
+		String CPGraphUnfinishedFormatHeight=CharCPGraphUnfinishedFormat.get("Height");
+		String CPGraphUnfinishedFormatThickness=CharCPGraphUnfinishedFormat.get("Thickness");
+		String CPGraphUnfinishedFormatWeight=CharCPGraphUnfinishedFormat.get("Weight");
+		String CPGraphUnfinishedFormatInventoryItemCode=CharCPGraphUnfinishedFormat.get("InventoryItemCode");
+		String CPGraphUnfinishedFormatInventoryItemDescription=CharCPGraphUnfinishedFormat.get("InventoryItemDescription");
+		String CPGraphUnfinishedFormatQuantity=CharCPGraphUnfinishedFormat.get("Quantity");
+		String CPGraphUnfinishedFormatNote=CharCPGraphUnfinishedFormat.get("Note");
+
+		String PageWHval=CPGraphUnfinishedFormatWidth+" x "+CPGraphUnfinishedFormatHeight;
+
+		String XpathWitCPGraphUnfinishedFormatSize ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Size (WxH)']/parent::span/span/input";
+		String XpathWitCPGraphUnfinishedFormatThickness="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Thickness']/parent::span/span/input";
+		String XpathWitCPGraphUnfinishedFormatWeight="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Weight']/parent::span/span/input";
+		String XpathWitCPGraphUnfinishedFormatInventoryItemCode="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Inventory item']/parent::span/span/span/input[1]";
+		String XpathWitCPGraphUnfinishedFormatQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
+		String XpathWitCPGraphUnfinishedFormatNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
+
+		//iNSERT iNVENTORY iTEM FIRST AS IT RESETS OTHER VALUES
+		//FOR iNVENTORY iTEM
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).sendKeys(CPGraphUnfinishedFormatInventoryItemCode+Keys.TAB); 
+
+		// for size(WxH)
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).sendKeys(PageWHval+Keys.TAB); 
+
+
+		// for Thickness
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).sendKeys(CPGraphUnfinishedFormatThickness+Keys.TAB); 
+
+		// for Weight
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).sendKeys(CPGraphUnfinishedFormatWeight+Keys.TAB); 
+
+		// for Quantity
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).sendKeys(CPGraphUnfinishedFormatQuantity+Keys.TAB); 
+
+		// for Note
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).sendKeys(CPGraphUnfinishedFormatNote+Keys.TAB);
+
+	}
+	public void Charactertics_CPGraphBleed(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	{
+		HashMap<String, String> CharCPGraphBleed= new HashMap<String, String>();
+		CharCPGraphBleed=name.CPGraphBleed(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+		
+		String CPGraphBleed=CharCPGraphBleed.get("Bleed");
+		
+		String XpathWitCPGraphBleed =" //label[text()='Bleed']/../span/input";
+		
+		if(!CPGraphBleed.isEmpty()) {
+			driver.findElement(By.xpath(XpathWitCPGraphBleed)).click();
+			driver.findElement(By.xpath(XpathWitCPGraphBleed)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphBleed)).sendKeys(CPGraphBleed+Keys.TAB); 
+
+		}
+		
+	}
+	
+	public void Charactertics_CPGraphInitialLaminating(int Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
+		HashMap<String, String> CharCPGraphInitialLaminating = new HashMap<String, String>();
+		CharCPGraphInitialLaminating=name.CPGraphInitialLaminating(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+
+
+		String CPGraphInitialLaminatingFront=CharCPGraphInitialLaminating.get("Front");
+		String CPGraphInitialLaminatingBack=CharCPGraphInitialLaminating.get("Back");
+		String CPGraphInitialLaminatingNote=CharCPGraphInitialLaminating.get("Note");
+		String CPGraphInitialLaminatingRollWidthFront=CharCPGraphInitialLaminating.get("RollWidthFront");
+		String CPGraphInitialLaminatingRollWidthBack=CharCPGraphInitialLaminating.get("RollWidthBack");
+
+
+		String XpathWitCPGraphInitialLaminatingFront="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Front']/parent::span/span/span/input";
+		String XpathWitCPGraphInitialLaminatingBack="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Back']/parent::span/span/span/input";
+		String XpathWitCPGraphInitialLaminatingNote = "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";	
+		String XpathWitCPGraphInitialLaminatingDetails ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button";
+		String XpathWitCPGraphInitialLaminatingRollWidthFront= "//header[text()='Roll Width - Front']/parent::div/span/span/input";
+		String XpathWitCPGraphInitialLaminatingRollWidthBack= "//header[text()='Roll Width - Back']/parent::div/span/span/input";
+
+		// for Front
+		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingFront, CPGraphInitialLaminatingFront);
+
+		// for Back
+		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingBack, CPGraphInitialLaminatingBack);
+
+
+		// for Note
+		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).sendKeys(CPGraphInitialLaminatingNote+Keys.TAB);
+
+		// for Details
+		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingDetails)).click();
+		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+		{
+			System.out.println("Details page is displayed");
+
+			//products roll width front format
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).sendKeys(CPGraphInitialLaminatingRollWidthFront+Keys.TAB);
+
+			//products roll width Back format
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).sendKeys(CPGraphInitialLaminatingRollWidthBack+Keys.TAB);
+
+			Thread.sleep(2000);
+
+			//click on ok button
+			driver.findElement(By.xpath("//button[@title='OK']")).click();
+		}
+		else
+		{
+			System.err.println("Details page is not displayed. Please check");
+		}
+
 	}
 }

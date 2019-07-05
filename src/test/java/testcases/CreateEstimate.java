@@ -1,5 +1,6 @@
 package testcases;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import base.Testbase;
 import pages.Desktop;
 import pages.Estimate;
 import pages.IquoteLogin;
+import pages.JobPage;
 import utilities.CommonFunctions;
 import utilities.ReadData;
 
@@ -23,7 +25,10 @@ public class CreateEstimate extends Testbase {
 	public void createestimate() throws Exception {
 		
 		int Optionnum=1;
+		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
+		File file = new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\");
+		Estimate.deleteFiles(file);
 		System.out.println("Base Est : " +Config.getProperty("EstimateIDs"));
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
@@ -47,10 +52,17 @@ public class CreateEstimate extends Testbase {
 		
 		Estimate.CalculateEstimate();
 		Estimate.NavigateToNegotiationTab();
-		Estimate.SaveEstimateNumber();
-		Estimate.NegotiaionAndPrint("Actual.pdf");
+		newest=Estimate.SaveEstimateNumber();
+		Estimate.NegotiaionAndPrint("Actualfor"+newest+".pdf");
 		System.out.println("****************************Creation Of estimate ends*****************************************");
-		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		/*Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		Estimate.CloseEstimateTab();
+		JobPage.NavigateToJobPage();
+		JobPage.searchJobWithEstimateNumber(newest);
+		JobPage.NavigateToJobGeneral();
+		JobPage.NavigateToJobPlanning();
+		JobPage.NavigateToJobMaterials();*/
+		
 		
 		
 	}
