@@ -91,8 +91,11 @@ public class Testbase {
 					TimeUnit.SECONDS);
 			wait = new WebDriverWait(driver, 5);
 			//Extent
-			htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
-			System.out.println(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
+			//htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
+			htmlReporter = new ExtentHtmlReporter(
+					System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
+			System.out.println(System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
+			
 	        extent = new ExtentReports();
 	        extent.attachReporter(htmlReporter);
 	         
