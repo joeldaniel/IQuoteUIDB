@@ -40,7 +40,7 @@ public class createproductandcomponents extends Testbase{
 		actions.doubleClick(elementLocator).perform();
 		Thread.sleep(5000);
 		
-		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		//Estimate.NegotiaionAndPrint("Actualfor"+newest+".pdf");
 		
 		
 	}

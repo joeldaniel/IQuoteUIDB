@@ -92,6 +92,7 @@ public class Testbase {
 			wait = new WebDriverWait(driver, 5);
 			//Extent
 			htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
+			System.out.println(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
 	        extent = new ExtentReports();
 	        extent.attachReporter(htmlReporter);
 	         

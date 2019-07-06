@@ -336,6 +336,7 @@ public class Estimate extends Testbase{
 	public static void NegotiaionAndPrint(String filename) throws Exception
 	{
 		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+filename;
+		System.out.println(filelocation);
 		Robot robot = new Robot();
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
 		int val =driver.findElements(By.xpath(OR.getProperty("OtherFunctions_Label"))).size();

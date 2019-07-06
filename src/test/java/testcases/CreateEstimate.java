@@ -10,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.Status;
+
 import base.Testbase;
 import pages.Desktop;
 import pages.Estimate;
@@ -23,7 +25,7 @@ public class CreateEstimate extends Testbase {
 	
 	@Test
 	public void createestimate() throws Exception {
-		
+		test = extent.createTest("createestimate");
 		int Optionnum=1;
 		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
@@ -32,7 +34,8 @@ public class CreateEstimate extends Testbase {
 		System.out.println("Base Est : " +Config.getProperty("EstimateIDs"));
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
-		System.out.println("****************************Creating a new Estimate****************************");
+		test.log(Status.INFO, "Creating a new Estimate");
+		
 		Estimate.ClickonNewEstimate();
 		Estimate.CreateNewEstimate(Integer.parseInt(Config.getProperty("EstimateIDs")));
 		
@@ -53,8 +56,8 @@ public class CreateEstimate extends Testbase {
 		Estimate.CalculateEstimate();
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-		Estimate.NegotiaionAndPrint("Actualfor"+newest+".pdf");
-		System.out.println("****************************Creation Of estimate ends*****************************************");
+		Estimate.NegotiaionAndPrint("Actualfor"+newest.replace(",", "")+".pdf");
+		test.log(Status.INFO, "Creation Of estimate ends");
 		/*Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		Estimate.CloseEstimateTab();
 		JobPage.NavigateToJobPage();
