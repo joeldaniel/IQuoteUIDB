@@ -64,6 +64,7 @@ public class Testbase {
 			}
 			
 			Config.setProperty("browser", browser);
+			System.out.println("The browser selected : "+browser);
 			if (Config.getProperty("browser").equals("firefox")) {
 
 				// System.setProperty("webdriver.gecko.driver", "gecko.exe");
@@ -83,6 +84,7 @@ public class Testbase {
 				driver = new InternetExplorerDriver();
 
 			}
+			
 			
 			driver.get(Config.getProperty("testsiteurl"));
 			
