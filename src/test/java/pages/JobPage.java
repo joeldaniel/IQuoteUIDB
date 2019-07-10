@@ -1,8 +1,17 @@
 package pages;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -11,6 +20,8 @@ import org.openqa.selenium.WebElement;
 
 import base.Testbase;
 import utilities.CommonFunctions;
+import utilities.ReadAndUpdate;
+import utilities.ScreenShot;
 
 public class JobPage extends Testbase{
 
@@ -93,17 +104,17 @@ public class JobPage extends Testbase{
       public static void searchJobWithEstimateNumber (String eEstimateNumber)throws Exception
       {
     	  Thread.sleep(15000);
-    	  CommonFunctions.ClickElement(driver, By.xpath("//b[text()='Estimate']/ancestor::span[@class='renderer inline-img']/ancestor::ul[@class='is-filter__browser']//span[@class='ltv__item ltv_ ltv_last']//input[1]"));
-			driver.findElement(By.xpath("//b[text()='Estimate']/ancestor::span[@class='renderer inline-img']/ancestor::ul[@class='is-filter__browser']//span[@class='ltv__item ltv_ ltv_last']//input[1]")).sendKeys(eEstimateNumber);
-			driver.findElement(By.xpath("//b[text()='Estimate']/ancestor::span[@class='renderer inline-img']/ancestor::ul[@class='is-filter__browser']//span[@class='ltv__item ltv_ ltv_last']//input[1]")).sendKeys(Keys.TAB);
+    	  CommonFunctions.ClickElement(driver, By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input"));
+			driver.findElement(By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input")).sendKeys(eEstimateNumber);
+			driver.findElement(By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input")).sendKeys(Keys.TAB);
 			Thread.sleep(5000);
 			CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Search']"));
 			//driver.findElement(By.xpath("//label[text()='Search']")).click();
-			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[(@class='grid__cell grid__cell--alpha grid__current gs--summarize' ) and (@data-index='0/1')]"), 120000);
-			driver.findElement(By.xpath("//span[(@class='grid__cell grid__cell--alpha grid__current gs--summarize' ) and (@data-index='0/1')]")).click();
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='"+eEstimateNumber+"']"), 120000);
+			driver.findElement(By.xpath("//span[text()='"+eEstimateNumber+"']")).click();
 			Thread.sleep(6000);
 			CommonFunctions.ClickElement(driver, By.xpath("//button[@title='Duplicate Job']/../button[2]/span/img")); 
-			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Synchronization Status']"), 120000);
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Synchronization Status']"), 12000);
 			CommonFunctions.waitUntilElementisVisible(driver, By.xpath("//label[text()='Synchronization Status']"), 10000);
 			String JobPageValidation= "//label[text()='Synchronization Status']";
 			if (driver.findElements(By.xpath(JobPageValidation)).size()==1)
@@ -148,12 +159,14 @@ public class JobPage extends Testbase{
       //Author Sonali
    
       public  static void NavigateToJobMaterials()throws Exception
-      {//Author Sonali
-            CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_MaterialsTab")));
+      {
+           
+    	  //CommonFunctions.ClickElement(driver, By.xpath("//span[@class='wizard__step']//label[text()='Materials']"));
+    	  driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[6]")).click();
             CommonFunctions.waitForPageLoad(driver);
-            CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//div[@class='program']//div[@class='eng-di__cont']"), 180);
-            int val =driver.findElements(By.xpath("//div[@class='ps-diagram']//div[@class='diagram__cont']")).size();
-            System.out.println(val);
+            
+            int val =driver.findElements(By.xpath("//header[text()='Materials']")).size();
+           // System.out.println(val);
             if (val>0)
             {
                   System.out.println("Navigation to Job Materials Page Successfull");
@@ -290,8 +303,8 @@ public class JobPage extends Testbase{
 	{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_PlanningTab")));
 		CommonFunctions.waitForPageLoad(driver);
-        CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Job_ProcessGroup_Label")), 180);
-		int val =driver.findElements(By.xpath(OR.getProperty("Job_ProcessGroup_Label"))).size();
+        //CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Job_ProcessGroup_Label")), 180);
+		int val =driver.findElements(By.xpath("//header[text()='Plan']")).size();
 		System.out.println(val);
 		if (val>0)
 		{
@@ -302,6 +315,157 @@ public class JobPage extends Testbase{
 			System.err.println("Navigation to job Planning Page Failed");
 
 		}
+	}
+	
+	public static void PushPlanningData(String Estimate,String Sheetname) throws Exception {
+		Estimate=Estimate.replace(",", "");
+		//CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Component']"));
+		//label[text()='Component']//ancestor::div[@class='grid__box']//span[@class='cell__sort--a']
+		String ExcelPath="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+		ReadAndUpdate RU = new ReadAndUpdate();
+		int val =driver.findElements(By.xpath("//label[text()='Component']//ancestor::div[@class='grid__box']//span[@class='cell__sort--a']")).size();
+		//System.out.println(val);
+		if (val>0)
+		{
+			System.out.println("Already sorted");
+		}
+		else
+		{
+			System.out.println("Sorting the panning now...");
+			CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Plan']//..//label[text()='Component']"));
+			int val1 =driver.findElements(By.xpath("//label[text()='Component']//ancestor::div[@class='grid__box']//span[@class='cell__sort--a']")).size();
+			//System.err.println("After Click Value is "+val1);
+
+		}
+		
+		String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
+		List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
+		int rowCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-row"));
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+
+		WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
+
+		Long scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+		Long clientWidth = scrollWidth;
+		js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+		scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+		js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+		Thread.sleep(2000);
+		List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
+		int colCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-index").split("/")[1]);
+		//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
+		String[] colNames = {"Component","Activity","Planninggroup","ScheduledResource","Start","End","PlannedQty","Producedqty","Status","Productionstarted","Productionconcluded","Plant","ProductionDivision","MISJobID","MISWorkCenter","PlannedResource"};
+		RU.Create_Excel(ExcelPath, Sheetname, colNames);
+		for(int row=0;row<=rowCount;row++) {
+			for(int col=0;col<=colCount;col++) {
+				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+				String innerHtml="";
+				try{
+					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+				}catch(Exception e){
+					js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+					scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+					js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+					CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+				}
+				String value="";
+				if (innerHtml.contains("label")) {
+					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
+
+				} else if(innerHtml.contains("span")) {
+					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
+				} else {
+					value = "";
+				}
+				//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
+		
+			//	RU.UpdateFunction(SheetName, "Planning", scenario+Integer.toString(row), colNames[col], value);
+				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
+				//Move ScrollBar to Starting Position after all Columns
+				if(col==colCount) {
+					js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
+					Thread.sleep(1000);
+				}
+			}
+
+		}
+		
+		
+		
+	
+	}
+	
+	public static void PushMaterialData(String Estimate,String Sheetname) throws Exception {
+		
+		Estimate=Estimate.replace(",", "");
+		String ExcelPath="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+		ReadAndUpdate RU = new ReadAndUpdate();
+		String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
+		List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
+		int colCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-index").split("/")[1]);
+
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
+		Long scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*20;
+		js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+		scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*10;
+		js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+		Thread.sleep(2000);
+		List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
+		int rowCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-row"));
+
+		//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
+
+		//String[] colNames = {"CmpType","ProcessGroupDescription","ProcessDescription","CmpName","Qty","UnitofMeasurement","IsSupplied","Inventoryitem","Plant","MISJobID"};
+		
+		String[] colNames={"Materialtype","Element","Process","Material","Quantity","Measurementunit","Provided","Inventoryitem","Plant","MISJobID"};
+		RU.Create_Excel(ExcelPath, Sheetname, colNames);
+		for(int row=0;row<=rowCount;row++) {
+			for(int col=0;col<=colCount;col++) {
+              
+				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+			     CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
+			     driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
+			     
+				String innerHtml="";
+				try{
+					 CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+					 CommonFunctions.waitUntilElementisVisible(driver, By.xpath(jobPlanningValueXpath), 180);
+					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+				}catch(Exception e){
+					js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+					scrollHeight = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*20;
+					js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+					CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+				}
+				String value="";
+				if (innerHtml.contains("label")) {
+					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
+
+				} else if(innerHtml.contains("span")) {
+					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
+				} else {
+					value = "";
+				}
+				//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
+				
+				//RU.UpdateFunction(Sheetname, "Material", scenario_+Integer.toString(row), colNames[col], value);
+				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
+				//Move ScrollBar to Starting Position after all Columns
+				if(row==rowCount) {
+					js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
+					Thread.sleep(1000);
+				}
+			}
+
+		}
+	
 	}
 	
 	//Author Sonali
@@ -612,7 +776,7 @@ public class JobPage extends Testbase{
     }
 
 
-public static void NavigateToJobGeneral()throws Exception
+    public static void NavigateToJobGeneral()throws Exception
     {//Author Sonali
           CommonFunctions.ClickElement(driver, By.xpath("//div[@class='wizard']/nav[@class='wizard__nav']//label[text()='General'] "));
           CommonFunctions.waitForPageLoad(driver);
@@ -622,7 +786,11 @@ public static void NavigateToJobGeneral()throws Exception
           if (val>0)
           {
                 System.out.println("Navigation to Job General Page Successfull");
-          }
+                String Jobnum=driver.findElement(By.xpath("//header[text()='Job']/parent::div//label[text()='Job number']/parent::span/span/input")).getAttribute("Value");          
+          		
+          		String CustomerID= driver.findElement(By.xpath("//label[text()='Customer']/parent::span//input[1]")).getAttribute("value");
+          		System.out.println("Job Number and customerID : "+Jobnum+","+CustomerID);
+    		}
           else
           {
                 System.err.println("Navigation to job General Page Failed");
@@ -631,6 +799,350 @@ public static void NavigateToJobGeneral()throws Exception
             
      //  TakeScreenShot.ScreenShotWindow(driver,"JobMaterials");            
     }
+    public static boolean VerifyJobPlanning(String Estimate,String SheetName1) {
+    	
+    	Estimate=Estimate.replace(",", "");
+    	String ExcelSheetPath1="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
+    	String ExcelSheetPath2="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx";
+    	
+	      boolean Comp1 = false;
+	      try {
+	            
+	        ArrayList arr1 = new ArrayList();
+	        ArrayList arr2 = new ArrayList();
+	        ArrayList arr3 = new ArrayList();
+	        ArrayList arr4 = new ArrayList();
+	        FileInputStream file1 = new FileInputStream(new File(
+	        		ExcelSheetPath1));
 
+	        FileInputStream file2 = new FileInputStream(new File(
+	        		ExcelSheetPath2));
 
+	        // Get the workbook instance for XLS file
+	        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
+	        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
+
+	        // Get first sheet from the workbook
+	     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
+	        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
+	    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
+	        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
+	        // Compare sheets
+
+	        // Get iterator to all the rows in current sheet1
+	        Iterator<Row> rowIterator1 = sheet1.iterator();
+	        Iterator<Row> rowIterator2 = sheet2.iterator();
+
+	        while (rowIterator1.hasNext()) {
+	            Row row = rowIterator1.next();
+	            // For each row, iterate through all the columns
+	            Iterator<Cell> cellIterator = row.cellIterator();
+	            
+	            //System.out.println("Get last row :-"+row.getLastCellNum()); 
+	            while (cellIterator.hasNext()) {
+
+	                Cell cell = cellIterator.next();
+	                 // System.out.println(cell.getRowIndex());
+	                // This is for read only one column from excel
+	                if (cell.getColumnIndex() >= 0) {
+	                    // Check the cell type and format accordingly
+	                    switch (cell.getCellType()) {
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                       // System.out.print(cell.getNumericCellValue());
+	                        arr1.add(cell.getNumericCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_STRING:
+	                        arr1.add(cell.getStringCellValue());
+	                        //System.out.print(cell.getStringCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        arr1.add(cell.getBooleanCellValue());
+	                        //System.out.print(cell.getBooleanCellValue());
+	                        break;
+	                    }
+
+	                }
+
+	            }
+
+	            System.out.println(" ");
+	        }
+
+	        file1.close();
+
+	        System.out.println("-----------------------------------");
+	        // For retrive the second excel data
+	        while (rowIterator2.hasNext()) {
+	            Row row1 = rowIterator2.next();
+	            // For each row, iterate through all the columns
+	            Iterator<Cell> cellIterator1 = row1.cellIterator();
+
+	            while (cellIterator1.hasNext()) {
+
+	                Cell cell1 = cellIterator1.next();
+	                // Check the cell type and format accordingly
+
+	                // This is for read only one column from excel
+	                if (cell1.getColumnIndex() >= 0) {
+	                  System.out.println(cell1.getCellType());
+	                    switch (cell1.getCellType()) {
+	                    
+	           
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                        arr2.add(cell1.getNumericCellValue());
+	                       // System.out.print(cell1.getNumericCellValue());
+	                        
+	                        break;
+	                    case Cell.CELL_TYPE_STRING:
+	                        arr2.add(cell1.getStringCellValue());
+	                        //System.out.print(cell1.getStringCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        arr2.add(cell1.getBooleanCellValue());
+	                       // System.out.print(cell1.getBooleanCellValue());
+	                        break;
+
+	                    }
+
+	                }
+	                // this continue is for
+	                // continue;
+	            }
+
+	            System.out.println("");
+	        }
+
+	       // System.out.println("book1.xls -- " + arr1.size());
+	        //System.out.println("book1.xls -- " + arr2.size());
+
+	        // compare two arrays
+	        for (Object process : arr1) 
+	        {
+	            if (!arr2.contains(process)) {
+	                arr3.add(process);
+	                //arr4.add()
+	               // System.out.println("False");
+	                Comp1=false;
+	            }
+	            else
+	            {
+	                //  System.out.println("True");
+	                  Comp1=true;
+	            }
+	            
+	            
+	        }
+	        //System.out.println("arr3 list values - = - = + " + arr3);
+	       
+	       
+
+	        // closing the files
+	        file1.close();
+	        file2.close();
+	        
+	        if (arr3.size()>0)
+	        {
+	        	//System.err.println("Difference in The Excel sheet as as follows:- ");
+	        	//System.err.println("arr3 list values - = - = + " + arr3);
+	        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
+	        	Comp1= false;
+	        }
+	        else
+	        {
+	        	//System.out.println("Difference in The Excel sheet as as follows:- ");
+	        	//System.out.println("arr3 list values - = - = + " + arr3);
+	        	Comp1 =true;
+	        }
+	        
+	        
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		return Comp1;
+	      
+	
+    }
+    public static boolean VerifyJobMaterial(String Estimate,String SheetName1) {
+    	
+    	Estimate=Estimate.replace(",", "");
+    	String ExcelSheetPath1="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+    	String ExcelSheetPath2="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx";
+    	
+	      boolean Comp1 = false;
+	      try {
+	            
+	        ArrayList arr1 = new ArrayList();
+	        ArrayList arr2 = new ArrayList();
+	        ArrayList arr3 = new ArrayList();
+	        ArrayList arr4 = new ArrayList();
+	        FileInputStream file1 = new FileInputStream(new File(
+	        		ExcelSheetPath1));
+
+	        FileInputStream file2 = new FileInputStream(new File(
+	        		ExcelSheetPath2));
+
+	        // Get the workbook instance for XLS file
+	        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
+	        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
+
+	        // Get first sheet from the workbook
+	     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
+	        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
+	    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
+	        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
+	        // Compare sheets
+
+	        // Get iterator to all the rows in current sheet1
+	        Iterator<Row> rowIterator1 = sheet1.iterator();
+	        Iterator<Row> rowIterator2 = sheet2.iterator();
+
+	        while (rowIterator1.hasNext()) {
+	            Row row = rowIterator1.next();
+	            // For each row, iterate through all the columns
+	            Iterator<Cell> cellIterator = row.cellIterator();
+	            
+	           // System.out.println("Get last row :-"+row.getLastCellNum()); 
+	            while (cellIterator.hasNext()) {
+
+	                Cell cell = cellIterator.next();
+	                 // System.out.println(cell.getRowIndex());
+	                // This is for read only one column from excel
+	                if (cell.getColumnIndex() >= 0) {
+	                    // Check the cell type and format accordingly
+	                    switch (cell.getCellType()) {
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                       // System.out.print(cell.getNumericCellValue());
+	                        arr1.add(cell.getNumericCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_STRING:
+	                        arr1.add(cell.getStringCellValue());
+	                       // System.out.print(cell.getStringCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        arr1.add(cell.getBooleanCellValue());
+	                       // System.out.print(cell.getBooleanCellValue());
+	                        break;
+	                    }
+
+	                }
+
+	            }
+
+	            System.out.println(" ");
+	        }
+
+	        file1.close();
+
+	        System.out.println("-----------------------------------");
+	        // For retrive the second excel data
+	        while (rowIterator2.hasNext()) {
+	            Row row1 = rowIterator2.next();
+	            // For each row, iterate through all the columns
+	            Iterator<Cell> cellIterator1 = row1.cellIterator();
+
+	            while (cellIterator1.hasNext()) {
+
+	                Cell cell1 = cellIterator1.next();
+	                // Check the cell type and format accordingly
+
+	                // This is for read only one column from excel
+	                if (cell1.getColumnIndex() >= 0) {
+	                  System.out.println(cell1.getCellType());
+	                    switch (cell1.getCellType()) {
+	                    
+	           
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                        arr2.add(cell1.getNumericCellValue());
+	                       // System.out.print(cell1.getNumericCellValue());
+	                        
+	                        break;
+	                    case Cell.CELL_TYPE_STRING:
+	                        arr2.add(cell1.getStringCellValue());
+	                      //  System.out.print(cell1.getStringCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        arr2.add(cell1.getBooleanCellValue());
+	                       // System.out.print(cell1.getBooleanCellValue());
+	                        break;
+
+	                    }
+
+	                }
+	                // this continue is for
+	                // continue;
+	            }
+
+	            System.out.println("");
+	        }
+
+	       // System.out.println("book1.xls -- " + arr1.size());
+	        //System.out.println("book1.xls -- " + arr2.size());
+
+	        // compare two arrays
+	        for (Object process : arr1) 
+	        {
+	            if (!arr2.contains(process)) {
+	                arr3.add(process);
+	                //arr4.add()
+	               // System.out.println("False");
+	                Comp1=false;
+	            }
+	            else
+	            {
+	                //  System.out.println("True");
+	                  Comp1=true;
+	            }
+	            
+	            
+	        }
+	       // System.out.println("arr3 list values - = - = + " + arr3);
+	       
+	       
+
+	        // closing the files
+	        file1.close();
+	        file2.close();
+	        
+	        if (arr3.size()>0)
+	        {
+	        	//System.err.println("Difference in The Excel sheet as as follows:- ");
+	        	//System.err.println("arr3 list values - = - = + " + arr3);
+	        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
+	        	Comp1= false;
+	        }
+	        else
+	        {
+	        	//System.out.println("Difference in The Excel sheet as as follows:- ");
+	        	//System.out.println("arr3 list values - = - = + " + arr3);
+	        	Comp1 =true;
+	        }
+	        
+	        
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		return Comp1;
+	      
+	
+    }
+    public static void CloseJobTab() {
+    	driver.findElement(By.xpath("//span[@class='app__tab__close']")).click();
+    }
+    
+    public static void NavigateToJobEngineering() {
+    	driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[4]")).click();
+    }
+    public static void VerifyJobEngineering(String Estimate) throws Exception {
+    	Estimate=Estimate.replace(",", "");
+		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='program']//div[@class='eng-di__cont']"), "Job_ENG", "",Estimate);
+		if(!Actualname.isEmpty()) {
+			String Status=ScreenShot.imageComparison("Job_ENG.png",Actualname,(Estimate+"Job_ENG_Diff.png"), "No",Estimate);
+			System.out.println("Image Comparision of Quantity Diagram : "+Status);
+		}
+		
+    }
 }

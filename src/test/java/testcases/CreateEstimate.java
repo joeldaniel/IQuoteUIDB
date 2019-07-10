@@ -30,7 +30,8 @@ public class CreateEstimate extends Testbase {
 		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
 		File file = new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\");
-		Estimate.deleteFiles(file);
+		String filename="NEG_"+Config.getProperty("EstimateIDs");
+		//Estimate.deleteFiles(file);
 		System.out.println("Base Est : " +Config.getProperty("EstimateIDs"));
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
@@ -52,19 +53,43 @@ public class CreateEstimate extends Testbase {
 			Estimate.AddQuantity(Integer.parseInt(Config.getProperty("EstimateIDs")), Option);
 			Optionnum+=1;
 		}
-		
+		Estimate.SaveEstimate();
 		Estimate.CalculateEstimate();
+		
+		Estimate.NavigateToEngineeringTab();
+		Estimate.VerifyEngineering(Config.getProperty("EstimateIDs"));
+		Estimate.NavigateToQtyPriceTab();
+		Estimate.VerifyQty(Config.getProperty("EstimateIDs"));
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-		Estimate.NegotiaionAndPrint("Actualfor"+newest.replace(",", "")+".pdf");
+		String Actualname= Estimate.NegotiaionAndPrint(filename,Config.getProperty("EstimateIDs"));
+		Estimate.VerifyNegotiation(Actualname,Config.getProperty("EstimateIDs"));
 		test.log(Status.INFO, "Creation Of estimate ends");
-		/*Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		
+		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		Estimate.CloseEstimateTab();
+		//Job Verification Starts
 		JobPage.NavigateToJobPage();
 		JobPage.searchJobWithEstimateNumber(newest);
 		JobPage.NavigateToJobGeneral();
 		JobPage.NavigateToJobPlanning();
-		JobPage.NavigateToJobMaterials();*/
+		JobPage.PushPlanningData(Config.getProperty("EstimateIDs"), "Planning");
+		JobPage.NavigateToJobMaterials();
+		JobPage.PushMaterialData(Config.getProperty("EstimateIDs"), "Material");
+		JobPage.NavigateToJobEngineering();
+		JobPage.VerifyJobEngineering(Config.getProperty("EstimateIDs"));
+		JobPage.CloseJobTab();
+		if(JobPage.VerifyJobPlanning(Config.getProperty("EstimateIDs"), "Planning")) {
+			System.out.println("Pass");
+		}else {
+			System.out.println("Fail");
+		}
+		if(JobPage.VerifyJobMaterial(Config.getProperty("EstimateIDs"), "Material")) {
+			System.out.println("Pass");
+		}else {
+			System.out.println("Fail");
+		}
+		
 		
 		
 		

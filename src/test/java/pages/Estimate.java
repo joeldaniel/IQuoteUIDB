@@ -3,8 +3,11 @@ package pages;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +24,11 @@ import org.testng.Assert;
 
 import base.DBUtil;
 import base.Testbase;
+import de.redsix.pdfcompare.PdfComparator;
 import utilities.CommonFunctions;
 import utilities.ReadData;
+import utilities.ScreenShot;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -176,13 +182,12 @@ public class Estimate extends Testbase{
 		{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
 			CommonFunctions.waitForPageLoad(driver);
-
+			WebElement ele=driver.findElement(By.xpath("//label[text()='Calculate']"));
+			CommonFunctions.waitForElement(ele, 300);
 			Thread.sleep(2000);
-			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 120000);
-			CommonFunctions.waitUntilElementisClickable(driver, By.xpath("//label[text()='Calculate']"), 120000);
-			//CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[@class='diagram-zoom']"));
-			int val =driver.findElements(By.xpath(OR.getProperty("Engineering_Tab_zoom_Logo"))).size();
-			if (val>0)
+			
+			int EngVisible= driver.findElements(By.xpath("//label[text()='Calculate']")).size();
+			if (EngVisible>0)
 			{
 				System.out.println("Estimate saved successfully");
 			}
@@ -196,6 +201,39 @@ public class Estimate extends Testbase{
 		
 		//	TakeScreenShot.ScreenShotWindow(driver,"NegotiationPageEstimateNumber");  
 	
+	}
+	public static void VerifyEngineering(String EstimateID) throws Exception {
+		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
+		if(!Actualname.isEmpty()) {
+			String Status=ScreenShot.imageComparison("ENG.png",Actualname,(EstimateID+"ENG_Diff.png"), "No",EstimateID);
+			System.out.println("Image Comparision of Engineering Diagram : "+Status);
+		}
+		
+	}
+	public static void VerifyQty(String EstimateID) throws Exception {
+
+		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//label[text()='Option']/parent::span/parent::div/ancestor::div[@class='grid__box']/ancestor::div[@class='wizard']"), "QTY", "",EstimateID);
+		if(!Actualname.isEmpty()) {
+			String Status=ScreenShot.imageComparison("QTY.png",Actualname,(EstimateID+"QTY_Diff.png"), "No",EstimateID);
+			System.out.println("Image Comparision of Quantity Diagram : "+Status);
+		}
+		
+	
+	}
+	public static void VerifyNegotiation(String Actualfile,String Estimate) throws IOException {
+		 
+		String file1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile;
+		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
+		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
+		boolean isEquals = new PdfComparator(file1, file2).compare().writeTo(diff);
+		if (!isEquals) {
+		    System.out.println("Differences found in PDF's!");
+		}
+		if (isEquals) {
+		    System.out.println("No Differences found in PDF's!");
+		}
+		
+		
 	}
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
@@ -223,9 +261,10 @@ public class Estimate extends Testbase{
 	{
 		//Thread.sleep(40000);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
-		//driver.findElement(By.xpath("//label[text()='Calculate']")).click();
+		WebElement ele=driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[5]"));
+		CommonFunctions.waitForElement(ele, 300);
 		CommonFunctions.waitForPageLoad(driver);
-		Thread.sleep(10000);
+		Thread.sleep(6000);
 	
 		String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
 		System.out.println("Attribute value is :"+EngVisible);
@@ -333,9 +372,11 @@ public class Estimate extends Testbase{
 			}			
 		}
 	}
-	public static void NegotiaionAndPrint(String filename) throws Exception
+	public static String NegotiaionAndPrint(String filename,String Estimate) throws Exception
 	{
-		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+filename;
+		DateFormat dateFormat = new SimpleDateFormat("hhmmssaa");
+		filename= filename+"_"+ dateFormat.format(new Date())+".pdf";
+		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+filename;
 		System.out.println(filelocation);
 		Robot robot = new Robot();
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
@@ -384,9 +425,11 @@ public class Estimate extends Testbase{
          Thread.sleep(2000);
          robot.keyPress(KeyEvent.VK_TAB);
          robot.keyRelease(KeyEvent.VK_TAB);
+         Thread.sleep(2000);
          robot.keyPress(KeyEvent.VK_ENTER);
          robot.keyRelease(KeyEvent.VK_ENTER);
-		
+         Thread.sleep(3000);
+		return filename;
 	}
 	public static void setClipboardData(String string) {
 		//StringSelection is a class that can be used for copy and paste operations.
@@ -1320,7 +1363,7 @@ public class Estimate extends Testbase{
 		String StatusChange= driver.findElement(By.xpath(OR.getProperty("statusCheck"))).getText();
 		Thread.sleep(5000);
 		System.out.println("Value is "+StatusChange);
-		if (StatusChange.equals(ValidateStatus))
+		if (StatusChange.contains(ValidateStatus))
 		{
 			System.out.println("Status Changed Successfully ");
 		}
@@ -1333,4 +1376,116 @@ public class Estimate extends Testbase{
 		return ScreenShotStatusChange;
 	
 	}
+	//Santoshi
+    public String RemunerationGroup(String RemuDesc, String CostAccName,String MarginVal) throws Exception
+    {
+
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).click();
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys("Remuneration Group");
+
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys(Keys.ENTER);
+          CommonFunctions.waitUntilElementisVisible(driver, (By.xpath("//label[text()='Remuneration Group']")), 5000);
+          driver.findElement(By.xpath(("//label[text()='Remuneration Group']"))).click();
+          if(driver.findElements(By.xpath("//button[@title='Edit Remuneration Group']")).size()>0)
+          {
+
+                System.out.println("Navigate to remuneration page succesfully");
+          }
+          else
+          {
+                System.err.println("Navigate to remuneration page Failed");
+          }
+          
+          driver.findElement(By.xpath("//span[text()='"+RemuDesc+"']")).click();
+          
+          driver.findElement(By.xpath("//button[@title='Edit Remuneration Group']")).click();
+          CommonFunctions.waitForPageLoad(driver);
+          CommonFunctions.waitUntilElementisClickable(driver, (By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]")), 5000);
+          
+          
+          System.out.println("*************Fetching the original Margin Value************************");
+          driver.findElement(By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]")).click();
+          Thread.sleep(5000);
+          String OriginalVal= driver.findElement(By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]/input")).getAttribute("value");
+          Thread.sleep(10000);
+          System.out.println("Original value of costAccount:" +OriginalVal);
+          System.out.println("*************Fetching the original Margin Value Ends************************");
+    
+          
+          driver.findElement(By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]/input")).sendKeys(MarginVal,Keys.TAB);
+          Thread.sleep(10000);
+          CommonFunctions.waitUntilElementisClickable(driver, (By.xpath("//div[@class='wv']//div[@class='wvtb wvtb__size0']//following-sibling::button[1]")), 10000);
+          driver.findElement(By.xpath("//div[@class='wv']//div[@class='wvtb wvtb__size0']//following-sibling::button[1]")).click();
+          CommonFunctions.waitUntilElementisVisible(driver, (By.xpath("//button[@title='Edit Remuneration Group']")), 2000);
+          if(driver.findElements(By.xpath("//button[@title='Edit Remuneration Group']")).size()>0)
+          {
+                System.out.println("remuneration margin value saved successfully");
+          }
+          else
+          {
+                System.out.println("remuneration margin value saved failed");     
+          }
+          
+          return OriginalVal;
+    }
+    
+    
+    
+    public void RemuOriginalValue(String RemuDesc, String CostAccName,String OriginalVal) throws Exception
+    {
+
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).click();
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys("Remuneration Group");
+
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys(Keys.ENTER);
+          CommonFunctions.waitUntilElementisVisible(driver, (By.xpath("//label[text()='Remuneration Group']")), 5000);
+          driver.findElement(By.xpath(("//label[text()='Remuneration Group']"))).click();
+          
+          if(driver.findElements(By.xpath("//button[@title='Edit Remuneration Group']")).size()>0)
+          {
+
+                System.out.println("Navigate to remuneration page succesfully");
+          }
+          else
+          {
+                System.err.println("Navigate to remuneration page Failed");
+          }
+          
+          driver.findElement(By.xpath("//span[text()='"+RemuDesc+"']")).click();
+          
+          
+          //Revert orginal value
+          
+          
+          driver.findElement(By.xpath("//button[@title='Edit Remuneration Group']")).click();
+          CommonFunctions.waitForPageLoad(driver);
+          CommonFunctions.waitUntilElementisClickable(driver, (By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]")), 5000);
+          driver.findElement(By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]")).click();
+          Thread.sleep(1000);
+          
+          driver.findElement(By.xpath("//label[text()='"+CostAccName+"']/../../following-sibling::span[1]/input")).sendKeys(OriginalVal,Keys.TAB);
+          //click on save
+          CommonFunctions.waitUntilElementisClickable(driver, (By.xpath("//div[@class='wv']//div[@class='wvtb wvtb__size0']//following-sibling::button[1]")), 10000);
+          driver.findElement(By.xpath("//div[@class='wv']//div[@class='wvtb wvtb__size0']//following-sibling::button[1]")).click();
+          CommonFunctions.waitUntilElementisVisible(driver, (By.xpath("//button[@title='Edit Remuneration Group']")), 2000);
+          if(driver.findElements(By.xpath("//button[@title='Edit Remuneration Group']")).size()>0)
+          {
+                System.out.println("Original margin value saved  successfully");
+          }
+          else
+          {
+                System.out.println("Original margin value save failed");    
+          }
+          
+    
+    }
+
+
+
 }

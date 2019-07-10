@@ -23,7 +23,9 @@ import org.testng.Assert;
 import base.Testbase;
 
 public class CommonFunctions extends Testbase {
-	
+	public static final int minWait = 5;
+	public static final int midWait = 20;
+	public static final int maxWait = 30;
 	public static boolean isElementPresent(WebDriver driver, By by)
 	{
 		try
@@ -206,6 +208,19 @@ public class CommonFunctions extends Testbase {
 		} catch (Exception e)
 		{
 			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	public static boolean waitForElement(WebElement ele,int timeOut){
+		driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
+		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		try{
+			wait.until(ExpectedConditions.visibilityOf(ele));
+			driver.manage().timeouts().implicitlyWait(minWait, TimeUnit.SECONDS);
+			return true;
+		} catch (Exception e) {
+			driver.manage().timeouts().implicitlyWait(minWait, TimeUnit.SECONDS);
 			return false;
 		}
 		
