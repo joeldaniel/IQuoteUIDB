@@ -1,5 +1,7 @@
 package utilities;
 
+import java.security.SecureRandom;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class CommonFunctions extends Testbase {
 	public static final int minWait = 5;
 	public static final int midWait = 20;
 	public static final int maxWait = 30;
+	private static SecureRandom random = new SecureRandom();
 	public static boolean isElementPresent(WebDriver driver, By by)
 	{
 		try
@@ -38,6 +41,27 @@ public class CommonFunctions extends Testbase {
 			driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
 			return false;
 		}
+	}
+	public static String unique6LengthNumeric()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("hhssmm");
+		Date date = new Date();
+		String sUniqueNumber = dateFormat.format(date);
+		if(String.valueOf(sUniqueNumber.charAt(0)).equals("0")){sUniqueNumber=sUniqueNumber.replaceFirst("0", String.valueOf(random.nextInt(8)+1));}
+		return sUniqueNumber;
+	}
+	public static String CurrentDateTime()
+	{
+		DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+		Date dateobj = new Date();
+		System.out.println(df.format(dateobj));
+
+		/*getting current date time using calendar class 
+		 * An Alternative of above*/
+		Calendar calobj = Calendar.getInstance();
+		System.out.println(df.format(calobj.getTime()));
+		String CDate=df.format(calobj.getTime());
+		return CDate;
 	}
 	public static boolean Elementdisplayed_Enabled(WebElement Element)
 	{

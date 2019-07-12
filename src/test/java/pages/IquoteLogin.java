@@ -1,6 +1,9 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import com.aventstack.extentreports.Status;
 
 import base.Testbase;
 import utilities.CommonFunctions;
@@ -13,7 +16,9 @@ public class IquoteLogin extends Testbase{
 		
         System.out.println("Login Started");
         
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("user")));
+		
 		if (CommonFunctions.isElementPresent(driver, By.id("user")))
 		{
 			CommonFunctions.ClickElement(driver, By.id("user"));
@@ -23,6 +28,7 @@ public class IquoteLogin extends Testbase{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("First_ok")));
 			CommonFunctions.waitForPageLoad(driver);
 			Thread.sleep(5000);
+			//wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(OR.getProperty("Login_OKButton"))));
 			if (driver.findElements(By.xpath(OR.getProperty("Login_OKButton"))).size()>0)
 			{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Login_OKButton")));
@@ -32,10 +38,12 @@ public class IquoteLogin extends Testbase{
 			if (CommonFunctions.isElementPresent(driver, By.xpath(OR.getProperty("Desktop_Labl"))))
 			{
 				System.out.println("Login To Iquote Successfull");
+				test.log(Status.PASS, "Login To Iquote Successfull");
 			}
 			else
 			{
 				System.out.println("Failed to Login To Iquote");
+				test.log(Status.FAIL, "Login To Iquote Successfull");
 				
 			}
 		

@@ -1,8 +1,8 @@
 package base;
 import java.io.FileInputStream;
-
+import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +17,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import com.aventstack.extentreports.reporter.configuration.ChartLocation;
+
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import org.openqa.selenium.WebDriver;
@@ -39,7 +39,7 @@ public class Testbase {
     public static ExtentTest test;
     public static String browser;
     public static Actions actions;
-    
+    protected static DBUtil iqdb = new DBUtil();
 	
 	
 	@BeforeSuite
@@ -49,6 +49,8 @@ public class Testbase {
 			fis = new FileInputStream(
 					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
 			Config.load(fis);
+			
+			//DBUtil iqdb=new DBUtil(Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"), Config.getProperty("DBUrl"));
 			
 			
 			fis = new FileInputStream(
@@ -91,7 +93,7 @@ public class Testbase {
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
 					TimeUnit.SECONDS);
-			wait = new WebDriverWait(driver, 5);
+			wait = new WebDriverWait(driver, 30);
 			//Extent
 			//htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
 			htmlReporter = new ExtentHtmlReporter(
@@ -106,16 +108,22 @@ public class Testbase {
 	        extent.setSystemInfo("Environment", "QA");
 	        extent.setSystemInfo("User Name", "Daniel joel");
 	         
-	        htmlReporter.config().setChartVisibilityOnOpen(true);
-	        htmlReporter.config().setDocumentTitle("DataBaseTesting Report");
+	       // htmlReporter.config().setChartVisibilityOnOpen(true);
+	        htmlReporter.config().setDocumentTitle("IQuote Testing Report");
 	        htmlReporter.config().setReportName("My Own Report");
-	        htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
+	       // htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
 	        htmlReporter.config().setTheme(Theme.STANDARD);
-			
-		}	
+	        iqdb.Createconnection(Config.getProperty("DBUrl"), Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"));
+	    }	
 
 	}
-	
+	protected static void saveProperties(Properties p) throws IOException
+    {
+        FileOutputStream fr = new FileOutputStream(System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+        p.store(fr, "Properties");
+        fr.close();
+        System.out.println("After saving properties: " + p);
+    }
 	@AfterMethod
     public void getResult(ITestResult result)
     {
@@ -136,8 +144,10 @@ public class Testbase {
     }
 	
 	@AfterSuite
-	public void tearDown() {
-		driver.quit();
+	public void tearDown() throws SQLException {
+		
+		  //driver.quit();
+		  iqdb.Closeconnection();
 		 extent.flush();
 		
 	}

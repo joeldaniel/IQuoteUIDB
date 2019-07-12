@@ -22,10 +22,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
+import com.aventstack.extentreports.Status;
+
 import base.DBUtil;
 import base.Testbase;
 import de.redsix.pdfcompare.PdfComparator;
 import utilities.CommonFunctions;
+import utilities.HTML_File_Creator;
 import utilities.ReadData;
 import utilities.ScreenShot;
 
@@ -36,13 +39,16 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent; 
 
 public class Estimate extends Testbase{
-	static String CommonOriginalHandle=null;
 	
+	static String CommonOriginalHandle=null;
+	static HTML_File_Creator HTMLF= new HTML_File_Creator();
+	static ReadData val = new ReadData();
 	
 	public static void ClickonNewEstimate()throws Exception
 	{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_Estimatepage_Dropdown")));
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Nav_NewEstimate_Page"))));
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_NewEstimate_Page")));
 		CommonFunctions.waitForPageLoad(driver);
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//b[text()='New estimate']"), 100000);
@@ -51,10 +57,12 @@ public class Estimate extends Testbase{
 		if (val>0)
 		{
 			System.out.println("New Estimate Page successfully loaded");
+			test.log(Status.PASS, "New Estimate Page successfully loaded");
 		}
 		else
 		{
 			System.err.println("New Estimate Page not loaded");
+			test.log(Status.FAIL, "New Estimate Page not loaded");
 
 		}
 		
@@ -72,7 +80,7 @@ public class Estimate extends Testbase{
 			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
 			
 			if(driver.findElements(By.xpath("//span[text()='Delete Component Set']")).size()>0)
@@ -207,6 +215,12 @@ public class Estimate extends Testbase{
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("ENG.png",Actualname,(EstimateID+"ENG_Diff.png"), "No",EstimateID);
 			System.out.println("Image Comparision of Engineering Diagram : "+Status);
+			String sFile1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png";
+			String sFile2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\"+Actualname;
+			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\"+EstimateID+"ENG_Diff.png";
+			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
+			
+			
 		}
 		
 	}
@@ -216,6 +230,11 @@ public class Estimate extends Testbase{
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("QTY.png",Actualname,(EstimateID+"QTY_Diff.png"), "No",EstimateID);
 			System.out.println("Image Comparision of Quantity Diagram : "+Status);
+			String sFile1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png";
+			String sFile2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\"+Actualname;
+			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\"+EstimateID+"QTY_Diff.png";
+			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
+			
 		}
 		
 	
@@ -226,13 +245,14 @@ public class Estimate extends Testbase{
 		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
 		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
 		boolean isEquals = new PdfComparator(file1, file2).compare().writeTo(diff);
+		String status =isEquals? "PASS" : "FAIL";
 		if (!isEquals) {
 		    System.out.println("Differences found in PDF's!");
 		}
 		if (isEquals) {
 		    System.out.println("No Differences found in PDF's!");
 		}
-		
+		HTMLF.addrow("Step 4", "Estimate Negotiation PDF Validation", file2, file1, "", status,Config.getProperty("EstimateIDs")+".html");
 		
 	}
 	public static void CreateOption(int Option) throws InterruptedException {
@@ -309,22 +329,19 @@ public class Estimate extends Testbase{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
 		Thread.sleep(2000);
 		CommonFunctions.waitForPageLoad(driver);
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 25);
-		driver.findElement(By.xpath("//div[@class='wv']//button[@title='Print']/following-sibling::span[3]")).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//li/label[text()='Summarized view']")).click();
-		Thread.sleep(2000);
-		int val =driver.findElements(By.xpath(OR.getProperty("SummarizedView"))).size();
-		if (val>0)
-		{
-			System.out.println(" Navigation tab successfully opened");
-			return true ;
+		if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Default')]")).size()>0) {
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 25);
+			return true;
 		}
-		else
-		{
-			System.out.println("Navigation tab did not open");
-			return false ;
-
+		else if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Analysis')]")).size()>0){
+			driver.findElement(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Analysis')]")).click();
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//label[contains(text(),'Default')]"))));
+			driver.findElement(By.xpath("//label[contains(text(),'Default')]")).click();
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Print']"), 25);
+			return true;
+		}
+		else {
+			return false;
 		}
 
 	}
@@ -392,7 +409,17 @@ public class Estimate extends Testbase{
 		}
 		Thread.sleep(3000);
 		CommonFunctions.SetOriginalWindowHandle(driver);
-		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
+		if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Default')]")).size()>0) {
+			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
+		}
+		else if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Analysis')]")).size()>0){
+			driver.findElement(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Analysis')]")).click();
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//label[contains(text(),'Default')]"))));
+			driver.findElement(By.xpath("//label[contains(text(),'Default')]")).click();
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Print_Button"))));
+			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
+		}
+			
 		Thread.sleep(10000);
 		
 		robot.keyPress(KeyEvent.VK_TAB);
@@ -719,7 +746,7 @@ public class Estimate extends Testbase{
 		try
 		{
 			HashMap<String, String> EstNewPage = new HashMap<String, String>();
-			ReadData val = new ReadData();
+			//ReadData val = new ReadData();
 			EstNewPage=val.IdentificationPage(EstimateId);
 			
 			String CustCode= EstNewPage.get("CustomerCode");
@@ -746,6 +773,7 @@ public class Estimate extends Testbase{
 		
 			//////Enter the Product
 			System.out.println("Product name is "+ProdLine);
+			test.log(Status.INFO, "Product name is "+ProdLine);
 			///// Enter The Customer
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Estimate_Customer")), CustCode);
 			driver.findElement(By.xpath(OR.getProperty("Estimate_Customer"))).sendKeys(Keys.TAB);
@@ -755,7 +783,8 @@ public class Estimate extends Testbase{
 		  
 			/////////Enter Salesperson
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Ne_SalespaersonCode")));
-			Thread.sleep(2000);
+			//Thread.sleep(2000);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(OR.getProperty("Ne_SalespaersonCode"))));
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_SalespaersonCode")), SalesPCode);
 			driver.findElement(By.xpath(OR.getProperty("Ne_SalespaersonCode"))).sendKeys(Keys.TAB);
 		
@@ -766,30 +795,33 @@ public class Estimate extends Testbase{
 			//////////Enter Agency
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_AgencyCode")), AgenCode);
 			driver.findElement(By.xpath(OR.getProperty("Ne_AgencyCode"))).sendKeys(Keys.TAB);
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 		
-		
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Ne_CSR"))));
 			/////////Enter CSR
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_CSR")), CSRN);
 			driver.findElement(By.xpath(OR.getProperty("Ne_CSR"))).sendKeys(Keys.TAB);
-			Thread.sleep(5000);
-		
+			//Thread.sleep(5000);
+			
 			/////////Enter Project COde
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Ne_Projectcode"))));
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_Projectcode")), ProjCode);
 			driver.findElement(By.xpath(OR.getProperty("Ne_Projectcode"))).sendKeys(Keys.TAB);
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 		
 			/////////Enter Estimate Type
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("NE_EstimateType"))));
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_EstimateType")), EstimateType);
 			driver.findElement(By.xpath(OR.getProperty("NE_EstimateType"))).sendKeys(Keys.TAB);
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 		
 			////////Enter Estimate Title
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("NE_EstimateTitle"))));
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_EstimateTitle")), EstimateTitle);
 			driver.findElement(By.xpath(OR.getProperty("NE_EstimateTitle"))).sendKeys(Keys.TAB);
-			Thread.sleep(3000);
+			//Thread.sleep(3000);
 		
-			Thread.sleep(3000);
+			
 			
 			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Quantities']"), 1000);
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Quantity")));
@@ -799,16 +831,19 @@ public class Estimate extends Testbase{
 			
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Confirm")));
 			CommonFunctions.waitForPageLoad(driver);
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Specification']")));
 			CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[text()='Specification']"));
 			int vale =driver.findElements(By.xpath(OR.getProperty("NewEstimate_Spec"))).size();
 			if (vale>0)
 			{
 				System.out.println("Estimate Creation done");
+				test.log(Status.PASS, "Estimate Creation done");
 			}
 			else
 			{
 				System.err.println("Failed to create Estimate");
+				test.log(Status.FAIL, "Failed to create Estimate");
 		
 			}
 		
@@ -961,8 +996,9 @@ public class Estimate extends Testbase{
 			 Map<String, String> childMap = entry.getValue();
 		        if(childMap.get("ParentComponent") != null)
 		        {
+		        	Thread.sleep(3000);
 		        	driver.findElement(By.xpath("//label[text()='"+childMap.get("ParentComponent")+"']")).click();
-					Thread.sleep(3000);
+					Thread.sleep(1000);
 					driver.findElement(By.xpath("//label[text()='"+childMap.get("ParentComponent")+"']")).click();
 					Thread.sleep(3000);
 					driver.findElement(By.xpath("//span[text()='Composition']")).click();
@@ -1115,7 +1151,7 @@ public class Estimate extends Testbase{
 			
 			HashMap<String, HashMap<String, String>> CreateProductandComp = new HashMap<String, HashMap<String, String>>();
 			HashMap<String, HashMap<String, String>>Characteristicsforcomp = new HashMap<String, HashMap<String, String>>();
-			ReadData val = new ReadData();
+			
 			CreateProductandComp=val.CreateProductandComponents(EstimateId,IdItemOption);
 			List<String> listCompOrder = new ArrayList<String>(CreateProductandComp.keySet());
 			// List<String> CharacterCompCharacterComp = new ArrayList<String>();
@@ -1132,9 +1168,11 @@ public class Estimate extends Testbase{
 				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
 				String XpathForComponent="//label[text()='"+CompDescp+"']";
-				Thread.sleep(3000);
+				//Thread.sleep(3000);
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(XpathForComponent)));
 				driver.findElement(By.xpath(XpathForComponent)).click();
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Component']")));
 				driver.findElement(By.xpath("//label[text()='Component']")).click();
 				List<String> CharacterCompCharacterComp = new ArrayList<String>(Characteristicsforcomp.keySet());
 				Collections.sort(CharacterCompCharacterComp);

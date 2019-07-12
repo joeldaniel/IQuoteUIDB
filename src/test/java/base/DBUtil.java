@@ -10,9 +10,19 @@ public class DBUtil {
 
 	Connection con;
 	
-	public DBUtil(String url, String user, String password) throws ClassNotFoundException, SQLException {
-		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		con = DriverManager.getConnection(url, user, password);
+	public void Createconnection(String url, String user, String password) {
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			con = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(url +" : "+ user +" : "+ password);
 		System.out.println("Connected to sql db");	
 	}
@@ -27,6 +37,7 @@ public class DBUtil {
 	
 	public void Closeconnection() throws SQLException {
 		con.close();
+		System.out.println("Disconnected to sql db");
 	}
 	
 

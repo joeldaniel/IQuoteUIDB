@@ -1,22 +1,23 @@
 package utilities;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import base.DBUtil;
 import base.Testbase;
 
 public class ReadData extends Testbase{
 	public static Properties Query = new Properties();
 	public static FileInputStream fis;
+	
+	
 	public static HashMap<String, String> EstDetailsNewEstimate = new HashMap<String, String>();
 	public static HashMap<String, HashMap<String, String>> EStCreateproductComp = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> ParentChildCombinationWithLinkData = new HashMap<String, HashMap<String, String>>();
@@ -43,9 +44,8 @@ public class ReadData extends Testbase{
 	public static HashMap<String, String> CharCPvalueQTY = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPPlant	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPNote	 = new HashMap<String, String>();
-	String DBuser=Config.getProperty("DBUsername");
-	String DBpass=Config.getProperty("DBPassWord");
-	String DBurl=Config.getProperty("DBUrl");
+	
+	
 	ResultSet rs,rs1;
 	String OptionDesc=null;
 	
@@ -62,8 +62,7 @@ public class ReadData extends Testbase{
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\IdentificationPage.properties");
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
-		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
 
 		try
@@ -124,7 +123,7 @@ public class ReadData extends Testbase{
 			System.out.println("failed");
 		}
 
-		iqdb.Closeconnection();
+		
 		return EstDetailsNewEstimate;
 
 	
@@ -137,8 +136,7 @@ public class ReadData extends Testbase{
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\CreateProductComponents.properties");
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
-		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
 		try
 		{
@@ -172,7 +170,7 @@ public class ReadData extends Testbase{
 			System.out.println("failed");
 		}
 
-		iqdb.Closeconnection();
+		
 		return EStCreateproductComp;
 
 		
@@ -187,7 +185,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
 		try
 		{
@@ -221,7 +219,7 @@ public class ReadData extends Testbase{
 			System.out.println("failed");
 		}
 
-		iqdb.Closeconnection();
+		
 		return EStCreateproductComp;
 
 		
@@ -235,7 +233,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
 		
 		try
@@ -272,7 +270,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return ParentChildCombinationWithLinkData;
 	}
 
@@ -284,7 +282,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
 		
 		try
@@ -320,7 +318,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return EstQTYPage;
 	}
 	public HashMap<Integer, HashMap<String, String>> QtyForEst(int EstimateId,String Option) throws IOException, ClassNotFoundException, SQLException
@@ -333,7 +331,7 @@ public class ReadData extends Testbase{
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\QuantityForEstimate.properties");
 		Query.load(fis);
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		
 		ResultSet rs;
 		String Query1=Query.getProperty("Query");
@@ -380,7 +378,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder));
 		
 		try
@@ -421,7 +419,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return EstCharacteristicEachComponent;
 	}
 	
@@ -433,7 +431,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", Option));
 		
 		try
@@ -474,7 +472,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return EstCharacteristicEachComponent;
 	
 	}
@@ -487,7 +485,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs").replace("##ComponentOrder##", CompOrder)));
 		try
 		{
@@ -550,7 +548,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return EstDetailsPaperSpec;
 		
 	}
@@ -565,7 +563,7 @@ public class ReadData extends Testbase{
 		System.out.println("To remove");
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -612,7 +610,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		//iqdb.Closeconnection();
+		
 		return CharCPGraphBindStitch;
 		
 	}
@@ -631,7 +629,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
 		try {
 			//loop
@@ -666,7 +664,7 @@ public class ReadData extends Testbase{
 			
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return ProQty;
 	}
 
@@ -678,7 +676,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
 		
 		try
@@ -694,7 +692,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return Options;
 	}
 	
@@ -706,7 +704,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		String Query2=Query1.replace("##Estimate##", Config.getProperty("EstimateIDs"))+"and qttTMItemOption.Description= '"+Optionname+"'";
 		rs = iqdb.RunQuery(Query2);
 		
@@ -723,7 +721,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		
 		return Products;
 		
@@ -735,7 +733,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
 		while(rs.next()) {
@@ -753,7 +751,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		String Query2=Query1.replace("##Estimate##", Config.getProperty("EstimateIDs"))+"and qttTMItemOption.Description= '"+Optionname+"'"+"and qttTMPSCmp.Description= '"+Product+"'";
 		rs = iqdb.RunQuery(Query2);
 		
@@ -775,7 +773,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		
 		return Quantities;
 	}
@@ -788,7 +786,7 @@ public class ReadData extends Testbase{
 		System.out.println("To remove");
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs1 = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrderval).replace("##IdItemOption##", IdItemOption));
 		try
 		{
@@ -843,7 +841,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return EstDetailsColorandVarnish;
 		
 	}
@@ -856,7 +854,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
 		try
 		{
@@ -944,7 +942,7 @@ public class ReadData extends Testbase{
 			System.out.println("failed");
 		}
 
-		//iqdb.Closeconnection();
+		
 		return EstDetailsPaperFormat;
 	}
 	
@@ -956,7 +954,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1008,7 +1006,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		iqdb.Closeconnection();
+		
 		return CharCPGraphStampingItem;
 	}
 	
@@ -1020,7 +1018,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##ComponentOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
 		try
 		{
@@ -1096,7 +1094,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1142,7 +1140,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1195,7 +1193,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1241,7 +1239,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1297,7 +1295,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1357,7 +1355,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1417,7 +1415,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL serv
 		
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
@@ -1447,7 +1445,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1499,7 +1497,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1544,7 +1542,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1595,7 +1593,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1641,7 +1639,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1692,7 +1690,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
@@ -1746,7 +1744,7 @@ public class ReadData extends Testbase{
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil(DBurl, DBuser, DBpass);
+		
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{

@@ -1,32 +1,18 @@
 package rough;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.Status;
+
 import base.Testbase;
-import pages.Desktop;
-import pages.Estimate;
 import pages.IquoteLogin;
 import pages.JobPage;
 import utilities.CommonFunctions;
-import utilities.ReadData;
-import java.util.Collection;
 
 public class createproductandcomponents extends Testbase{
 	@Test
-	public  void test() throws Exception {
+	public  void method() throws Exception {
+		test = extent.createTest("test");
 		String filename="NEG_"+Config.getProperty("EstimateIDs");
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
 		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
@@ -44,27 +30,13 @@ public class createproductandcomponents extends Testbase{
 		actions.doubleClick(elementLocator).perform();
 		Thread.sleep(5000);*/
 		String newest="25,931";
+		test.log(Status.INFO, "main");
 		//newest=newest.replace(",", "");
 		JobPage.NavigateToJobPage();
 		JobPage.searchJobWithEstimateNumber(newest);
 		JobPage.NavigateToJobGeneral();
 		JobPage.NavigateToJobPlanning();
 		JobPage.PushPlanningData(newest, "Planning");
-		JobPage.NavigateToJobMaterials();
-		JobPage.PushMaterialData(newest, "Material");
-		JobPage.NavigateToJobEngineering();
-		JobPage.VerifyJobEngineering(newest);
-		JobPage.CloseJobTab();
-		if(JobPage.VerifyJobPlanning(newest, "Planning")) {
-			System.out.println("Pass");
-		}else {
-			System.out.println("Fail");
-		}
-		if(JobPage.VerifyJobMaterial(newest, "Material")) {
-			System.out.println("Pass");
-		}else {
-			System.out.println("Fail");
-		}
 		
 	}
 

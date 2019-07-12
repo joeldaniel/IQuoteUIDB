@@ -20,6 +20,7 @@ import org.openqa.selenium.WebElement;
 
 import base.Testbase;
 import utilities.CommonFunctions;
+import utilities.HTML_File_Creator;
 import utilities.ReadAndUpdate;
 import utilities.ScreenShot;
 
@@ -29,6 +30,7 @@ public class JobPage extends Testbase{
 	//ReadAndUpdate dbConnection = new ReadAndUpdate();
 	
 	//Author Sonali
+	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	
       
       public  static void NavigateToJobPage()throws Exception
@@ -787,7 +789,8 @@ public class JobPage extends Testbase{
           {
                 System.out.println("Navigation to Job General Page Successfull");
                 String Jobnum=driver.findElement(By.xpath("//header[text()='Job']/parent::div//label[text()='Job number']/parent::span/span/input")).getAttribute("Value");          
-          		
+                HTMLF.addrow_Twoparm("Comment", "Job Number# is", "", Jobnum, "", "", Config.getProperty("EstimateIDs")+".html");
+    			HTMLF.addrow("Comment","Job Creation" , "", "", "", "",Config.getProperty("EstimateIDs")+".html");
           		String CustomerID= driver.findElement(By.xpath("//label[text()='Customer']/parent::span//input[1]")).getAttribute("value");
           		System.out.println("Job Number and customerID : "+Jobnum+","+CustomerID);
     		}
@@ -802,8 +805,8 @@ public class JobPage extends Testbase{
     public static boolean VerifyJobPlanning(String Estimate,String SheetName1) {
     	
     	Estimate=Estimate.replace(",", "");
-    	String ExcelSheetPath1="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
-    	String ExcelSheetPath2="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx";
+    	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
+    	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx";
     	
 	      boolean Comp1 = false;
 	      try {
@@ -960,6 +963,8 @@ public class JobPage extends Testbase{
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	    String status =Comp1? "PASS" : "FAIL";
+	    HTMLF.addrow("Step 7", "Job Planning Validation", ExcelSheetPath2, ExcelSheetPath1, "", status,Config.getProperty("EstimateIDs")+".html");
 		return Comp1;
 	      
 	
@@ -967,8 +972,8 @@ public class JobPage extends Testbase{
     public static boolean VerifyJobMaterial(String Estimate,String SheetName1) {
     	
     	Estimate=Estimate.replace(",", "");
-    	String ExcelSheetPath1="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
-    	String ExcelSheetPath2="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx";
+    	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+    	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx";
     	
 	      boolean Comp1 = false;
 	      try {
@@ -1125,6 +1130,8 @@ public class JobPage extends Testbase{
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	      String status =Comp1? "PASS" : "FAIL";
+		   HTMLF.addrow("Step 7", "Job Material Validation", ExcelSheetPath2, ExcelSheetPath1, "", status,Config.getProperty("EstimateIDs")+".html");
 		return Comp1;
 	      
 	
@@ -1142,6 +1149,10 @@ public class JobPage extends Testbase{
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("Job_ENG.png",Actualname,(Estimate+"Job_ENG_Diff.png"), "No",Estimate);
 			System.out.println("Image Comparision of Quantity Diagram : "+Status);
+			String sFile1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png";
+			String sFile2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualname;
+			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\"+Estimate+"Job_ENG_Diff.png";
+			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 		}
 		
     }

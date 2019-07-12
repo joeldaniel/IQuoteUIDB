@@ -22,10 +22,15 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.Status;
 
-public class ScreenShot {
+import base.Testbase;
 
-	
+
+public class ScreenShot extends Testbase {
+
+	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	public static String ScreenShotRegion_withPath (WebDriver driver, By locator, String ScreenshotName, String Masking,String Estimate) throws Exception
     {
           JavascriptExecutor JSE = (JavascriptExecutor) driver;
@@ -40,6 +45,8 @@ public class ScreenShot {
           //Get the entire Screenshot from the driver of passed WebElement
           File screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
           FileUtils.copyFile(screen, new File(NewFileNamePath1));
+          
+          
 
           //Create an instance of Buffered Image from captured screenshot
           BufferedImage img = ImageIO.read(screen);
@@ -167,10 +174,15 @@ public static String imageComparison(String File1,String File2, String Differenc
    String sFile2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+File2;
   
   String Differencepath= System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\"+Difference;
-  System.out.println("Base File path:- "+sFile1);
-  System.out.println("Actual File path:- "+sFile2);
-  System.out.println("Diff File path:- "+Differencepath);
+  //System.out.println("Base File path:- "+sFile1);
+  //System.out.println("Actual File path:- "+sFile2);
+  //System.out.println("Diff File path:- "+Differencepath);
+  test.log(Status.INFO, "Base File path:- "+sFile1);
+  test.log(Status.INFO, "Actual File path:- "+sFile2);
+  test.log(Status.INFO, "Diff File path:- "+Differencepath);
   
+
+
   int returnValue = -1;
   
   if (Masking == "Yes"){
@@ -178,9 +190,9 @@ public static String imageComparison(String File1,String File2, String Differenc
     
     String MastedFile=System.getProperty("user.dir")+"\\InputTestData\\ScreenShotValidation\\Engineering\\MaskedImages\\"+File1;
     String BaseMakedImahe = System.getProperty("user.dir")+"\\InputTestData\\ScreenShotValidation\\Engineering\\TempMasking\\"+File1;
-    System.out.println( "Base Masking Image " +BaseMakedImahe);
+    //System.out.println( "Base Masking Image " +BaseMakedImahe);
     String ActualMakedImahe = System.getProperty("user.dir")+"\\InputTestData\\ScreenShotValidation\\Engineering\\TempMasking\\"+File2;
-    System.out.println( "Actual Masking Image " +ActualMakedImahe);
+    //System.out.println( "Actual Masking Image " +ActualMakedImahe);
 
     
    // String cmd1 = ImageMagick_Loc+" convert "+sFile1+" "+MastedFile+" -composite "+ BaseMakedImahe;
@@ -219,7 +231,7 @@ public static String imageComparison(String File1,String File2, String Differenc
 
       Process p = Runtime.getRuntime().exec(System.getProperty("user.dir")+"\\src\\test\\resources\\executables\\ImageMagick-7.0.7-28-portable-Q16-x64\\magick.exe compare -metric AE -fuzz 10% "+sFile1+" "+sFile2+" "+Differencepath);
 
-      System.out.println( "Path is - " + Path);
+      //System.out.println( "Path is - " + Path);
       
       InputStream in = p.getErrorStream();
       byte b[] = new byte[1024];
@@ -239,7 +251,7 @@ public static String imageComparison(String File1,String File2, String Differenc
   }
 
    
-    System.out.println("Killing all CMD Processes");
+    //System.out.println("Killing all CMD Processes");
    Runtime.getRuntime().exec("taskkill /f /im cmd.exe") ;
   
    
@@ -253,7 +265,7 @@ public static String imageComparison(String File1,String File2, String Differenc
 //       System.out.println(sCurrentLine);
    
    
-   System.out.println("Return value of Compare is - " + returnValue);
+  // System.out.println("Return value of Compare is - " + returnValue);
        int DifferenceValue = returnValue;
        
        if(DifferenceValue == 0)
@@ -292,7 +304,7 @@ public static String imageComparison(String File1,String File2, String Differenc
 //       System.out.println("Failed to delete the file"); 
 //   } 
 //
- 
+      
         return ScreenShotStatus;
 }
 
@@ -317,7 +329,7 @@ public String imageComparison_old(String File1,String File2, String Difference) 
        
         //Process p = Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"cd D:\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64 && magick.exe compare -metric AE ..\\InputTestData\\ScreenShotValidation\\Engineering\\Actual\\Eng_125506PM.png ..\\InputTestData\\ScreenShotValidation\\Engineering\\Base\\Eng.png ..\\InputTestData\\ScreenShotValidation\\Engineering\\Difference\\EngDiff.png 2>results.txt\"");
         Process p = Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"cd C:\\WorkSpaceIquote\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64 && magick.exe compare -metric AE "+sFile1+" "+sFile2+" "+Differencepath+" 2>results.txt\"");
-        System.out.println( "Path is - " + Path);
+      //  System.out.println( "Path is - " + Path);
         
         Thread.sleep(5000);
         Runtime.getRuntime().exec("taskkill /f /im cmd.exe") ;
@@ -330,7 +342,7 @@ public String imageComparison_old(String File1,String File2, String Difference) 
         br = new BufferedReader(new FileReader("C:\\WorkSpaceIquote\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64\\results.txt"));
 
         while ((sCurrentLine = br.readLine()) != null) {
-            System.out.println(sCurrentLine);
+           // System.out.println(sCurrentLine);
             if(sCurrentLine.equals("0"))
             {
             	System.out.println("Screenshot Validation Pass");
@@ -362,7 +374,7 @@ public String imageComparison_1(String File1,String File2, String Difference) th
    //Process p = Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"cd D:\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64 && magick.exe compare -metric AE ..\\InputTestData\\ScreenShotValidation\\Engineering\\Actual\\Eng_125506PM.png ..\\InputTestData\\ScreenShotValidation\\Engineering\\Base\\Eng.png ..\\InputTestData\\ScreenShotValidation\\Engineering\\Difference\\EngDiff.png 2>results.txt\"");
 	Process p = Runtime.getRuntime().exec(System.getProperty("user.dir")+"\\ImageMagick-7.0.3-0-portable-Q16-x64\\magick.exe compare -metric AE -fuzz 10% "+sFile1+" "+sFile2+" "+Differencepath);
 
-    System.out.println( "Path is - " + Path);
+   // System.out.println( "Path is - " + Path);
     
     InputStream in = p.getErrorStream();
     byte b[] = new byte[1024];
@@ -390,7 +402,7 @@ public String imageComparison_1(String File1,String File2, String Difference) th
  //  br = new BufferedReader(new FileReader("C:\\WorkSpaceIquote\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64\\results.txt"));
 
   
-       System.out.println(sCurrentLine);
+      // System.out.println(sCurrentLine);
        if(sCurrentLine.equals("0"))
        {
        	System.out.println("Screenshot Validation Pass");
@@ -415,7 +427,7 @@ public void BufferedReaderExample()throws Exception
             br = new BufferedReader(new FileReader("D:\\IQuote_HTML5_Selenium\\ImageMagick-7.0.3-0-portable-Q16-x64\\results.txt"));
 
             while ((sCurrentLine = br.readLine()) != null) {
-                System.out.println(sCurrentLine);
+                //System.out.println(sCurrentLine);
                 if(sCurrentLine.equals("0"))
                 {
                 	System.err.println("Screenshot Validation failed");

@@ -37,7 +37,8 @@ public class checkquery  {
 		ResultSet rs;
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
+		DBUtil iqdb=new DBUtil();
+		iqdb.Createconnection("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=PremierPress", "iquote", "1quot3p@ss");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
