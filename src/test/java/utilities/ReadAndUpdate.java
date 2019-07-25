@@ -713,7 +713,7 @@ public class ReadAndUpdate {
 	            // For each row, iterate through all the columns
 	            Iterator<Cell> cellIterator = row.cellIterator();
 	            
-	            System.out.println("Get last row :-"+row.getLastCellNum()); 
+	           // System.out.println("Get last row :-"+row.getLastCellNum()); 
 	            while (cellIterator.hasNext()) {
 
 	                Cell cell = cellIterator.next();
@@ -723,16 +723,16 @@ public class ReadAndUpdate {
 	                    // Check the cell type and format accordingly
 	                    switch (cell.getCellType()) {
 	                    case Cell.CELL_TYPE_NUMERIC:
-	                        System.out.print(cell.getNumericCellValue());
+	                       // System.out.print(cell.getNumericCellValue());
 	                        arr1.add(cell.getNumericCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_STRING:
 	                        arr1.add(cell.getStringCellValue());
-	                        System.out.print(cell.getStringCellValue());
+	                       // System.out.print(cell.getStringCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_BOOLEAN:
 	                        arr1.add(cell.getBooleanCellValue());
-	                        System.out.print(cell.getBooleanCellValue());
+	                       // System.out.print(cell.getBooleanCellValue());
 	                        break;
 	                    }
 
@@ -740,12 +740,12 @@ public class ReadAndUpdate {
 
 	            }
 
-	            System.out.println(" ");
+	            //System.out.println(" ");
 	        }
 
 	        file1.close();
 
-	        System.out.println("-----------------------------------");
+	      //  System.out.println("-----------------------------------");
 	        // For retrive the second excel data
 	        while (rowIterator2.hasNext()) {
 	            Row row1 = rowIterator2.next();
@@ -765,16 +765,16 @@ public class ReadAndUpdate {
 	           
 	                    case Cell.CELL_TYPE_NUMERIC:
 	                        arr2.add(cell1.getNumericCellValue());
-	                        System.out.print(cell1.getNumericCellValue());
+	                      //  System.out.print(cell1.getNumericCellValue());
 	                        
 	                        break;
 	                    case Cell.CELL_TYPE_STRING:
 	                        arr2.add(cell1.getStringCellValue());
-	                        System.out.print(cell1.getStringCellValue());
+	                       // System.out.print(cell1.getStringCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_BOOLEAN:
 	                        arr2.add(cell1.getBooleanCellValue());
-	                        System.out.print(cell1.getBooleanCellValue());
+	                       // System.out.print(cell1.getBooleanCellValue());
 	                        break;
 
 	                    }
@@ -784,7 +784,7 @@ public class ReadAndUpdate {
 	                // continue;
 	            }
 
-	            System.out.println("");
+	            //System.out.println("");
 	        }
 
 	        System.out.println("book1.xls -- " + arr1.size());
@@ -807,7 +807,7 @@ public class ReadAndUpdate {
 	            
 	            
 	        }
-	        System.out.println("arr3 list values - = - = + " + arr3);
+	        //System.out.println("arr3 list values - = - = + " + arr3);
 	       
 	       
 
@@ -873,7 +873,7 @@ public class ReadAndUpdate {
 	            // For each row, iterate through all the columns
 	            Iterator<Cell> cellIterator = row.cellIterator();
 	            
-	            System.out.println("Get last row :-"+row.getLastCellNum()); 
+	           // System.out.println("Get last row :-"+row.getLastCellNum()); 
 	            while (cellIterator.hasNext()) {
 
 	                Cell cell = cellIterator.next();
@@ -883,16 +883,16 @@ public class ReadAndUpdate {
 	                    // Check the cell type and format accordingly
 	                    switch (cell.getCellType()) {
 	                    case Cell.CELL_TYPE_NUMERIC:
-	                        System.out.print(cell.getNumericCellValue());
+	                       // System.out.print(cell.getNumericCellValue());
 	                        arr1.add(cell.getNumericCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_STRING:
 	                        arr1.add(cell.getStringCellValue());
-	                        System.out.print(cell.getStringCellValue());
+	                        //System.out.print(cell.getStringCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_BOOLEAN:
 	                        arr1.add(cell.getBooleanCellValue());
-	                        System.out.print(cell.getBooleanCellValue());
+	                        //System.out.print(cell.getBooleanCellValue());
 	                        break;
 	                    }
 
@@ -900,12 +900,12 @@ public class ReadAndUpdate {
 
 	            }
 
-	            System.out.println(" ");
+	            //System.out.println(" ");
 	        }
 
 	        file1.close();
 
-	        System.out.println("-----------------------------------");
+	        //System.out.println("-----------------------------------");
 	        // For retrive the second excel data
 	        while (rowIterator2.hasNext()) {
 	            Row row1 = rowIterator2.next();
@@ -919,22 +919,22 @@ public class ReadAndUpdate {
 
 	                // This is for read only one column from excel
 	                if (cell1.getColumnIndex() >= 0) {
-	                  System.out.println(cell1.getCellType());
+	                  //System.out.println(cell1.getCellType());
 	                    switch (cell1.getCellType()) {
 	                    
 	           
 	                    case Cell.CELL_TYPE_NUMERIC:
 	                        arr2.add(cell1.getNumericCellValue());
-	                        System.out.print(cell1.getNumericCellValue());
+	                        //System.out.print(cell1.getNumericCellValue());
 	                        
 	                        break;
 	                    case Cell.CELL_TYPE_STRING:
 	                        arr2.add(cell1.getStringCellValue());
-	                        System.out.print(cell1.getStringCellValue());
+	                       // System.out.print(cell1.getStringCellValue());
 	                        break;
 	                    case Cell.CELL_TYPE_BOOLEAN:
 	                        arr2.add(cell1.getBooleanCellValue());
-	                        System.out.print(cell1.getBooleanCellValue());
+	                       // System.out.print(cell1.getBooleanCellValue());
 	                        break;
 
 	                    }
@@ -944,7 +944,7 @@ public class ReadAndUpdate {
 	                // continue;
 	            }
 
-	            System.out.println("");
+	            //System.out.println("");
 	        }
 
 	        System.out.println("book1.xls -- " + arr1.size());
@@ -1009,7 +1009,7 @@ public class ReadAndUpdate {
 		XSSFRow ExcelRow = null;
 		
 		
-		System.out.println("Row NUmber is : "+Rownumber);
+		//System.out.println("Row NUmber is : "+Rownumber);
 		try
 		{
 			ExcelInput = new FileInputStream(ExcelPath);
@@ -1059,12 +1059,12 @@ public class ReadAndUpdate {
 					
 			               Cell cell = ExcelRow.createCell(UpdateColumnIndex);
 			               cell.setCellValue(UpdateColumnValue);
-	 		               System.out.println(cell.getRichStringCellValue());
+	 		               //System.out.println(cell.getRichStringCellValue());
 			               cell.setCellStyle(headerCellStyle);
 			   		      
 					
 				        int rVal=ExcelRow.getRowNum();
-				        System.out.println("get Row NUmber is : "+rVal);
+				       // System.out.println("get Row NUmber is : "+rVal);
 						
 						
 //					}

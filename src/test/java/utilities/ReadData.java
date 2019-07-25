@@ -1,7 +1,7 @@
 package utilities;
 
 import java.io.FileInputStream;
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+
+import com.aventstack.extentreports.Status;
 
 import base.Testbase;
 
@@ -30,9 +32,12 @@ public class ReadData extends Testbase{
 	public static HashMap<String, HashMap<String, String>> EstDetailsPaperFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphHardCover	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphPackBox	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPFileList	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphCollection = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphBleed      = new HashMap<String, String>();
+    public static HashMap<String, String> CharCPGraphPackPallet	 = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphInitialLaminating      = new HashMap<String, String>();
     
     public static HashMap<String, String> CharCPGraphUnfinishedFormat = new HashMap<String, String>();
@@ -54,7 +59,7 @@ public class ReadData extends Testbase{
 	HashMap<String,HashMap<String,HashSet<Double>>> Quantities= new HashMap<String,HashMap<String,HashSet<Double>>>();
 		
 	
-	public HashMap<String, String> IdentificationPage(int EstimateId) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> IdentificationPage(String EstimateId) throws IOException, ClassNotFoundException, SQLException
 	{
 		
 		EstDetailsNewEstimate.clear();
@@ -63,11 +68,10 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId));
 
 		try
-		{
-			
+		{			
 			while(rs.next())
 			{
 				String CustCode=rs.getString("CustomerCode");
@@ -129,7 +133,7 @@ public class ReadData extends Testbase{
 	
 	}
 	
-	public HashMap<String, HashMap<String, String>> CreateProductandComponents(int EstimateId) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, HashMap<String, String>> CreateProductandComponents(String EstimateId) throws IOException, ClassNotFoundException, SQLException
 	{
 		EStCreateproductComp.clear();
 		fis = new FileInputStream(
@@ -137,7 +141,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		String Query1=Query.getProperty("Query");
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId));
 		try
 		{
 			
@@ -176,7 +180,7 @@ public class ReadData extends Testbase{
 		
 	}
 	
-	public HashMap<String, HashMap<String, String>> CreateProductandComponents(Integer EstimateId,String Option) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, HashMap<String, String>> CreateProductandComponents(String EstimateId,String Option) throws IOException, ClassNotFoundException, SQLException
 	{
 
 		EStCreateproductComp.clear();
@@ -186,7 +190,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##IdItemOption##", Option));
 		try
 		{
 			
@@ -225,7 +229,7 @@ public class ReadData extends Testbase{
 		
 	
 	}
-	public HashMap<String, HashMap<String, String>>ParentChildComponent(int Estimateid,String Option) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, HashMap<String, String>>ParentChildComponent(String Estimateid,String Option) throws IOException, ClassNotFoundException, SQLException
 	{
 		ParentChildCombinationWithLinkData.clear();
 		fis = new FileInputStream(
@@ -234,7 +238,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##IdItemOption##", Option));
 		
 		try
 		{
@@ -274,7 +278,7 @@ public class ReadData extends Testbase{
 		return ParentChildCombinationWithLinkData;
 	}
 
-	public HashMap<String, HashMap<String, String>> QtyForEst(int EstimateId) throws SQLException, ClassNotFoundException, IOException
+	public HashMap<String, HashMap<String, String>> QtyForEst(String EstimateId) throws SQLException, ClassNotFoundException, IOException
 	{
 		EstQTYPage.clear();
 		fis = new FileInputStream(
@@ -283,7 +287,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId));
 		
 		try
 		{
@@ -321,7 +325,7 @@ public class ReadData extends Testbase{
 		
 		return EstQTYPage;
 	}
-	public HashMap<Integer, HashMap<String, String>> QtyForEst(int EstimateId,String Option) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<Integer, HashMap<String, String>> QtyForEst(String EstimateId,String Option) throws IOException, ClassNotFoundException, SQLException
 	{
 		HashMap<Integer, HashMap<String, String>> EstQTYPage = new HashMap<Integer, HashMap<String, String>>();
 		HashSet<Integer> HS=new HashSet<>();
@@ -340,7 +344,7 @@ public class ReadData extends Testbase{
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##IdItemOption##", Option));
 		while(rs.next()){
 			
 			
@@ -353,7 +357,7 @@ public class ReadData extends Testbase{
 		for(int h1:HS) {
 			
 			HashMap<String, String> EstQtyPageData = new HashMap<String, String>();
-			 rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option)+" and  qttTMItemOptionQty.IdItemOptionQty= "+h1);
+			 rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##IdItemOption##", Option)+" and  qttTMItemOptionQty.IdItemOptionQty= "+h1);
 	          
 	            while(rs.next())
 	            {
@@ -370,7 +374,7 @@ public class ReadData extends Testbase{
 		return EstQTYPage;
 		
 	}
-	public HashMap<String, HashMap<String, String>> CharacteristicForEachComponent(int Estimateid, String CompOrder) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, HashMap<String, String>> CharacteristicForEachComponent(String Estimateid, String CompOrder) throws IOException, ClassNotFoundException, SQLException
 	{
 		EstCharacteristicEachComponent.clear();
 		fis = new FileInputStream(
@@ -379,7 +383,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", CompOrder));
 		
 		try
 		{
@@ -423,7 +427,7 @@ public class ReadData extends Testbase{
 		return EstCharacteristicEachComponent;
 	}
 	
-	public HashMap<String, HashMap<String,String>> CharacteristicForEachComponent(int Estimateid, String Option,String CompOrder)throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, HashMap<String,String>> CharacteristicForEachComponent(String Estimateid, String Option,String CompOrder)throws IOException, ClassNotFoundException, SQLException{
 
 		EstCharacteristicEachComponent.clear();
 		fis = new FileInputStream(
@@ -432,7 +436,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", Option));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", Option));
 		
 		try
 		{
@@ -476,7 +480,7 @@ public class ReadData extends Testbase{
 		return EstCharacteristicEachComponent;
 	
 	}
-	public HashMap<String, HashMap<String, String>> PaperSpec(int EstimateId, String CompOrder) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, HashMap<String, String>> PaperSpec(String EstimateId, String CompOrder) throws IOException, ClassNotFoundException, SQLException
 
 	{
 		EstDetailsPaperSpec.clear();
@@ -486,7 +490,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs").replace("##ComponentOrder##", CompOrder)));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId.replace("##ComponentOrder##", CompOrder)));
 		try
 		{
 			int valkey=1;
@@ -553,7 +557,7 @@ public class ReadData extends Testbase{
 		
 	}
 
-	public HashMap<String, String> CPGraphBindStitch(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	public HashMap<String, String> CPGraphBindStitch(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
 
 	{
 		CharCPGraphBindStitch.clear();
@@ -564,7 +568,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			//loop
@@ -615,7 +619,7 @@ public class ReadData extends Testbase{
 		
 	}
 
-	public HashMap<String,HashMap<String, HashSet<String>>> QuantityPage(String string) throws ClassNotFoundException, SQLException, IOException{
+	public HashMap<String,HashMap<String, HashSet<String>>> QuantityPage(String string,String Estimate) throws ClassNotFoundException, SQLException, IOException{
 		Set<String> Options=new HashSet<>();
 		HashSet<String> Product=new HashSet<>();
 		HashSet<String> Quantity=new HashSet<>();
@@ -630,7 +634,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimate));
 		try {
 			//loop
 			while(rs.next())
@@ -677,7 +681,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId));
 		
 		try
 		{
@@ -692,7 +696,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		
+		test.log(Status.INFO, "Options for Estimate are : "+Options);
 		return Options;
 	}
 	
@@ -705,7 +709,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		String Query2=Query1.replace("##Estimate##", Config.getProperty("EstimateIDs"))+"and qttTMItemOption.Description= '"+Optionname+"'";
+		String Query2=Query1.replace("##Estimate##", Estimate)+"and qttTMItemOption.Description= '"+Optionname+"'";
 		rs = iqdb.RunQuery(Query2);
 		
 		try
@@ -727,7 +731,7 @@ public class ReadData extends Testbase{
 		
 	}
 	
-	public String ReturnOptionDesForEstandOption(int Estimate,String Option) throws IOException, ClassNotFoundException, SQLException {
+	public String ReturnOptionDesForEstandOption(String Estimate,String Option) throws IOException, ClassNotFoundException, SQLException {
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\GetOptionDesc.properties");
 		Query.load(fis);
@@ -735,7 +739,7 @@ public class ReadData extends Testbase{
 		// opening database connection to MySQL server
 		
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimate).replace("##IdItemOption##", Option));
 		while(rs.next()) {
 			OptionDesc=rs.getString("OptionDescription");
 		}
@@ -752,7 +756,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		String Query2=Query1.replace("##Estimate##", Config.getProperty("EstimateIDs"))+"and qttTMItemOption.Description= '"+Optionname+"'"+"and qttTMPSCmp.Description= '"+Product+"'";
+		String Query2=Query1.replace("##Estimate##", Estimate)+"and qttTMItemOption.Description= '"+Optionname+"'"+"and qttTMPSCmp.Description= '"+Product+"'";
 		rs = iqdb.RunQuery(Query2);
 		
 		try
@@ -778,7 +782,7 @@ public class ReadData extends Testbase{
 		return Quantities;
 	}
 
-	public HashMap<String, HashMap<String, String>> CPGraphColorVanish(int EstimateId, String IdItemOption ,String CompOrderval) throws IOException, SQLException, ClassNotFoundException{
+	public HashMap<String, HashMap<String, String>> CPGraphColorVanish(String EstimateId, String IdItemOption ,String CompOrderval) throws IOException, SQLException, ClassNotFoundException{
 		EstDetailsColorandVarnish.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphColorVanish.properties");
@@ -787,7 +791,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs1 = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrderval).replace("##IdItemOption##", IdItemOption));
+		rs1 = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##CompOrder##", CompOrderval).replace("##IdItemOption##", IdItemOption));
 		try
 		{
 			int valkey1=1;
@@ -846,7 +850,7 @@ public class ReadData extends Testbase{
 		
 	}
 	
-	public HashMap<String, HashMap<String, String>> CPGraphRegularFormat(int EstimateId, String IdItemOption,String CompOrder ) throws SQLException, ClassNotFoundException, IOException{
+	public HashMap<String, HashMap<String, String>> CPGraphRegularFormat(String EstimateId, String IdItemOption,String CompOrder ) throws SQLException, ClassNotFoundException, IOException{
 		EstDetailsPaperFormat.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphRegularFormat.properties");
@@ -855,7 +859,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
 		try
 		{
 			while(rs.next()) {
@@ -946,7 +950,7 @@ public class ReadData extends Testbase{
 		return EstDetailsPaperFormat;
 	}
 	
-	public HashMap<String, HashMap<String, String>> CPGraphHotStamping(int Estimateid, String IdItemOption, String CompOrder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, HashMap<String, String>> CPGraphHotStamping(String Estimateid, String IdItemOption, String CompOrder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
 		CharCPGraphStampingItem.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphHotStamping.properties");
@@ -955,7 +959,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", CompOrder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			int valkey=1;
@@ -1010,7 +1014,7 @@ public class ReadData extends Testbase{
 		return CharCPGraphStampingItem;
 	}
 	
-	public HashMap<String, HashMap<String, String>> CPGraphMedia(int EstimateId,  String IdItemOption,String CompOrder) throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, HashMap<String, String>> CPGraphMedia(String EstimateId,  String IdItemOption,String CompOrder) throws IOException, ClassNotFoundException, SQLException{
 		EstDetailsPaperSpec.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphMedia.properties");
@@ -1019,7 +1023,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##ComponentOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", EstimateId).replace("##ComponentOrder##", CompOrder).replace("##IdItemOption##", IdItemOption));
 		try
 		{
 			int valkey=1;
@@ -1085,7 +1089,7 @@ public class ReadData extends Testbase{
 		return EstDetailsPaperSpec;
 	}
 
-	public HashMap<String, String> CPPlant(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPPlant(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPPlant.clear();
 		fis = new FileInputStream(
@@ -1095,7 +1099,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1131,7 +1135,7 @@ public class ReadData extends Testbase{
 		}
 		return CharCPPlant;
 	}
-	public HashMap<String, String> CPGenericCPOptionDesc(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPGenericCPOptionDesc(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CPGenericCPOptionDesc.clear();
 		fis = new FileInputStream(
@@ -1141,7 +1145,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1184,7 +1188,7 @@ public class ReadData extends Testbase{
 		return CPGenericCPOptionDesc;
 		
 	}
-	public HashMap<String, String> CPNote(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPNote(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPNote.clear();
 		fis = new FileInputStream(
@@ -1194,7 +1198,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1231,7 +1235,7 @@ public class ReadData extends Testbase{
 		return CharCPNote;
 		
 	}
-	public HashMap<String, String> CPAGraphPageProof(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, String> CPAGraphPageProof(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
 		CharCPAGraphPageProof.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPAGraphPageProof.properties");
@@ -1240,7 +1244,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1286,7 +1290,7 @@ public class ReadData extends Testbase{
 		return CharCPAGraphPageProof;
 	
 	}
-	public HashMap<String, String> CPGraphUnfinishedFormat(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPGraphUnfinishedFormat(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPGraphUnfinishedFormat.clear();
 		fis = new FileInputStream(
@@ -1296,7 +1300,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next())
@@ -1346,7 +1350,7 @@ public class ReadData extends Testbase{
 		return CharCPGraphUnfinishedFormat;
 	}
 	
-	public HashMap<String, String> CPGraphInitialLaminating(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	public HashMap<String, String> CPGraphInitialLaminating(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{
 		CharCPGraphInitialLaminating.clear();
 		fis = new FileInputStream(
@@ -1356,7 +1360,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1404,8 +1408,207 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphInitialLaminating;
 	}
+	public HashMap<String, String> CPGraphHardCover(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException{
+		CharCPGraphHardCover.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphHardCover.properties");
+		Query.load(fis);
 		
-	public HashMap<String, String> CPGraphBleed(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				//	String CharDescp=rs.getString("CharacteristicDesc");
+				String CPGraphHardCoverGlueType=rs.getString("GlueType");
+				String CPGraphHardCoverSewn=rs.getString("Sewn");
+				String CPGraphHardPerfectBindRound=rs.getString("PerfectBindRound");
+				String CPGraphHardCoverCardboard=rs.getString("CoverCardboard");
+				String CPGraphHardNote=rs.getString("Note");
+				String CPGraphHardSpineCardboard=rs.getString("SpineCardboard");
+				String CPGraphHardJointGap=rs.getString("JointGap");
+				String CPGraphHardChangeDefaultFoldOver=rs.getString("ChangeDefaultFoldOver");
+				String CPGraphHardHeadadjust=rs.getString("Headadjust");
+				String CPGraphHardFaceadjust=rs.getString("Faceadjust");
+				String CPGraphHardFootadjust=rs.getString("Footadjust");
+				String CPGraphHardFoldOverMargin=rs.getString("FoldOverMargin");
+				String CPGraphHardBackingMaterial=rs.getString("BackingMaterial");
+				String CPGraphHardHasheadband=rs.getString("Hasheadband");
+				String CPGraphHardHeadbandLiner=rs.getString("HeadbandLiner");
+				String CPGraphHardHeadbandColor=rs.getString("HeadbandColor");
+				String CPGraphHardNumberofribbons=rs.getString("Numberofribbons");
+				String CPGraphHardSeparateCover=rs.getString("SeparateCover");
+				String CPGraphHardCoverWidthReduction=rs.getString("CoverWidthReduction");
+				String CPGraphHardSubstrateType=rs.getString("SubstrateType");
+				String CPGraphHardLine=rs.getString("Line");
+				String CPGraphHardGrammage=rs.getString("Grammage");
+				String CPGraphHardGrainDirection=rs.getString("GrainDirection");
+				String CPGraphHardBookOverlapTop=rs.getString("BookOverlapTop");
+				String CPGraphHardBookOverlapBottom=rs.getString("BookOverlapBottom");
+				String CPGraphHardBookOverlapRight=rs.getString("BookOverlapRight");
+				String CPGraphHardManufacturer=rs.getString("Manufacturer");
+				String CPGraphHardAnotherManufacturer=rs.getString("AnotherManufacturer");
+				String CPGraphHardNotes=rs.getString("Notes");
+
+
+				CharCPGraphHardCover.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphHardCover.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphHardCover.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphHardCover.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphHardCover.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				//CharCPGraphHardCover.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphHardCover.put("GlueType", CPGraphHardCoverGlueType != null ? CPGraphHardCoverGlueType : "");
+				CharCPGraphHardCover.put("Sewn", CPGraphHardCoverSewn != null ? CPGraphHardCoverSewn : "");
+				CharCPGraphHardCover.put("PerfectBindRound", CPGraphHardPerfectBindRound != null ? CPGraphHardPerfectBindRound : "");
+				CharCPGraphHardCover.put("CoverCardboard", CPGraphHardCoverCardboard != null ? CPGraphHardCoverCardboard : "");
+				CharCPGraphHardCover.put("Note", CPGraphHardNote != null ? CPGraphHardNote : "");
+				CharCPGraphHardCover.put("SpineCardboard", CPGraphHardSpineCardboard != null ? CPGraphHardSpineCardboard : "");
+				CharCPGraphHardCover.put("JointGap", CPGraphHardJointGap != null ? CPGraphHardJointGap : "");
+				CharCPGraphHardCover.put("ChangeDefaultFoldOver", CPGraphHardChangeDefaultFoldOver != null ? CPGraphHardChangeDefaultFoldOver : "");
+				CharCPGraphHardCover.put("Headadjust", CPGraphHardHeadadjust != null ? CPGraphHardHeadadjust : "");
+				CharCPGraphHardCover.put("Faceadjust", CPGraphHardFaceadjust != null ? CPGraphHardFaceadjust : "");
+				CharCPGraphHardCover.put("Footadjust", CPGraphHardFootadjust != null ? CPGraphHardFootadjust : "");
+				CharCPGraphHardCover.put("FoldOverMargin", CPGraphHardFoldOverMargin != null ? CPGraphHardFoldOverMargin : "");
+				CharCPGraphHardCover.put("BackingMaterial", CPGraphHardBackingMaterial != null ? CPGraphHardBackingMaterial : "");
+				CharCPGraphHardCover.put("Hasheadband", CPGraphHardHasheadband != null ? CPGraphHardHasheadband : "");
+				CharCPGraphHardCover.put("HeadbandLiner", CPGraphHardHeadbandLiner != null ? CPGraphHardHeadbandLiner : "");
+				CharCPGraphHardCover.put("HeadbandColor", CPGraphHardHeadbandColor != null ? CPGraphHardHeadbandColor : "");
+				CharCPGraphHardCover.put("Numberofribbons", CPGraphHardNumberofribbons != null ? CPGraphHardNumberofribbons : "");
+				CharCPGraphHardCover.put("SeparateCover", CPGraphHardSeparateCover != null ? CPGraphHardSeparateCover : "");
+				CharCPGraphHardCover.put("CoverWidthReduction", CPGraphHardCoverWidthReduction != null ? CPGraphHardCoverWidthReduction : "");
+				CharCPGraphHardCover.put("SubstrateType", CPGraphHardSubstrateType != null ? CPGraphHardSubstrateType : "");
+				CharCPGraphHardCover.put("Line", CPGraphHardLine != null ? CPGraphHardLine : "");
+				CharCPGraphHardCover.put("Grammage", CPGraphHardGrammage != null ? CPGraphHardGrammage : "");
+				CharCPGraphHardCover.put("GrainDirection", CPGraphHardGrainDirection != null ? CPGraphHardGrainDirection : "");
+				CharCPGraphHardCover.put("BookOverlapTop", CPGraphHardBookOverlapTop != null ? CPGraphHardBookOverlapTop : "");
+				CharCPGraphHardCover.put("BookOverlapBottom", CPGraphHardBookOverlapBottom != null ? CPGraphHardBookOverlapBottom : "");
+				CharCPGraphHardCover.put("BookOverlapRight", CPGraphHardBookOverlapRight != null ? CPGraphHardBookOverlapRight : "");
+				CharCPGraphHardCover.put("Manufacturer", CPGraphHardManufacturer != null ? CPGraphHardManufacturer : "");
+				CharCPGraphHardCover.put("AnotherManufacturer", CPGraphHardAnotherManufacturer != null ? CPGraphHardAnotherManufacturer : "");
+				CharCPGraphHardCover.put("Notes", CPGraphHardNotes != null ? CPGraphHardNotes : "");
+
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphHardCover;
+		
+	}
+	public HashMap<String, String> CPGraphCollection(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPGraphCollection.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphCollection.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next()) {
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGraphCollectionTrimmed=rs.getString("Trimmed");
+				String CPGraphCollectionNote=rs.getString("Note");
+
+
+
+				CharCPGraphCollection.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphCollection.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphCollection.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphCollection.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphCollection.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphCollection.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphCollection.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPGraphCollection.put("Trimmed", CPGraphCollectionTrimmed != null ? CPGraphCollectionTrimmed : "");
+				CharCPGraphCollection.put("Note", CPGraphCollectionNote != null ? CPGraphCollectionNote : "");
+
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphCollection;
+	}
+	public HashMap<String, String> CPGraphPackPallet(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPGraphPackPallet.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPackPallet.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+				
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGraphPackPalletUnitsInThePallet=rs.getString("UnitsInThePallet");
+				String CPGraphPackPalletMaterial=rs.getString("Material");
+				String CPGraphPackPalletNote=rs.getString("Note");
+
+				CharCPGraphPackPallet.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphPackPallet.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphPackPallet.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphPackPallet.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphPackPallet.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphPackPallet.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphPackPallet.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPGraphPackPallet.put("UnitsInThePallet", CPGraphPackPalletUnitsInThePallet != null ? CPGraphPackPalletUnitsInThePallet : "");
+				CharCPGraphPackPallet.put("Material", CPGraphPackPalletMaterial != null ? CPGraphPackPalletMaterial : "");
+				CharCPGraphPackPallet.put("Note", CPGraphPackPalletNote != null ? CPGraphPackPalletNote : "");
+
+			}
+			
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+				System.out.println("failed");
+			}
+			return CharCPGraphPackPallet;
+	}
+	
+	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{
 		CharCPGraphBleed.clear();
 		fis = new FileInputStream(
@@ -1416,7 +1619,7 @@ public class ReadData extends Testbase{
 		// opening database connection to MySQL serv
 		
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try
 		{
@@ -1436,7 +1639,7 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphBleed;
 	}
-	public HashMap<String, String> CPGraphBindGlue(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPGraphBindGlue(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPGraphBindGlue.clear();
 		fis = new FileInputStream(
@@ -1446,7 +1649,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			HashMap<String, String> CharCPGraphStampingItemHM=new HashMap<String,String>(); 
@@ -1489,7 +1692,7 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphBindGlue;
 	}
-	public HashMap<String, String> CPValueQTY(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, String> CPValueQTY(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
 		CharCPvalueQTY.clear();
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPValueQTY.properties");
@@ -1498,7 +1701,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {
@@ -1534,16 +1737,16 @@ public class ReadData extends Testbase{
 		return CharCPvalueQTY;
 	}
 
-	public HashMap<String, String> CPASimpleQty(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
+	public HashMap<String, String> CPASimpleQty(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException{
 		CharCPASimpleQty.clear();
 		fis = new FileInputStream(
-				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPValueQTY.properties");
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPASimpleQty.properties");
 		Query.load(fis);
 		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {
@@ -1584,7 +1787,7 @@ public class ReadData extends Testbase{
 		}
 		return CharCPASimpleQty;
 	}
-	public HashMap<String, String> CPGraphFiber(int Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	public HashMap<String, String> CPGraphFiber(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
 	{
 		CharCPGraphFiber.clear();
 		fis = new FileInputStream(
@@ -1594,7 +1797,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {
@@ -1630,7 +1833,7 @@ public class ReadData extends Testbase{
 		return CharCPGraphFiber;
 		
 	}
-	public HashMap<String, String> CPGraphPackBox(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPGraphPackBox(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPGraphPackBox.clear();
 		fis = new FileInputStream(
@@ -1640,7 +1843,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {
@@ -1681,7 +1884,7 @@ public class ReadData extends Testbase{
 		return CharCPGraphPackBox;
 		
 	}
-	public HashMap<String, String> CPFileList(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPFileList(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPFileList.clear();
 		fis = new FileInputStream(
@@ -1691,7 +1894,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {
@@ -1735,7 +1938,7 @@ public class ReadData extends Testbase{
 	}
 	
 	
-	public HashMap<String, String> CPGraphLargeFormat(int Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	public HashMap<String, String> CPGraphLargeFormat(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
 	{
 		CharCPGraphLargeFormat.clear();
 		fis = new FileInputStream(
@@ -1745,7 +1948,7 @@ public class ReadData extends Testbase{
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
-		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		try
 		{
 			while(rs.next()) {

@@ -1,8 +1,16 @@
 package testcases;
 
 
+
 import java.util.HashSet;
 
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.Status;
@@ -18,60 +26,78 @@ import utilities.ReadData;
 
 public class CreateEstimate extends Testbase {
 	
+	@BeforeTest
+	public void launchbrowser() throws Exception {
+		if (Config.getProperty("browser").equals("chrome")) {
+
+			System.setProperty("webdriver.chrome.driver",
+					System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
+			
+			driver = new ChromeDriver();
+			driver.get(Config.getProperty("testsiteurl"));
+			
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
+					TimeUnit.SECONDS);
+			 wait = new WebDriverWait(driver, 180);
+			 IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+		}
+	}
 	
-	@Test
-	public void createestimate() throws Exception {
-		test = extent.createTest("createestimate");
+	@Test(dataProvider = "dp")
+	public void createestimate(String value) throws Exception {
+		
+		test = extent.createTest("createestimate for : "+value);
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
-		HTMLF.HTMLFileGenerator(Config.getProperty("EstimateIDs")+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
+		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
 		int Optionnum=1;
 		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
-		String filename="NEG_"+Config.getProperty("EstimateIDs");
-		System.out.println("Base Est : " +Config.getProperty("EstimateIDs"));
-		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",Config.getProperty("EstimateIDs")+".html");
-		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", Config.getProperty("EstimateIDs"), "", "",Config.getProperty("EstimateIDs")+".html");
-		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+		String filename="NEG_"+value;
+		System.out.println("Base Est : " +value);
+		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
+		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
+		
 		Desktop.NavigateToEstimatePage();
-		test.log(Status.INFO, "Creating of Estimate Started");
+		
 		
 		Estimate.ClickonNewEstimate();
-		Estimate.CreateNewEstimate(Integer.parseInt(Config.getProperty("EstimateIDs")));
+		Estimate.CreateNewEstimate(value);
 		
 		HashSet<String> Options=new HashSet<>();
 		ReadData name = new ReadData();
-		Options=name.NoOfOptions(Config.getProperty("EstimateIDs"));
-		test.log(Status.INFO, "Options for Estimate are : "+Options);
+		Options=name.NoOfOptions(value);
+		
 		for(String Option:Options) {
-			test.log(Status.INFO, "Creating Option : "+Option);
+			
 			Estimate.CreateOption(Optionnum);
-			test.log(Status.INFO, "Creating Product and components");
-			Estimate.CreateProduct_and_Components(Integer.parseInt(Config.getProperty("EstimateIDs")), Option);
-			test.log(Status.INFO, "Parent child combination");
-			Estimate.ParentChildCombination(Integer.parseInt(Config.getProperty("EstimateIDs")), Option);
-			test.log(Status.INFO, "Adding characteristics for components");
-			Estimate.ComponentandCharacteristics_ForPaperSpec(Integer.parseInt(Config.getProperty("EstimateIDs")),Option);
+			
+			Estimate.CreateProduct_and_Components(value, Option);
+			
+			Estimate.ParentChildCombination(value, Option);
+			
+			Estimate.ComponentandCharacteristics_ForPaperSpec(value,Option);
 			Estimate.NavigateToQtyPriceTab();
-			test.log(Status.INFO, "Adding Quantity");
-			Estimate.AddQuantity(Integer.parseInt(Config.getProperty("EstimateIDs")), Option);
+			
+			Estimate.AddQuantity(value, Option);
 			Optionnum+=1;
 		}
-		test.log(Status.INFO, "Saving Estimate");
+		
 		Estimate.SaveEstimate();
-		test.log(Status.INFO, "Calculating Estimate");
+		
 		Estimate.CalculateEstimate();
 		
 		Estimate.NavigateToEngineeringTab();
-		test.log(Status.INFO, "Verifying Engineering Diagrams");
-		Estimate.VerifyEngineering(Config.getProperty("EstimateIDs"));
+		
+		Estimate.VerifyEngineering(value);
 		
 		Estimate.NavigateToQtyPriceTab();
-		Estimate.VerifyQty(Config.getProperty("EstimateIDs"));
+		Estimate.VerifyQty(value);
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-		String Actualname= Estimate.NegotiaionAndPrint(filename,Config.getProperty("EstimateIDs"));
-		Estimate.VerifyNegotiation(Actualname,Config.getProperty("EstimateIDs"));
-		test.log(Status.INFO, "Creation Of estimate ends");
+		String Actualname= Estimate.NegotiaionAndPrint(filename,value);
+		Estimate.VerifyNegotiation(Actualname,value);
+		
 		
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		Estimate.CloseEstimateTab();
@@ -80,25 +106,35 @@ public class CreateEstimate extends Testbase {
 		JobPage.searchJobWithEstimateNumber(newest);
 		JobPage.NavigateToJobGeneral();
 		JobPage.NavigateToJobPlanning();
-		JobPage.PushPlanningData(Config.getProperty("EstimateIDs"), "Planning");
+		JobPage.PushPlanningData(value, "Planning");
 		JobPage.NavigateToJobMaterials();
-		JobPage.PushMaterialData(Config.getProperty("EstimateIDs"), "Material");
+		JobPage.PushMaterialData(value, "Material");
 		JobPage.NavigateToJobEngineering();
-		JobPage.VerifyJobEngineering(Config.getProperty("EstimateIDs"));
+		JobPage.VerifyJobEngineering(value);
 		JobPage.CloseJobTab();
-		if(JobPage.VerifyJobPlanning(Config.getProperty("EstimateIDs"), "Planning")) {
+		if(JobPage.VerifyJobPlanning(value, "Planning")) {
 			System.out.println("Pass");
 		}else {
 			System.out.println("Fail");
 		}
-		if(JobPage.VerifyJobMaterial(Config.getProperty("EstimateIDs"), "Material")) {
+		if(JobPage.VerifyJobMaterial(value, "Material")) {
 			System.out.println("Pass");
 		}else {
 			System.out.println("Fail");
 		}
-		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+Config.getProperty("EstimateIDs")+".html"; 
+		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
 		System.out.println("HTML File generated path is :- "+HTMLfilepath);
 		
 
 	}
+	@DataProvider(name = "dp")
+	public Object[] getDataFromDataprovider() {
+		return Config.getProperty("EstimateIDs").split(",");
+
+	}
+	@AfterTest
+	public void closebrowser() {
+		//driver.close();
+	}
+	
 }

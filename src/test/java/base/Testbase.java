@@ -39,16 +39,29 @@ public class Testbase {
     public static ExtentTest test;
     public static String browser;
     public static Actions actions;
+   
     protected static DBUtil iqdb = new DBUtil();
 	
-	
+   
 	@BeforeSuite
 	public void setUp() throws IOException {
 		if (driver == null) {
 			
+			System.out.println("DB Selected is : "+System.getenv("DataBase"));
+			System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
+			
+			//for Jenkins
+			/*fis = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
+			Config.load(fis);*/
+			//for normal work
 			fis = new FileInputStream(
 					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
 			Config.load(fis);
+			
+			//uncomment this for jenkins
+			//Config.setProperty("EstimateIDs", System.getenv("Estimates"));
+			//saveProperties(Config,System.getenv("DataBase"));
 			
 			//DBUtil iqdb=new DBUtil(Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"), Config.getProperty("DBUrl"));
 			
@@ -67,7 +80,9 @@ public class Testbase {
 			
 			Config.setProperty("browser", browser);
 			System.out.println("The browser selected : "+browser);
-			if (Config.getProperty("browser").equals("firefox")) {
+			
+		
+			/*if (Config.getProperty("browser").equals("firefox")) {
 
 				// System.setProperty("webdriver.gecko.driver", "gecko.exe");
 				driver = new FirefoxDriver();
@@ -85,15 +100,15 @@ public class Testbase {
 						System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\IEDriverServer.exe");
 				driver = new InternetExplorerDriver();
 
-			}
+			}*/
 			
 			
-			driver.get(Config.getProperty("testsiteurl"));
+			/*driver.get(Config.getProperty("testsiteurl"));
 			
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
-					TimeUnit.SECONDS);
-			wait = new WebDriverWait(driver, 30);
+					TimeUnit.SECONDS);*/
+			// wait = new WebDriverWait(driver, 180);
 			//Extent
 			//htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
 			htmlReporter = new ExtentHtmlReporter(
@@ -117,9 +132,9 @@ public class Testbase {
 	    }	
 
 	}
-	protected static void saveProperties(Properties p) throws IOException
+	protected static void saveProperties(Properties p,String val) throws IOException
     {
-        FileOutputStream fr = new FileOutputStream(System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+        FileOutputStream fr = new FileOutputStream(System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+val+".properties");
         p.store(fr, "Properties");
         fr.close();
         System.out.println("After saving properties: " + p);

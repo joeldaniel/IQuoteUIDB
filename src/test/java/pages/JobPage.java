@@ -44,7 +44,7 @@ public class JobPage extends Testbase{
             CommonFunctions.waitForPageLoad(driver);
             //CommonFunctions.ClickElement(driver, By.xpath(Locators.getProperty(Locators.PartialJob)));
             int val =driver.findElements(By.xpath(OR.getProperty("JobNumber_Field"))).size();
-            System.out.println(val);
+           // System.out.println(val);
             if (val>0)
             {
                   System.out.println("Navigation to Job Page Successfull");
@@ -106,6 +106,10 @@ public class JobPage extends Testbase{
       public static void searchJobWithEstimateNumber (String eEstimateNumber)throws Exception
       {
     	  Thread.sleep(15000);
+    	  driver.findElement(By.xpath("//label[@class='inline-img renderer']")).click();
+    	  Thread.sleep(2000);
+    	  driver.findElement(By.xpath("//span[text()='Script Filter']")).click();
+    	  Thread.sleep(2000);
     	  CommonFunctions.ClickElement(driver, By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input"));
 			driver.findElement(By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input")).sendKeys(eEstimateNumber);
 			driver.findElement(By.xpath("//i[text()='Estimate > ']//ancestor::header//following-sibling::div//input")).sendKeys(Keys.TAB);
@@ -307,7 +311,7 @@ public class JobPage extends Testbase{
 		CommonFunctions.waitForPageLoad(driver);
         //CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Job_ProcessGroup_Label")), 180);
 		int val =driver.findElements(By.xpath("//header[text()='Plan']")).size();
-		System.out.println(val);
+		//System.out.println(val);
 		if (val>0)
 		{
 			System.out.println("Navigation to Job Planning Page Successfull");
@@ -323,7 +327,7 @@ public class JobPage extends Testbase{
 		Estimate=Estimate.replace(",", "");
 		//CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Component']"));
 		//label[text()='Component']//ancestor::div[@class='grid__box']//span[@class='cell__sort--a']
-		String ExcelPath="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+		String ExcelPath=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
 		ReadAndUpdate RU = new ReadAndUpdate();
 		int val =driver.findElements(By.xpath("//label[text()='Component']//ancestor::div[@class='grid__box']//span[@class='cell__sort--a']")).size();
 		//System.out.println(val);
@@ -363,6 +367,9 @@ public class JobPage extends Testbase{
 		for(int row=0;row<=rowCount;row++) {
 			for(int col=0;col<=colCount;col++) {
 				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+				WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
+		        //This will scroll the page till the element is found		
+		        js.executeScript("arguments[0].scrollIntoView();", Element);
 				String innerHtml="";
 				try{
 					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
@@ -387,10 +394,10 @@ public class JobPage extends Testbase{
 			//	RU.UpdateFunction(SheetName, "Planning", scenario+Integer.toString(row), colNames[col], value);
 				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
 				//Move ScrollBar to Starting Position after all Columns
-				if(col==colCount) {
+				/*if(col==colCount) {
 					js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
 					Thread.sleep(1000);
-				}
+				}*/
 			}
 
 		}
@@ -403,7 +410,7 @@ public class JobPage extends Testbase{
 	public static void PushMaterialData(String Estimate,String Sheetname) throws Exception {
 		
 		Estimate=Estimate.replace(",", "");
-		String ExcelPath="C:\\Joel\\SeleniumProjects\\IQuoteUIDB\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
+		String ExcelPath=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
 		ReadAndUpdate RU = new ReadAndUpdate();
 		String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
 		List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
@@ -431,8 +438,11 @@ public class JobPage extends Testbase{
 			for(int col=0;col<=colCount;col++) {
               
 				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
-			     CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
-			     driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
+				WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
+		        //This will scroll the page till the element is found		
+		        js.executeScript("arguments[0].scrollIntoView();", Element);
+			     //CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
+			     //driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
 			     
 				String innerHtml="";
 				try{
@@ -460,10 +470,10 @@ public class JobPage extends Testbase{
 				//RU.UpdateFunction(Sheetname, "Material", scenario_+Integer.toString(row), colNames[col], value);
 				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
 				//Move ScrollBar to Starting Position after all Columns
-				if(row==rowCount) {
+				/*if(row==rowCount) {
 					js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
 					Thread.sleep(1000);
-				}
+				}*/
 			}
 
 		}
@@ -784,7 +794,7 @@ public class JobPage extends Testbase{
           CommonFunctions.waitForPageLoad(driver);
           CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Synchronization Status']"), 180);
           int val =driver.findElements(By.xpath("//label[text()='Synchronization Status']")).size();
-          System.out.println(val);
+          //System.out.println(val);
           if (val>0)
           {
                 System.out.println("Navigation to Job General Page Successfull");
@@ -868,12 +878,12 @@ public class JobPage extends Testbase{
 
 	            }
 
-	            System.out.println(" ");
+	            //System.out.println(" ");
 	        }
 
 	        file1.close();
 
-	        System.out.println("-----------------------------------");
+	       // System.out.println("-----------------------------------");
 	        // For retrive the second excel data
 	        while (rowIterator2.hasNext()) {
 	            Row row1 = rowIterator2.next();
@@ -887,7 +897,7 @@ public class JobPage extends Testbase{
 
 	                // This is for read only one column from excel
 	                if (cell1.getColumnIndex() >= 0) {
-	                  System.out.println(cell1.getCellType());
+	                 // System.out.println(cell1.getCellType());
 	                    switch (cell1.getCellType()) {
 	                    
 	           
@@ -912,7 +922,7 @@ public class JobPage extends Testbase{
 	                // continue;
 	            }
 
-	            System.out.println("");
+	           // System.out.println("");
 	        }
 
 	       // System.out.println("book1.xls -- " + arr1.size());
@@ -1035,12 +1045,12 @@ public class JobPage extends Testbase{
 
 	            }
 
-	            System.out.println(" ");
+	           // System.out.println(" ");
 	        }
 
 	        file1.close();
 
-	        System.out.println("-----------------------------------");
+	        //System.out.println("-----------------------------------");
 	        // For retrive the second excel data
 	        while (rowIterator2.hasNext()) {
 	            Row row1 = rowIterator2.next();
@@ -1054,7 +1064,7 @@ public class JobPage extends Testbase{
 
 	                // This is for read only one column from excel
 	                if (cell1.getColumnIndex() >= 0) {
-	                  System.out.println(cell1.getCellType());
+	                 // System.out.println(cell1.getCellType());
 	                    switch (cell1.getCellType()) {
 	                    
 	           
@@ -1079,7 +1089,7 @@ public class JobPage extends Testbase{
 	                // continue;
 	            }
 
-	            System.out.println("");
+	            //System.out.println("");
 	        }
 
 	       // System.out.println("book1.xls -- " + arr1.size());

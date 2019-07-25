@@ -12,7 +12,7 @@ public class canbeused extends Testbase{
 	public  void checkingconfig() throws IOException {
 		
 		Config.setProperty("OriginalMarginVal", "kj");
-		saveProperties(Config);
+		saveProperties(Config,"Ds");
 		
 				
 

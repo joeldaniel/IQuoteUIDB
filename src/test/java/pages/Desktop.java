@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.aventstack.extentreports.Status;
@@ -12,9 +13,11 @@ public class Desktop extends Testbase {
 	
 	public static void NavigateToEstimatePage()throws Exception
 	{
+		test.log(Status.INFO, "Creating of Estimate Started");
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Desktop_Label")));
-
-		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Sales']")); // Click on Sales tab
+		Thread.sleep(2000);
+		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Sales']")); 
+		Thread.sleep(1000);// Click on Sales tab
 		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='IQuote']")); //Click on Iquote text
 		CommonFunctions.ClickElement(driver, By.xpath("//div[@class='drop-down']//label[text()='Estimate']"));// Click on Estimate from the dropdown
 
@@ -42,5 +45,41 @@ public class Desktop extends Testbase {
 		}
 
 		    
+	}
+
+	public  static boolean Quicksearch(String searchpage) throws Exception
+    {
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).click();
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys(searchpage);
+
+
+          driver.findElement(By.xpath("//input[@placeholder='Quick Searching']")).sendKeys(Keys.ENTER);
+          CommonFunctions.waitUntilElementisVisible(driver, (By.xpath("//label[text()='"+searchpage+"']")), 5000);
+          driver.findElement(By.xpath(("//label[text()='"+searchpage+"']"))).click();
+          CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//header[@class='program__header']//label//b[text()='"+searchpage+"']"));
+          if(driver.findElements(By.xpath("//header[@class='program__header']//label//b[text()='"+searchpage+"']")).size()>0)
+          {
+                System.out.println("Search successfully");
+                return true;
+          }
+          else
+          {
+                System.out.println("Search failed");    
+                return false;
+                
+          }
+    }
+	
+	public static boolean CloseTab(String title)
+	{
+		if(driver.findElements(By.xpath("//span[@class='app__tab__close']//preceding::span[@title='"+title+"']")).size()>0){
+			driver.findElement(By.xpath("//span[@class='app__tab__close']//preceding::span[@title='\"+title+\"']")).click();
+			return true;
+				
+		}
+		else {
+			return false;
+		}
 	}
 }

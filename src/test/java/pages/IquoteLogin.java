@@ -1,5 +1,7 @@
 package pages;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -12,7 +14,7 @@ public class IquoteLogin extends Testbase{
 	
 	public static void Login(String UserName,String Password) throws Exception {
 
-
+		
 		
         System.out.println("Login Started");
         
@@ -38,12 +40,12 @@ public class IquoteLogin extends Testbase{
 			if (CommonFunctions.isElementPresent(driver, By.xpath(OR.getProperty("Desktop_Labl"))))
 			{
 				System.out.println("Login To Iquote Successfull");
-				test.log(Status.PASS, "Login To Iquote Successfull");
+				//test.log(Status.PASS, "Login To Iquote Successfull");
 			}
 			else
 			{
 				System.out.println("Failed to Login To Iquote");
-				test.log(Status.FAIL, "Login To Iquote Successfull");
+				//test.log(Status.FAIL, "Login To Iquote Successfull");
 				
 			}
 		

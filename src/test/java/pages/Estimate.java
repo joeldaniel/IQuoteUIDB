@@ -19,6 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
@@ -121,7 +122,7 @@ public class Estimate extends Testbase{
 
 	}
 	
-	public void Qtypage(int Estimateid)
+	public void Qtypage(String Estimateid)
 	{
 		try
 		{
@@ -186,6 +187,7 @@ public class Estimate extends Testbase{
 	}
 	public static void SaveEstimate() throws Exception
 	{
+		test.log(Status.INFO, "Saving Estimate");
 		if(driver.findElements(By.xpath("//div[@class='wv']//button[2]")).size()>0)
 		{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
@@ -211,6 +213,7 @@ public class Estimate extends Testbase{
 	
 	}
 	public static void VerifyEngineering(String EstimateID) throws Exception {
+		test.log(Status.INFO, "Verifying Engineering Diagrams");
 		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("ENG.png",Actualname,(EstimateID+"ENG_Diff.png"), "No",EstimateID);
@@ -237,6 +240,7 @@ public class Estimate extends Testbase{
 			
 		}
 		
+		
 	
 	}
 	public static void VerifyNegotiation(String Actualfile,String Estimate) throws IOException {
@@ -253,10 +257,11 @@ public class Estimate extends Testbase{
 		    System.out.println("No Differences found in PDF's!");
 		}
 		HTMLF.addrow("Step 4", "Estimate Negotiation PDF Validation", file2, file1, "", status,Config.getProperty("EstimateIDs")+".html");
-		
+		test.log(Status.INFO, "Creation Of estimate ends");
 	}
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
+			test.log(Status.INFO, "Creating Option : "+Option);
 			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 		   	 Thread.sleep(1000);
@@ -279,15 +284,20 @@ public class Estimate extends Testbase{
 	}
 	public static void CalculateEstimate() throws Exception
 	{
+		test.log(Status.INFO, "Calculating Estimate");
 		//Thread.sleep(40000);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
 		WebElement ele=driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[5]"));
 		CommonFunctions.waitForElement(ele, 300);
 		CommonFunctions.waitForPageLoad(driver);
-		Thread.sleep(6000);
-	
+		Thread.sleep(3000);
+		Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//label[text()='Engineering']//parent::span"), "data-enabled", "true"));
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Engineering']")));
+		//element.click();
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Engineering_Tab")),180);
 		String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
 		System.out.println("Attribute value is :"+EngVisible);
+		
 		if(EngVisible.equalsIgnoreCase("True"))
 		{
 			System.out.println("Calculation passed");
@@ -304,7 +314,7 @@ public class Estimate extends Testbase{
 	}
 	public static Boolean NavigateToEngineeringTab()throws Exception
 	{
-		
+		CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Engineering_Tab")),180);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Engineering_Tab")));
 		CommonFunctions.waitForPageLoad(driver);
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[@class='drop-down-btn diagram__action']/img[@class='icon eng-di__tool-img']"), 180);
@@ -421,6 +431,44 @@ public class Estimate extends Testbase{
 		}
 			
 		Thread.sleep(10000);
+		
+		/*Set<String> s=new HashSet<>();
+		
+		s=driver.getWindowHandles();
+		String current=driver.getWindowHandle();
+		System.out.println(current);
+		
+		for(String o:s) {
+			if(!o.equals(current)) {
+				System.out.println(o);
+			driver.switchTo().window(o);
+			}
+		}
+		driver.findElement(By.cssSelector("paper-button.action-button")).click();
+		
+		Actions ac=new Actions(driver);
+		ac.sendKeys(Keys.TAB);
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.TAB);
+		Thread.sleep(2000);
+		ac.sendKeys("s");
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.chord(Keys.SHIFT,Keys.TAB));
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.chord(Keys.SHIFT,Keys.TAB));
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.ENTER);
+		setClipboardData(filelocation);
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.chord(Keys.CONTROL,"v"));
+		ac.sendKeys(Keys.TAB);
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.TAB);
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.TAB);
+		Thread.sleep(2000);
+		ac.sendKeys(Keys.ENTER);
+		Thread.sleep(3000);*/
 		
 		robot.keyPress(KeyEvent.VK_TAB);
 		Thread.sleep(2000);
@@ -692,7 +740,7 @@ public class Estimate extends Testbase{
 		}
 	
 	}
-	public static void AddQty(int EstimateId)
+	public static void AddQty(String EstimateId)
 	{
 		try
 		{
@@ -741,7 +789,7 @@ public class Estimate extends Testbase{
 			Assert.fail("Failed while entering Quatity in Quantity page");
 		}
 	}
-	public static void CreateNewEstimate(int EstimateId)throws Exception
+	public static void CreateNewEstimate(String EstimateId)throws Exception
 	{ 
 		try
 		{
@@ -831,8 +879,8 @@ public class Estimate extends Testbase{
 			
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Confirm")));
 			CommonFunctions.waitForPageLoad(driver);
-			//Thread.sleep(5000);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Specification']")));
+			Thread.sleep(5000);
+			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Specification']")));
 			CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[text()='Specification']"));
 			int vale =driver.findElements(By.xpath(OR.getProperty("NewEstimate_Spec"))).size();
 			if (vale>0)
@@ -857,7 +905,7 @@ public class Estimate extends Testbase{
 		}
 	}
 	
-	public static void CreateProduct_and_Components(int EstimateId) throws Exception {
+	public static void CreateProduct_and_Components(String EstimateId) throws Exception {
 		//Renaming Existing Products
 		//RenameExistingProductsandComponents();
 		ReadData val = new ReadData();
@@ -893,8 +941,8 @@ public class Estimate extends Testbase{
 	    }
 	}
 	
-	public static void CreateProduct_and_Components(int EstimateID,String IdItemOption) throws Exception {
-
+	public static void CreateProduct_and_Components(String EstimateID,String IdItemOption) throws Exception {
+		test.log(Status.INFO, "Creating Product and components");
 		//Renaming Existing Products
 		RenameExistingProductsandComponents();
 		ReadData val = new ReadData();
@@ -983,8 +1031,8 @@ public class Estimate extends Testbase{
 		
 	}
 	
-	public static void ParentChildCombination(int EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException {
-
+	public static void ParentChildCombination(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException {
+		test.log(Status.INFO, "Parent child combination");
 		Thread.sleep(5000);
 		//DeleteRenamedProductsandComponents();
 		ReadData val = new ReadData();
@@ -1021,6 +1069,7 @@ public class Estimate extends Testbase{
 							Thread.sleep(2000);
 							String Level1SelectChild="//b[text()='Composition']/ancestor::div[@class='popup__portal program__popup']/following-sibling::div//li/label[text()='"+childMap.get("ChildComponent")+"']";
 							System.out.println(Level1SelectChild);
+							Thread.sleep(2000);
 							driver.findElement(By.xpath(Level1SelectChild)).click();
 							Thread.sleep(2000);
 					
@@ -1035,10 +1084,10 @@ public class Estimate extends Testbase{
 		
 	
 	}
-	public static void AddQuantity(int EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException
+	public static void AddQuantity(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException
 	{
 		Thread.sleep(2000);
-		
+		test.log(Status.INFO, "Adding Quantity");
 		ReadData val = new ReadData();
 		try
 		{
@@ -1108,8 +1157,9 @@ public class Estimate extends Testbase{
 			
 		
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
+			System.out.println(OptionName);
 			if(!OptionName.equalsIgnoreCase("Option 1")) {
-				driver.findElement(By.xpath("//span[@class='grid__cell grid__cell--alpha grid__current gs--summarize']//span[@class='renderer'][contains(text(),'Option 1')]")).click();
+				driver.findElement(By.xpath("//span[@class='grid__cell grid__cell--alpha grid__current ']//span[@class='renderer'][contains(text(),'Option 1')]")).click();
 				Thread.sleep(5000);
 				driver.findElement(By.xpath("//input[@type='text' and @value='Option 1']")).sendKeys(OptionName+Keys.TAB);
 			}
@@ -1144,8 +1194,9 @@ public class Estimate extends Testbase{
 		}
 	
 	}
-	public static void ComponentandCharacteristics_ForPaperSpec(int EstimateId,String IdItemOption)
+	public static void ComponentandCharacteristics_ForPaperSpec(String EstimateId,String IdItemOption)
 	{
+		test.log(Status.INFO, "Adding characteristics for components");
 		Estimatepage_Characteristics EPC = new Estimatepage_Characteristics();
 		try {
 			
@@ -1168,7 +1219,7 @@ public class Estimate extends Testbase{
 				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
 				String XpathForComponent="//label[text()='"+CompDescp+"']";
-				//Thread.sleep(3000);
+				Thread.sleep(3000);
 				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(XpathForComponent)));
 				driver.findElement(By.xpath(XpathForComponent)).click();
 				//Thread.sleep(1000);
@@ -1211,6 +1262,8 @@ public class Estimate extends Testbase{
 					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
 					case "qttCModelGraphCarac.qttCPGraphRegularFormatSheet":
 					case "qttCModelGraphCarac.qttCPGraphRegularOpenFormatModels":
+					case "qttCModelGraphCarac.qttCPGraphEndSheetFormat":	
+					case "qttCModelGraphCarac.qttCPGraphRegularCoverOpenFormat":
 						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphHotStamping":
@@ -1230,12 +1283,15 @@ public class Estimate extends Testbase{
 						EPC.Charactertics_CPNote(EstimateId, IdItemOption,Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
+					case "qttCModelGraphCarac.qttCPAGraphPageProof2":
+					case "qttCModelGraphCarac.qttCPAGraphPageProof3":
 						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
 						break;
 					case "qttCModelPS.qttCPValue":
 						EPC.Charactertics_CPValue(EstimateId,IdItemOption, Comporderval, Characteristic);
 						break;
 					case "qttCModelPS.qttCPASimpleQty":
+					case "qttCModelPS.qttCPASimple":
 						EPC.Charactertics_CPASimpleQty(EstimateId,IdItemOption, Comporderval, Characteristic);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphFiber":
@@ -1245,7 +1301,7 @@ public class Estimate extends Testbase{
 						EPC.Charactertics_CPGraphPackBox(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelPS.qttCPFileList":
-						EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						//EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphLargeFormat":
 						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
@@ -1258,11 +1314,20 @@ public class Estimate extends Testbase{
 						break;
 					case "qttCModelGraphCarac.qttCPGraphUnfinishedFormat":
                         EPC.Charactertics_CPGraphUnfinishedFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
-                        break;
-                        
+                        break;                        
                   case "qttCModelGraphCarac.qttCPGraphLaminating":
                         EPC.Charactertics_CPGraphInitialLaminating(EstimateId,IdItemOption, Comporderval, Characteristic);
-                      break;
+                        break;
+                  case "qttCModelGraphCarac.qttCPGraphHardCover":
+  						EPC.Charactertics_CPGraphHardCover(EstimateId, IdItemOption,Comporderval, Characteristic) ;     
+	  					break;
+                  case "qttCModelGraphCarac.qttCPGraphMaxMultiline":
+	  					EPC.Charactertics_CPGraphMaxMultiLine(EstimateId, IdItemOption,Comporderval, Characteristic);
+	  					break;
+                  case "qttCModelGraphCarac.qttCPGraphPackagingPallet":
+  						EPC.Charactertics_CPGraphPackPallet(EstimateId,IdItemOption, Comporderval, Characteristic) ; 
+  						break;
+
                  
 
 					default:
@@ -1280,7 +1345,7 @@ public class Estimate extends Testbase{
 		}
 	}
 
-	public static void AddQtyForProductForOption(HashMap<String,HashMap<String,HashSet<Double>>> Quantities,Integer EstimateID) throws Exception {
+	public static void AddQtyForProductForOption(HashMap<String,HashMap<String,HashSet<Double>>> Quantities,String EstimateID) throws Exception {
 		ReadData name = new ReadData();
 		HashMap<String, HashMap<String, String>> CreateProductandComp = new HashMap<String, HashMap<String, String>>();
 		HashMap<String, HashMap<String, String>> ParentChildCombinationWithLinkData = new HashMap<String, HashMap<String, String>>();
@@ -1290,7 +1355,7 @@ public class Estimate extends Testbase{
 	        for (Entry<String, HashSet<Double>> entry2 : childMap.entrySet()) {
 	            String childKey = entry2.getKey();
 	            HashSet<Double> childValue = entry2.getValue();
-	            System.out.println("Sere");
+	          
 	            
 	            for (String key : Quantities.keySet()) {
 	            	System.out.println(key + "=" + Quantities.get(key));
@@ -1321,7 +1386,7 @@ public class Estimate extends Testbase{
 	        	        
 	            	}
 		        //Product and child combination
-	            	ParentChildCombination(EstimateID);
+	            	//ParentChildCombination(EstimateID);
 	            	
 	           
 	            }
@@ -1364,6 +1429,7 @@ public class Estimate extends Testbase{
 				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.TAB);*/
 				Thread.sleep(2000);
 				//driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).click();
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.HOME);
 				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Futuredate);
 				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.TAB);
 				Thread.sleep(2000);
@@ -1394,7 +1460,7 @@ public class Estimate extends Testbase{
 			System.err.println("Status Changing Pop-up page is not displayed");
 		}
 
-		Thread.sleep(3000);
+	
 		CommonFunctions.ClickElement(driver,By.xpath("//b[text()='Status changing']/ancestor::div[@class='program']/div[@class='program__window']//button[@title='Confirm']"));
 		Thread.sleep(20000);
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[@class='input-wraper status']//span[contains(text(),'In Production')]"), 120000);
