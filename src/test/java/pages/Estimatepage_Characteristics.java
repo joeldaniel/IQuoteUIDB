@@ -75,7 +75,18 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.ENTER);
 			Thread.sleep(2000);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.TAB);
-
+			
+			String pr=driver.findElement(By.xpath("//label[text()='Provided']//parent::button")).getAttribute("aria-checked");
+			if(PageProvide.equalsIgnoreCase("0")) {
+				 if(pr.equalsIgnoreCase("true")) {
+					  driver.findElement(By.xpath("//label[text()='Provided']")).click();
+				  }
+			}
+			else if(PageProvide.equalsIgnoreCase("1")) {
+				 if(pr.equalsIgnoreCase("false")) {
+					  driver.findElement(By.xpath("//label[text()='Provided']")).click();
+				  }
+			}
 			Thread.sleep(3000);
 			driver.findElement(By.xpath("//label[text()='"+CharacTypeDesc+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button")).click();
 
@@ -1267,4 +1278,168 @@ public class Estimatepage_Characteristics extends Testbase {
 		Thread.sleep(2000);
 	
 	}
+	public void Charactertics_CPGraphPrintType(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+
+		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
+		CharCPGraphPrintType=name.CPGraphPrintType(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+
+
+		String CPGraphPrintTypePrintingProcess=CharCPGraphPrintType.get("PrintingProcess");
+        System.out.println("Printing Process Value is :- "+CPGraphPrintTypePrintingProcess);  
+
+		String XpathWitCPGraphPrintTypePrintingProcess="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Printing process']/parent::span/span[@class='ltv__itemcont ltv_']/span/label ";
+
+
+		// for Printing Process
+		CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphPrintTypePrintingProcess, CPGraphPrintTypePrintingProcess);
+
+
+	
+	}
+public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+		
+		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
+		CharCPGraphPrintType=name.CPGraphPackagingStrapping(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+
+
+		String UnitsInTheStrap=CharCPGraphPrintType.get("UnitsInTheStrap");
+		String Material=CharCPGraphPrintType.get("Material");
+		String Application=CharCPGraphPrintType.get("Application");
+		String Note=CharCPGraphPrintType.get("Note");
+		if(!UnitsInTheStrap.isEmpty()) {
+			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).clear();
+			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).click();
+			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).sendKeys(UnitsInTheStrap);
+		}
+		if(!Material.isEmpty()) {
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).clear();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).click();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).sendKeys(Material);
+		}
+		if(!Application.isEmpty()) {
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).clear();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).click();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).sendKeys(Application);
+		}
+		if(!Note.isEmpty()) {
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).clear();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).click();
+			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).sendKeys(Note);
+		}
+         
+		
+
+	}
+public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+
+	HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat= new HashMap<String, HashMap<String, String>>();
+	CharCPGraphGIrregFormat=name.CPGraphGIrregFormat(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+	List<String> ListIrregFormat = new ArrayList<String>(CharCPGraphGIrregFormat.keySet());
+
+	if(!(ListIrregFormat.size()==0))
+	{  
+		for (String valIrregFormat:ListIrregFormat)
+		{
+
+			String IrregFormatClosedWidth = CharCPGraphGIrregFormat.get(valIrregFormat).get("ClosedWidth");
+			String IrregFormatClosedHeight = CharCPGraphGIrregFormat.get(valIrregFormat).get("ClosedHeight");
+			String IrregFormatOpenedWidth = CharCPGraphGIrregFormat.get(valIrregFormat).get("OpenedWidth");
+			String IrregFormatOpenedHeight = CharCPGraphGIrregFormat.get(valIrregFormat).get("OpenedHeight");
+			String IrregFormatDieApportionment = CharCPGraphGIrregFormat.get(valIrregFormat).get("DieApportionment");
+			String IrregFormatKnifeCode = CharCPGraphGIrregFormat.get(valIrregFormat).get("KnifeCode");
+			String IrregFormatEditDie = CharCPGraphGIrregFormat.get(valIrregFormat).get("EditDie");
+			String IrregFormatSizeWidth = CharCPGraphGIrregFormat.get(valIrregFormat).get("SizeWidth");
+			String IrregFormatSizeHeight = CharCPGraphGIrregFormat.get(valIrregFormat).get("SizeHeight");
+			String IrregFormatNumberUp = CharCPGraphGIrregFormat.get(valIrregFormat).get("NumberUp");
+			String IrregFormatDieCutterLength = CharCPGraphGIrregFormat.get(valIrregFormat).get("DieCutterLength");
+			String IrregFormatFixedDieLength = CharCPGraphGIrregFormat.get(valIrregFormat).get("FixedDieLength");
+			String IrregFormatDifficulty = CharCPGraphGIrregFormat.get(valIrregFormat).get("Difficulty");
+			String IrregFormatUtilization = CharCPGraphGIrregFormat.get(valIrregFormat).get("Utilization");
+			String IrregFormatDoNotChargeForDie = CharCPGraphGIrregFormat.get(valIrregFormat).get("DoNotChargeForDie");
+			String IrregFormatInverted = CharCPGraphGIrregFormat.get(valIrregFormat).get("Inverted");
+			String IrregFormatFixNumberUp = CharCPGraphGIrregFormat.get(valIrregFormat).get("FixNumberUp");
+			String IrregFormatHasADifferentSlot = CharCPGraphGIrregFormat.get(valIrregFormat).get("HasADifferentSlot");
+			String IrregFormatAutoGenerated = CharCPGraphGIrregFormat.get(valIrregFormat).get("AutoGenerated");
+			String IrregFormatNotes = CharCPGraphGIrregFormat.get(valIrregFormat).get("Notes");
+			String IrregFormatDieSizeWidth = CharCPGraphGIrregFormat.get(valIrregFormat).get("DieSizeWidth");
+			String IrregFormatDieSizeHeight = CharCPGraphGIrregFormat.get(valIrregFormat).get("DieSizeHeight");
+			String IrregFormatOriginalNumberUp = CharCPGraphGIrregFormat.get(valIrregFormat).get("OriginalNumberUp");
+			String IrregFormatOriginalDieLength = CharCPGraphGIrregFormat.get(valIrregFormat).get("OriginalDieLength");
+
+			String ValueforClosedwh=IrregFormatClosedWidth+" x "+IrregFormatClosedHeight;
+			String ValueforFlatwh=IrregFormatOpenedWidth+" x "+IrregFormatOpenedHeight;
+			String ValueforSize=IrregFormatSizeWidth+" x "+IrregFormatSizeHeight;
+
+			String xpathForClosedWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Closed (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
+			String xpathForFlatWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Flat (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
+			String xpathForQuantityIntheDieLayout="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Quantity in the die layout']/parent::span[@class='ltv__item ltv_']/following-sibling::span/input";
+			String xpathForDieApportionment="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Die Apportionment']/parent::span//input";
+
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForClosedWh, ValueforClosedwh);
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForFlatWh, ValueforFlatwh);
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForDieApportionment, IrregFormatDieApportionment);
+
+			driver.findElement(By.xpath("//label[text()='Fit options']/parent::button")).click();
+
+			if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
+			{
+				System.out.println("Fit Option Window is displayed");
+				driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
+				if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
+				{
+					System.out.println("New Window is displayed");
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Die cutter length (m)']/parent::span/span//input", IrregFormatDieCutterLength);
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Utilization']/parent::span/span//input", IrregFormatUtilization);
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Knife code']/parent::span/span//input", IrregFormatKnifeCode);
+					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Notes']/parent::span/span//input", IrregFormatNotes);
+					CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Difficulty']/parent::span/span//input", IrregFormatDifficulty);
+					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Inverted']", IrregFormatInverted);
+					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
+					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
+					driver.findElement(By.xpath("//button[@title='Confirm']")).click();
+					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label/b[text()='New']"), 10000);
+				}
+				else
+				{
+					System.err.println("New Window is not displayed Please Investigate"); 
+				}
+				//Selecting Newly added Coloum
+				Thread.sleep(5000);
+				int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
+				String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
+				//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
+				
+				int AllRowCount= Integer.parseInt(DataColum);
+				 System.out.println("Total Coloum :- "+DataColum);
+			     System.out.println("Irregular Format Deleting unwanted Rows");
+				for(int Rowcountval=0;Rowcountval<AllRowCount;Rowcountval++)
+				{
+					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"), 180);
+					CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"));
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
+					Thread.sleep(2000);	
+				}
+				
+//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
+//				Thread.sleep(2000);
+				driver.findElement(By.xpath("//button[@title='OK']")).click();   
+				CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 1000);
+			}
+			else
+			{
+				System.err.println("Fit Option Window is not displayed please investigate");
+			}
+
+		}
+
+	}
+
+
+
+}
 }

@@ -1,5 +1,9 @@
 package pages;
 
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,25 +23,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import com.aventstack.extentreports.Status;
 
-import base.DBUtil;
 import base.Testbase;
 import de.redsix.pdfcompare.PdfComparator;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
-import utilities.ScreenShot;
-
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent; 
+import utilities.ScreenShot; 
 
 public class Estimate extends Testbase{
 	
@@ -267,13 +263,25 @@ public class Estimate extends Testbase{
 		   	 Thread.sleep(1000);
 		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Option')]")));
 		   	 driver.findElement(By.xpath("//li[contains(text(),'New Option')]")).click();
-		   	 Estimate.Navigate_to_ProductTab();
-		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
+		   	 Thread.sleep(5000);
+		   	 //Estimate.Navigate_to_ProductTab();
+		 	if (driver.findElements(By.xpath("//nav[@class='wizard__nav']//span[2]")).size()>0) {
+		   		driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[2]")).click();
+		   	}
+		 	else {
+		 		System.out.println("object not clicked to go to second option");
+		 	}
+		    Thread.sleep(1000);
+		   	// wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
 		   	 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-		   	 Thread.sleep(1000);
-		   	 System.out.println("//li[contains(text(),'Option "+(Option-1)+"')]//following::li"+0+"");
-		   	driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).click();
+		   	driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+		   	 Thread.sleep(2000);
+		   	 System.out.println("//li[contains(text(),'Option "+(Option)+"')]//following::li"+1+"");
+		   	driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).click();
 		   	System.out.println("Option : "+Option);
+		   	//Navigate to product screen
+		    Thread.sleep(1000);
+		   
 			
 		}
 		else {
@@ -430,7 +438,8 @@ public class Estimate extends Testbase{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
 		}
 			
-		Thread.sleep(10000);
+
+				Thread.sleep(5000);
 		
 		/*Set<String> s=new HashSet<>();
 		
@@ -549,7 +558,7 @@ public class Estimate extends Testbase{
 			    		}
 			    		else
 			    		{
-			    			System.err.println("Hyperlink Charecteristic not found :- "+getSelectOption);
+			    			System.out.println("Hyperlink Charecteristic not found :- "+getSelectOption);
 			    		}
 			    	}	    	
 			    }
@@ -881,7 +890,8 @@ public class Estimate extends Testbase{
 			CommonFunctions.waitForPageLoad(driver);
 			Thread.sleep(5000);
 			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Specification']")));
-			CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[text()='Specification']"));
+			//CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[text()='Specification']"));
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Specification']")));
 			int vale =driver.findElements(By.xpath(OR.getProperty("NewEstimate_Spec"))).size();
 			if (vale>0)
 			{
@@ -957,7 +967,7 @@ public class Estimate extends Testbase{
 	        Map<String, String> childMap = entry.getValue();
 	        if(childMap.get("ComponentTypeDesc") != null)
 	        {
-
+	        	WebElement el=wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@title='Add Component']")));
 				driver.findElement(By.xpath("//span[@title='Add Component']")).click();
 				Thread.sleep(5000);
 				String xpathforComp="//ul[@class='select ']//span[@class='renderer inline-img' and text()='"+childMap.get("ComponentTypeDesc")+"']";
@@ -1158,10 +1168,10 @@ public class Estimate extends Testbase{
 		
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
 			System.out.println(OptionName);
-			if(!OptionName.equalsIgnoreCase("Option 1")) {
-				driver.findElement(By.xpath("//span[@class='grid__cell grid__cell--alpha grid__current ']//span[@class='renderer'][contains(text(),'Option 1')]")).click();
+			if(!OptionName.equalsIgnoreCase("Option")) {
+				driver.findElement(By.xpath("//span[starts-with(@class,'grid__cell grid__cell--alpha')]//span[@class='renderer'][contains(text(),'Option')]")).click();
 				Thread.sleep(5000);
-				driver.findElement(By.xpath("//input[@type='text' and @value='Option 1']")).sendKeys(OptionName+Keys.TAB);
+				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
 			}
 			
 			
@@ -1327,8 +1337,15 @@ public class Estimate extends Testbase{
                   case "qttCModelGraphCarac.qttCPGraphPackagingPallet":
   						EPC.Charactertics_CPGraphPackPallet(EstimateId,IdItemOption, Comporderval, Characteristic) ; 
   						break;
-
-                 
+                  case "qttCModelGraphCarac.qttCPGraphPrintType":	
+  					EPC.Charactertics_CPGraphPrintType(EstimateId,IdItemOption, Comporderval, Characteristic);
+  					break;
+                  case "qttCModelGraphCarac.qttCPGraphPackagingStrapping":
+                	 EPC.Charactertics_CPGraphPackagingStrapping(EstimateId,IdItemOption, Comporderval, Characteristic);
+                	  break;
+                  case "qttCModelGraphCarac.qttCPGraphGIrregFormat":
+  					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
+  					break;
 
 					default:
 						System.out.println("Characteristic that is not present :- "+FixedCharDescp);

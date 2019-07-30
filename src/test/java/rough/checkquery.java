@@ -25,10 +25,10 @@ public class checkquery  {
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		fis = new FileInputStream(
-				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPFileList.properties");
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPackagingStrapping.properties");
 		Query.load(fis);
 		fis = new FileInputStream(
-				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Config.properties");
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
 		Config.load(fis);
 		HashMap<Integer, HashMap<String, String>> EstQTYPage = new HashMap<Integer, HashMap<String, String>>();
 		

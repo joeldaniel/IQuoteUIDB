@@ -32,8 +32,11 @@ public class ReadData extends Testbase{
 	public static HashMap<String, HashMap<String, String>> EstDetailsPaperFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
+	public static HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat = new HashMap<String, HashMap<String, String>>();
+	public static HashMap<String, String> CharCPGraphPrintType	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphHardCover	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphPackBox	 = new HashMap<String, String>();
+	public static HashMap<String, String> CPGraphPackagingStrapping      = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPFileList	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphCollection = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphBleed      = new HashMap<String, String>();
@@ -200,7 +203,7 @@ public class ReadData extends Testbase{
 				HashMap<String, String> EstProductCreation = new HashMap<String, String>();
 
 				String OptionDescp=rs.getString("OptionDescription");
-				//String QtyDescp=rs.getString("QtyDescription");
+				//String IdPSCmp=rs.getString("IdPSCmp");
 				String CompDescp=rs.getString("ComponentDescription");
 				String CompOrder=rs.getString("ComponentOrder");
 				String CompTypeDescp=rs.getString("ComponentTypeDesc");
@@ -211,7 +214,7 @@ public class ReadData extends Testbase{
 				EstProductCreation.put("ComponentFinal", CompFinal != null ? CompFinal : "");
 				EstProductCreation.put("ComponentOrder", CompOrder != null ? CompOrder : "");
 				EstProductCreation.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
-				//EstProductCreation.put("QtyDescription", QtyDescp != null ? QtyDescp : "");
+				//EstProductCreation.put("IdPSCmp", IdPSCmp != null ? IdPSCmp : "");
 
 				EStCreateproductComp.put(CompOrder, EstProductCreation);
 
@@ -1607,7 +1610,199 @@ public class ReadData extends Testbase{
 			}
 			return CharCPGraphPackPallet;
 	}
-	
+	public HashMap<String, String> CPGraphPrintType(String Estimateid, String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphPrintType.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPrintType.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+
+				String CPGraphPrintTypePrintingProcess=rs.getString("PrintingProcess");
+
+
+				CharCPGraphPrintType.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphPrintType.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphPrintType.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphPrintType.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphPrintType.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphPrintType.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphPrintType.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+
+				CharCPGraphPrintType.put("PrintingProcess", CPGraphPrintTypePrintingProcess != null ? CPGraphPrintTypePrintingProcess : "");
+
+			
+			}
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphPrintType;
+	}
+
+	public HashMap<String, String> CPGraphPackagingStrapping(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	{
+		CPGraphPackagingStrapping.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPackagingStrapping.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+				String UnitsInTheStrap=rs.getString("UnitsInTheStrap");
+				String Material=rs.getString("Material");
+				String Application=rs.getString("Application");
+				String Note=rs.getString("Note");
+				CPGraphPackagingStrapping.put("UnitsInTheStrap", UnitsInTheStrap != null ? UnitsInTheStrap : "");
+				CPGraphPackagingStrapping.put("Material", Material != null ? Material : "");
+				CPGraphPackagingStrapping.put("Application", Application != null ? Application : "");
+				CPGraphPackagingStrapping.put("Note", Note != null ? Note : "");
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CPGraphPackagingStrapping;
+	}
+	public HashMap<String, HashMap<String, String>> CPGraphGIrregFormat(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPGraphGIrregFormat.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphGIrregFormat.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			HashMap<String, String> CharCharacteristicCPGraphGIrregFormat=new HashMap<String,String>();
+			int valkey=1;
+			while(rs.next())
+			{
+
+				//	String Quantity=rs.getString("Qty");
+
+
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CPvalueidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGraphGIrregFormatClosedWidth=rs.getString("ClosedWidth");
+				String CPGraphGIrregFormatClosedHeight=rs.getString("ClosedHeight");
+				String CPGraphGIrregFormatOpenedWidth=rs.getString("OpenedWidth");
+				String CPGraphGIrregFormatOpenedHeight=rs.getString("OpenedHeight");
+				String CPGraphGIrregFormatDieApportionment=rs.getString("DieApportionment");
+				String CPGraphGIrregFormatKnifeCode=rs.getString("KnifeCode");
+				String CPGraphGIrregFormatEditDie=rs.getString("EditDie");
+				String CPGraphGIrregFormatSizeWidth=rs.getString("SizeWidth");
+				String CPGraphGIrregFormatSizeHeight=rs.getString("SizeHeight");
+				String CPGraphGIrregFormatNumberUp=rs.getString("NumberUp");
+				String CPGraphGIrregFormatDieCutterLength=rs.getString("DieCutterLength");
+				String CPGraphGIrregFormatFixedDieLength=rs.getString("FixedDieLength");
+				String CPGraphGIrregFormatDifficulty=rs.getString("Difficulty");
+				String CPGraphGIrregFormatUtilization=rs.getString("Utilization");
+				String CPGraphGIrregFormatDoNotChargeForDie=rs.getString("DoNotChargeForDie");
+				String CPGraphGIrregFormatInverted=rs.getString("Inverted");
+				String CPGraphGIrregFormatFixNumberUp=rs.getString("FixNumberUp");
+				String CPGraphGIrregFormatHasADifferentSlot=rs.getString("HasADifferentSlot");
+				String CPGraphGIrregFormatAutoGenerated=rs.getString("AutoGenerated");
+				String CPGraphGIrregFormatNotes=rs.getString("Notes");
+				String CPGraphGIrregFormatDieSizeWidth=rs.getString("DieSizeWidth");
+				String CPGraphGIrregFormatDieSizeHeight=rs.getString("DieSizeHeight");
+				String CPGraphGIrregFormatOriginalNumberUp=rs.getString("OriginalNumberUp");
+				String CPGraphGIrregFormatOriginalDieLength=rs.getString("OriginalDieLength");
+
+
+
+
+				CharCharacteristicCPGraphGIrregFormat.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("idPSCmpCarac", CPvalueidPSCmpCarac != null ? CPvalueidPSCmpCarac : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ClosedWidth", CPGraphGIrregFormatClosedWidth != null ? CPGraphGIrregFormatClosedWidth : "");
+				CharCharacteristicCPGraphGIrregFormat.put("ClosedHeight", CPGraphGIrregFormatClosedHeight != null ? CPGraphGIrregFormatClosedHeight : "");
+				CharCharacteristicCPGraphGIrregFormat.put("OpenedWidth", CPGraphGIrregFormatOpenedWidth != null ? CPGraphGIrregFormatOpenedWidth : "");
+				CharCharacteristicCPGraphGIrregFormat.put("OpenedHeight", CPGraphGIrregFormatOpenedHeight != null ? CPGraphGIrregFormatOpenedHeight : "");
+				CharCharacteristicCPGraphGIrregFormat.put("DieApportionment", CPGraphGIrregFormatDieApportionment != null ? CPGraphGIrregFormatDieApportionment : "");
+				CharCharacteristicCPGraphGIrregFormat.put("KnifeCode", CPGraphGIrregFormatKnifeCode != null ? CPGraphGIrregFormatKnifeCode : "");
+				CharCharacteristicCPGraphGIrregFormat.put("EditDie", CPGraphGIrregFormatEditDie != null ? CPGraphGIrregFormatEditDie : "");
+				CharCharacteristicCPGraphGIrregFormat.put("SizeWidth", CPGraphGIrregFormatSizeWidth != null ? CPGraphGIrregFormatSizeWidth : "");
+				CharCharacteristicCPGraphGIrregFormat.put("SizeHeight", CPGraphGIrregFormatSizeHeight != null ? CPGraphGIrregFormatSizeHeight : "");
+				CharCharacteristicCPGraphGIrregFormat.put("NumberUp", CPGraphGIrregFormatNumberUp != null ? CPGraphGIrregFormatNumberUp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("DieCutterLength", CPGraphGIrregFormatDieCutterLength != null ? CPGraphGIrregFormatDieCutterLength : "");
+				CharCharacteristicCPGraphGIrregFormat.put("FixedDieLength", CPGraphGIrregFormatFixedDieLength != null ? CPGraphGIrregFormatFixedDieLength : "");
+				CharCharacteristicCPGraphGIrregFormat.put("Difficulty", CPGraphGIrregFormatDifficulty != null ? CPGraphGIrregFormatDifficulty : "");
+				CharCharacteristicCPGraphGIrregFormat.put("Utilization", CPGraphGIrregFormatUtilization != null ? CPGraphGIrregFormatUtilization : "");
+				CharCharacteristicCPGraphGIrregFormat.put("DoNotChargeForDie", CPGraphGIrregFormatDoNotChargeForDie != null ? CPGraphGIrregFormatDoNotChargeForDie : "");
+				CharCharacteristicCPGraphGIrregFormat.put("Inverted", CPGraphGIrregFormatInverted != null ? CPGraphGIrregFormatInverted : "");
+				CharCharacteristicCPGraphGIrregFormat.put("FixNumberUp", CPGraphGIrregFormatFixNumberUp != null ? CPGraphGIrregFormatFixNumberUp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("HasADifferentSlot", CPGraphGIrregFormatHasADifferentSlot != null ? CPGraphGIrregFormatHasADifferentSlot : "");
+				CharCharacteristicCPGraphGIrregFormat.put("AutoGenerated", CPGraphGIrregFormatAutoGenerated != null ? CPGraphGIrregFormatAutoGenerated : "");
+				CharCharacteristicCPGraphGIrregFormat.put("Notes", CPGraphGIrregFormatNotes != null ? CPGraphGIrregFormatNotes : "");
+				CharCharacteristicCPGraphGIrregFormat.put("DieSizeWidth", CPGraphGIrregFormatDieSizeWidth != null ? CPGraphGIrregFormatDieSizeWidth : "");
+				CharCharacteristicCPGraphGIrregFormat.put("DieSizeHeight", CPGraphGIrregFormatDieSizeHeight != null ? CPGraphGIrregFormatDieSizeHeight : "");
+				CharCharacteristicCPGraphGIrregFormat.put("OriginalNumberUp", CPGraphGIrregFormatOriginalNumberUp != null ? CPGraphGIrregFormatOriginalNumberUp : "");
+				CharCharacteristicCPGraphGIrregFormat.put("OriginalDieLength", CPGraphGIrregFormatOriginalDieLength != null ? CPGraphGIrregFormatOriginalDieLength : "");
+
+
+				CharCPGraphGIrregFormat.put(valkey+"", CharCharacteristicCPGraphGIrregFormat);
+				++valkey;
+				//System.out.println(Collections.singletonList(EstDetailsQty));
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphGIrregFormat;
+	}
+
 	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{
 		CharCPGraphBleed.clear();
