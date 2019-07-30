@@ -1980,6 +1980,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
+	
 		return CharCPASimpleQty;
 	}
 	public HashMap<String, String> CPGraphFiber(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
@@ -2076,6 +2077,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
+		
 		return CharCPGraphPackBox;
 		
 	}

@@ -507,6 +507,7 @@ public class Estimate extends Testbase{
          Thread.sleep(2000);
          robot.keyPress(KeyEvent.VK_TAB);
          Thread.sleep(2000);
+         
          robot.keyPress(KeyEvent.VK_TAB);
          robot.keyRelease(KeyEvent.VK_TAB);
          Thread.sleep(2000);
