@@ -275,19 +275,19 @@ public class CommonFunctions extends Testbase {
 		Thread.sleep(2000);
 		
 		String Selectedval= driver.findElement(By.xpath(XpathForLocator)).getText();
-		if (Selectedval.equals(Fieldvalue))
+		if (Selectedval.contains(Fieldvalue))
 		{
 			System.out.println("Correct value is selected from dropdown");
 		}
 		else
 		{
-			System.err.println("Correct value is not selected from dropdown please investigate");
+			System.out.println("Correct value is not selected from dropdown please investigate");
 		}
 	
 	}
 	public static void Iquote_SelectFromDropdown_Text(WebDriver driver, String XpathForLocator, String Fieldvalue) throws Exception
     {
-		
+		driver.findElement(By.xpath(XpathForLocator)).click();
          driver.findElement(By.xpath(XpathForLocator)).clear();
          driver.findElement(By.xpath(XpathForLocator)).click();
          driver.findElement(By.xpath(XpathForLocator)).sendKeys(Fieldvalue);

@@ -93,7 +93,8 @@ public class Estimatepage_Characteristics extends Testbase {
 			if (driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
 			{   CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input"), 180);
 				System.out.println("Details page is displayed");
-				driver.findElement(By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input")).sendKeys("");
+				String SFFinishedFormat=PageFormatWidth+" x "+PageFormatHeight;
+				driver.findElement(By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 				driver.findElement(By.xpath("//label[text()='Grain Direction']/parent::span//span[@class='ltv__itemcont ltv_']/span[@class='input-wraper simple-lookup2']")).click();
 
 				if (PageGrainDirection!=null || PageGrainDirection!="")
@@ -1330,7 +1331,8 @@ public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String I
 		
 
 	}
-public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+{
 
 	HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat= new HashMap<String, HashMap<String, String>>();
 	CharCPGraphGIrregFormat=name.CPGraphGIrregFormat(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -1381,65 +1383,158 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 
 			driver.findElement(By.xpath("//label[text()='Fit options']/parent::button")).click();
 
-			if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
-			{
-				System.out.println("Fit Option Window is displayed");
-				driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
-				if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
+				if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
 				{
-					System.out.println("New Window is displayed");
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Die cutter length (m)']/parent::span/span//input", IrregFormatDieCutterLength);
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Utilization']/parent::span/span//input", IrregFormatUtilization);
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Knife code']/parent::span/span//input", IrregFormatKnifeCode);
-					CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Notes']/parent::span/span//input", IrregFormatNotes);
-					CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Difficulty']/parent::span/span//input", IrregFormatDifficulty);
-					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Inverted']", IrregFormatInverted);
-					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
-					CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
-					driver.findElement(By.xpath("//button[@title='Confirm']")).click();
-					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label/b[text()='New']"), 10000);
+					System.out.println("Fit Option Window is displayed");
+					driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
+					if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
+					{
+						System.out.println("New Window is displayed");
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Die cutter length (m)']/parent::span/span//input", IrregFormatDieCutterLength);
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Utilization']/parent::span/span//input", IrregFormatUtilization);
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Knife code']/parent::span/span//input", IrregFormatKnifeCode);
+						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Notes']/parent::span/span//input", IrregFormatNotes);
+						CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Difficulty']/parent::span/span//input", IrregFormatDifficulty);
+						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Inverted']", IrregFormatInverted);
+						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
+						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
+						driver.findElement(By.xpath("//button[@title='Confirm']")).click();
+						CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label/b[text()='New']"), 10000);
+					}
+					else
+					{
+						System.err.println("New Window is not displayed Please Investigate"); 
+					}
+					//Selecting Newly added Coloum
+					Thread.sleep(5000);
+					int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
+					String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
+					//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
+					
+					int AllRowCount= Integer.parseInt(DataColum);
+					 System.out.println("Total Coloum :- "+DataColum);
+				     System.out.println("Irregular Format Deleting unwanted Rows");
+					for(int Rowcountval=0;Rowcountval<AllRowCount;Rowcountval++)
+					{
+						CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"), 180);
+						CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"));
+						Thread.sleep(2000);
+						driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']")).click();
+						Thread.sleep(2000);
+						driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
+						Thread.sleep(2000);	
+					}
+					
+	//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
+	//				Thread.sleep(2000);
+					driver.findElement(By.xpath("//button[@title='OK']")).click();   
+					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 1000);
 				}
 				else
 				{
-					System.err.println("New Window is not displayed Please Investigate"); 
+					System.err.println("Fit Option Window is not displayed please investigate");
 				}
-				//Selecting Newly added Coloum
-				Thread.sleep(5000);
-				int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
-				String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
-				//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
-				
-				int AllRowCount= Integer.parseInt(DataColum);
-				 System.out.println("Total Coloum :- "+DataColum);
-			     System.out.println("Irregular Format Deleting unwanted Rows");
-				for(int Rowcountval=0;Rowcountval<AllRowCount;Rowcountval++)
-				{
-					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"), 180);
-					CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"));
-					Thread.sleep(2000);
-					driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']")).click();
-					Thread.sleep(2000);
-					driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
-					Thread.sleep(2000);	
-				}
-				
-//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
-//				Thread.sleep(2000);
-				driver.findElement(By.xpath("//button[@title='OK']")).click();   
-				CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 1000);
-			}
-			else
-			{
-				System.err.println("Fit Option Window is not displayed please investigate");
+
 			}
 
 		}
-
+	
 	}
+	public void Charactertics_CPGraphLabelFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
+
+		HashMap<String, String> CharCPGraphLabelFormat = new HashMap<String, String>();
+		CharCPGraphLabelFormat=name.CPGraphLabelFormat(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
 
 
+		String CPGraphLabelFormatLabelType=CharCPGraphLabelFormat.get("LabelType");
+		String CPGraphLabelFormatDeliverytype=CharCPGraphLabelFormat.get("Deliverytype");
+		String CPGraphLabelFormatFormatWidth=CharCPGraphLabelFormat.get("FormatWidth");
+		String CPGraphLabelFormatFormatHeight=CharCPGraphLabelFormat.get("FormatHeight");
+		String CPGraphLabelFormatColumns=CharCPGraphLabelFormat.get("Columns");
+		String CPGraphLabelFormatGapacross=CharCPGraphLabelFormat.get("Gapacross");
+		String CPGraphLabelFormatGapDown=CharCPGraphLabelFormat.get("GapDown");
+		String CPGraphLabelFormatKisscut=CharCPGraphLabelFormat.get("Kisscut");
+		String CPGraphLabelFormatspecialdiecut=CharCPGraphLabelFormat.get("SpecialDiecut");
+		String CPGraphLabelFormatTrimmargin=CharCPGraphLabelFormat.get("Trimmargin");
+		
+		double width=Math.round(Double.parseDouble(CPGraphLabelFormatFormatWidth));
+		double height=Math.round(Double.parseDouble(CPGraphLabelFormatFormatHeight));
+		String PageWHval=width+" x "+height;	
 
-}
+		String XpathWitCPGraphLabelFormatSize="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Format (WxH)']/parent::span//span/input";
+		String XpathWitCPGraphLabelFormatColumn = "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Columns']/parent::span/span/input";	
+		String XpathWitCPGraphLabelFormatGapacross= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap across']/parent::span/span/input";
+		String XpathWitCPGraphLabelFormatGapDown= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap down']/parent::span/span/input";	
+		String XpathWitCPGraphLabelFormatKisscut =" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Kiss cut']";
+		String XpathforSpecialdiecutting=" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Special die cutting']";
+		String XpathforTrimmargin=" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Trim margin']";
+		String XpathWitCPGraphLabelFormatLabelType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Label Type']/parent::span//input";
+		String XpathWitCPGraphLabelFormatDeliverytype ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Delivery type']/parent::span//input";
+		
+		//for LabelType
+		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatLabelType, CPGraphLabelFormatLabelType);
+		driver.findElement(By.xpath("(//label[text()='Label Type']//following::span[1]//span//.)[3]")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatLabelType+"']")).click();
+		
+		
+		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatDeliverytype, CPGraphLabelFormatDeliverytype);
+		//driver.findElement(By.xpath("(//label[text()='Delivery type']//following::span[1]//span//.)[3]")).click();
+		//Thread.sleep(2000);
+		//driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatDeliverytype+"']")).click();
+		
+		// for Format Size
+		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(Keys.CONTROL+"a"+Keys.DELETE);
+		Thread.sleep(1000);
+		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(PageWHval+Keys.TAB);
+		Thread.sleep(2000);
+		// for Column
+		if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatColumn)).size()>0) {
+			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(Keys.DELETE);
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(CPGraphLabelFormatColumns+Keys.TAB);
+		}
+		
+		Thread.sleep(2000);
+		// for GapAcross
+		if(driver.findElements(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).size()>0) {
+			driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).clear(); 
+			driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapacross+Keys.TAB);
+			Thread.sleep(2000);
+		}
+		// for GapDown
+		if(driver.findElements(By.xpath("//label[text()='Gap down']//following::span[1]//input")).size()>0) {
+			driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).clear(); 
+			driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapDown+Keys.TAB+Keys.TAB);
+		}
+		Thread.sleep(2000);
+		if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatKisscut)).size()>0)
+			CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphLabelFormatKisscut, CPGraphLabelFormatKisscut);
+		if(driver.findElements(By.xpath(XpathforSpecialdiecutting)).size()>0)
+			CommonFunctions.Iquote_SelectCheckbox(driver, XpathforSpecialdiecutting, CPGraphLabelFormatspecialdiecut);
+		if(driver.findElements(By.xpath(XpathforTrimmargin)).size()>0)
+			CommonFunctions.Iquote_SelectCheckbox(driver, XpathforTrimmargin, CPGraphLabelFormatTrimmargin);
+		
+	 			 			 
+	
+	}
+	public void Charactertics_CPGenericCPOption(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
+
+		HashMap<String, String> CharCPGenericCPOption = new HashMap<String, String>();
+		CharCPGenericCPOption=name.CPGenericCPOption(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+		String CpGenericvalue=CharCPGenericCPOption.get("Description");
+
+		String XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
+		driver.findElement(By.xpath(XpathForComponent)).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(XpathForComponent)).sendKeys(CpGenericvalue+Keys.ENTER);
+
+	
+	}
 }

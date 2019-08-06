@@ -1,5 +1,7 @@
 package pages;
 
+import java.io.File;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -81,5 +83,18 @@ public class Desktop extends Testbase {
 		else {
 			return false;
 		}
+	}
+	public static boolean deletefilesinfolder(String directoryname) {
+		File directory = new File(directoryname);
+		File[] files = directory.listFiles();
+		for(File file:files) {
+			if(!file.delete()) {
+				return false;
+				
+			}
+			
+		}
+		return true;
+		
 	}
 }

@@ -2,10 +2,12 @@ package testcases;
 
 
 
+import java.io.File;
 import java.util.HashSet;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
@@ -28,6 +30,9 @@ public class CreateEstimate extends Testbase {
 	
 	@BeforeTest
 	public void launchbrowser() throws Exception {
+		Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
+		Thread.sleep(2000);
+		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");
 		if (Config.getProperty("browser").equals("chrome")) {
 
 			System.setProperty("webdriver.chrome.driver",
@@ -49,6 +54,7 @@ public class CreateEstimate extends Testbase {
 		
 		test = extent.createTest("createestimate for : "+value);
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
+		
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
 		int Optionnum=1;
 		String newest="";
@@ -57,6 +63,7 @@ public class CreateEstimate extends Testbase {
 		System.out.println("Base Est : " +value);
 		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
+		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
 		
 		Desktop.NavigateToEstimatePage();
 		
@@ -122,6 +129,7 @@ public class CreateEstimate extends Testbase {
 		}else {
 			System.out.println("Fail");
 		}
+		Optionqty=0;
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
 		System.out.println("HTML File generated path is :- "+HTMLfilepath);
 		
@@ -134,7 +142,7 @@ public class CreateEstimate extends Testbase {
 	}
 	@AfterTest
 	public void closebrowser() {
-		//driver.close();
+		driver.close();
 	}
 	
 }

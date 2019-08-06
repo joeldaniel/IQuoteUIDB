@@ -41,6 +41,7 @@ public class Estimate extends Testbase{
 	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	static ReadData val = new ReadData();
 	
+	
 	public static void ClickonNewEstimate()throws Exception
 	{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_Estimatepage_Dropdown")));
@@ -210,6 +211,7 @@ public class Estimate extends Testbase{
 	}
 	public static void VerifyEngineering(String EstimateID) throws Exception {
 		test.log(Status.INFO, "Verifying Engineering Diagrams");
+		
 		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("ENG.png",Actualname,(EstimateID+"ENG_Diff.png"), "No",EstimateID);
@@ -293,6 +295,7 @@ public class Estimate extends Testbase{
 	public static void CalculateEstimate() throws Exception
 	{
 		test.log(Status.INFO, "Calculating Estimate");
+		System.out.println("Calculating Estimate");
 		//Thread.sleep(40000);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
 		WebElement ele=driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[5]"));
@@ -573,7 +576,8 @@ public class Estimate extends Testbase{
 		{
 			String DefaultCharXpath="//span[@class='ltv__item ltv_']/div[@class='list']/div[@class='list__item']["+i+"]/header[@class='layout-header']/span[contains(@class,'input-wraper islookup--header ')]//label";
 			String Characterval= driver.findElement(By.xpath(DefaultCharXpath)).getText();
-			CharacteristicsList.add(Characterval);
+			//if(!Characterval.contains("Number of versions"))
+				CharacteristicsList.add(Characterval);
 		}
 
 		//For Checked Characteristics
@@ -602,7 +606,7 @@ public class Estimate extends Testbase{
 
 			}
 
-
+			
 			if (RemoveCharacteristicsList.size()>0)
 			{
 				//Removing the character by Unchecking Checkbox
@@ -642,7 +646,8 @@ public class Estimate extends Testbase{
 		{
 			String DefaultCharXpath="//span[@class='ltv__item ltv_']/div[@class='list']/div[@class='list__item']["+i+"]/header[@class='layout-header']/span[contains(@class,'input-wraper islookup--header ')]//label";
 			String Characterval= driver.findElement(By.xpath(DefaultCharXpath)).getText();
-			CharacteristicsList.add(Characterval);
+			//if(!Characterval.contains("Number of versions"))
+				CharacteristicsList.add(Characterval);
 		}
       
 		//For Checked Characteristics
@@ -984,13 +989,20 @@ public class Estimate extends Testbase{
 				Thread.sleep(3000);
 				driver.findElement(By.xpath(xpathval)).click(); 
 				Thread.sleep(2000);
+				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), "To be renamed");
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), childMap.get("ComponentDescription"));
+				
+				
 				Thread.sleep(3000);
 	        }
 	        
 	    }
 		
 		DeleteRenamedProductsandComponents();
+	}
+	private static Object Ucase(String attribute) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	public static void ParentChildCombination(int EstimateId) throws ClassNotFoundException, IOException, SQLException, InterruptedException {
 		Thread.sleep(5000);
@@ -1100,6 +1112,7 @@ public class Estimate extends Testbase{
 		Thread.sleep(2000);
 		test.log(Status.INFO, "Adding Quantity");
 		ReadData val = new ReadData();
+		
 		try
 		{
 			ArrayList<String> Name=new ArrayList<>();
@@ -1170,9 +1183,10 @@ public class Estimate extends Testbase{
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
 			System.out.println(OptionName);
 			if(!OptionName.equalsIgnoreCase("Option")) {
-				driver.findElement(By.xpath("//span[starts-with(@class,'grid__cell grid__cell--alpha')]//span[@class='renderer'][contains(text(),'Option')]")).click();
+				driver.findElement(By.xpath("//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+Optionqty+"/0']//span[contains(text(),'Option')]")).click();
 				Thread.sleep(5000);
 				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
+				Optionqty+=1;
 			}
 			
 			
@@ -1347,9 +1361,15 @@ public class Estimate extends Testbase{
                   case "qttCModelGraphCarac.qttCPGraphGIrregFormat":
   					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
   					break;
+                  case "qttCModelGraphCarac.qttCPGraphLabelFormat":
+  					EPC.Charactertics_CPGraphLabelFormat(EstimateId, IdItemOption,Comporderval, Characteristic);
+  					break;
+                  case "qttCModelPS.qttCPGenericCPOption":
+  					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
+  					break;
 
 					default:
-						System.out.println("Characteristic that is not present :- "+FixedCharDescp);
+						System.out.println("Characteristic that is not present : "+FixedCharDescp);
 						
 					}
 

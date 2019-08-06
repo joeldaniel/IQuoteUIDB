@@ -39,6 +39,7 @@ public class Testbase {
     public static ExtentTest test;
     public static String browser;
     public static Actions actions;
+    public static int Optionqty=0;
    
     protected static DBUtil iqdb = new DBUtil();
 	
@@ -156,12 +157,13 @@ public class Testbase {
             test.log(Status.SKIP, MarkupHelper.createLabel(result.getName()+" Test Case SKIPPED", ExtentColor.ORANGE));
             test.skip(result.getThrowable());
         }
+       
     }
 	
 	@AfterSuite
 	public void tearDown() throws SQLException {
 		
-		  //driver.quit();
+		  driver.quit();
 		  iqdb.Closeconnection();
 		 extent.flush();
 		

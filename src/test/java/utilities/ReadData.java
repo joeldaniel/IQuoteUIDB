@@ -35,7 +35,9 @@ public class ReadData extends Testbase{
 	public static HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CharCPGraphPrintType	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphHardCover	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGenericCPOption	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphPackBox	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphLabelFormat	 = new HashMap<String, String>();
 	public static HashMap<String, String> CPGraphPackagingStrapping      = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPFileList	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphCollection = new HashMap<String, String>();
@@ -1802,6 +1804,122 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphGIrregFormat;
 	}
+	public HashMap<String, String> CPGraphLabelFormat(String Estimateid,String IdItemOption,String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGraphLabelFormat.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphLabelFormat.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				//	String OptionDescp=rs.getString("OptionDescription");
+					String CompFinal=rs.getString("ComponentFinal");
+					String CompOrder=rs.getString("ComponentOrder");
+					String CompDescp=rs.getString("ComponentDescription");
+					String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				//	String CharDescp=rs.getString("CharacteristicDesc");
+				//	String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+					String CPGraphLabelFormatLabelType=rs.getString("LabelType");
+					String CPGraphLabelFormatDeliverytype=rs.getString("Deliverytype");
+					String CPGraphLabelFormatFormatWidth=rs.getString("FormatWidth");
+					String CPGraphLabelFormatFormatHeight=rs.getString("FormatHeight");
+					String CPGraphLabelFormatColumns=rs.getString("Columns");
+					String CPGraphLabelFormatGapacross=rs.getString("Gapacross");
+					String CPGraphLabelFormatGapDown=rs.getString("GapDown");
+					String CPGraphLabelFormatKisscut=rs.getString("Kisscut");
+					String CPGraphLabelFormatSpecialDiecutting=rs.getString("Specialdiecutting");
+					String CPGraphLabelFormatTrimmargin=rs.getString("Trimmargin");
+						
+											
+				
+				//	CharCPGraphLabelFormat.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+					CharCPGraphLabelFormat.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+					CharCPGraphLabelFormat.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+					CharCPGraphLabelFormat.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+					CharCPGraphLabelFormat.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				//	CharCPGraphLabelFormat.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				//	CharCPGraphLabelFormat.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+					CharCPGraphLabelFormat.put("LabelType", CPGraphLabelFormatLabelType != null ? CPGraphLabelFormatLabelType : "");
+					CharCPGraphLabelFormat.put("Deliverytype", CPGraphLabelFormatDeliverytype != null ? CPGraphLabelFormatDeliverytype : "");
+					CharCPGraphLabelFormat.put("FormatWidth", CPGraphLabelFormatFormatWidth != null ? CPGraphLabelFormatFormatWidth : "");
+					CharCPGraphLabelFormat.put("FormatHeight", CPGraphLabelFormatFormatHeight != null ? CPGraphLabelFormatFormatHeight : "");
+					CharCPGraphLabelFormat.put("Columns", CPGraphLabelFormatColumns != null ? CPGraphLabelFormatColumns : "");
+					CharCPGraphLabelFormat.put("Gapacross", CPGraphLabelFormatGapacross != null ? CPGraphLabelFormatGapacross : "");
+					CharCPGraphLabelFormat.put("GapDown", CPGraphLabelFormatGapDown != null ? CPGraphLabelFormatGapDown : "");
+					CharCPGraphLabelFormat.put("Kisscut", CPGraphLabelFormatKisscut != null ? CPGraphLabelFormatKisscut : "");
+					CharCPGraphLabelFormat.put("SpecialDiecut", CPGraphLabelFormatSpecialDiecutting != null ? CPGraphLabelFormatSpecialDiecutting : "");
+					CharCPGraphLabelFormat.put("Trimmargin", CPGraphLabelFormatTrimmargin != null ? CPGraphLabelFormatTrimmargin : "");
+				
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphLabelFormat;
+	}
+	public HashMap<String, String> CPGenericCPOption(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGenericCPOption.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGenericCPOption.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+		// opening database connection to MySQL serv
+		
+		
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CPvalueidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String GPoPtionDescp=rs.getString("Description");
+
+
+
+				CharCPGenericCPOption.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGenericCPOption.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGenericCPOption.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGenericCPOption.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGenericCPOption.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGenericCPOption.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGenericCPOption.put("idPSCmpCarac", CPvalueidPSCmpCarac != null ? CPvalueidPSCmpCarac : "");
+				CharCPGenericCPOption.put("Description", GPoPtionDescp != null ? GPoPtionDescp : "");
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGenericCPOption;
+	}
+	
 
 	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{

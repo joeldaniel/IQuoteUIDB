@@ -1155,7 +1155,7 @@ public class JobPage extends Testbase{
     }
     public static void VerifyJobEngineering(String Estimate) throws Exception {
     	Estimate=Estimate.replace(",", "");
-		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='program']//div[@class='eng-di__cont']"), "Job_ENG", "",Estimate);
+		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "Job_ENG", "",Estimate);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("Job_ENG.png",Actualname,(Estimate+"Job_ENG_Diff.png"), "No",Estimate);
 			System.out.println("Image Comparision of Quantity Diagram : "+Status);
