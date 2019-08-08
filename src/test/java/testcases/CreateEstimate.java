@@ -44,7 +44,7 @@ public class CreateEstimate extends Testbase {
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
 					TimeUnit.SECONDS);
-			 wait = new WebDriverWait(driver, 180);
+			 wait = new WebDriverWait(driver, 300);
 			 IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		}
 	}
@@ -59,7 +59,7 @@ public class CreateEstimate extends Testbase {
 		int Optionnum=1;
 		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
-		String filename="NEG_"+value;
+		String filename="NEG"+value;
 		System.out.println("Base Est : " +value);
 		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
@@ -142,7 +142,7 @@ public class CreateEstimate extends Testbase {
 	}
 	@AfterTest
 	public void closebrowser() {
-		driver.close();
+		//driver.close();
 	}
 	
 }

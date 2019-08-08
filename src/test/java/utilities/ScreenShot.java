@@ -35,7 +35,8 @@ public class ScreenShot extends Testbase {
     {
           JavascriptExecutor JSE = (JavascriptExecutor) driver;
           DateFormat dateFormat = new SimpleDateFormat("hhmmssaa");
-          String Filenameval= ScreenshotName+"_"+ dateFormat.format(new Date())+".png";
+          //String Filenameval= ScreenshotName+"_"+ dateFormat.format(new Date())+".png";
+          String Filenameval= ScreenshotName+".png";
           String NewFileNamePath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Filenameval;
           
           WebElement element = driver.findElement(locator);

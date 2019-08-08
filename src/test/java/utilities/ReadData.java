@@ -34,6 +34,8 @@ public class ReadData extends Testbase{
 	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CharCPGraphPrintType	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGraphDieCut	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPAOptionQty	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphHardCover	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGenericCPOption	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphPackBox	 = new HashMap<String, String>();
@@ -569,7 +571,7 @@ public class ReadData extends Testbase{
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphBindStitch.properties");
 		Query.load(fis);
-		System.out.println("To remove");
+		
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		
@@ -1920,6 +1922,122 @@ public class ReadData extends Testbase{
 		return CharCPGenericCPOption;
 	}
 	
+	public HashMap<String, String> CPAOptionQty(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPAOptionQty.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPAOptionQty.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+				
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+
+				String CPAOptionQtyOptionDesc=rs.getString("OptionDesc");
+				String CPAOptionQtyNote=rs.getString("Note");
+				String CPAOptionQtyQuantity=rs.getString("Quantity");
+
+										
+			
+				CharCPAOptionQty.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPAOptionQty.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPAOptionQty.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPAOptionQty.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPAOptionQty.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPAOptionQty.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPAOptionQty.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+
+				CharCPAOptionQty.put("OptionDesc", CPAOptionQtyOptionDesc != null ? CPAOptionQtyOptionDesc : "");
+				CharCPAOptionQty.put("Note", CPAOptionQtyNote != null ? CPAOptionQtyNote : "");
+				CharCPAOptionQty.put("Quantity", CPAOptionQtyQuantity != null ? CPAOptionQtyQuantity : "");
+
+			
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPAOptionQty;
+		
+	}
+	public HashMap<String, String> CPGraphDieCut(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, SQLException, IOException
+	{
+		CharCPGraphDieCut.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphDieCut.properties");
+		Query.load(fis);
+
+		String Query1=Query.getProperty("Query");
+				
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPWithWasteStripping=rs.getString("WithWasteStripping");
+				String CPNeedtrimming=rs.getString("Needtrimming");
+				String CPIsKnifeFormatInformed=rs.getString("IsKnifeFormatInformed");
+				String CPWExistingDie=rs.getString("ExistingDie");
+				String CPInformedcuttinglength=rs.getString("Informedcuttinglength");
+				String CPDifficulty=rs.getString("Difficulty");
+				String CPNotes=rs.getString("Notes");
+
+
+
+
+
+				CharCPGraphDieCut.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGraphDieCut.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGraphDieCut.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGraphDieCut.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGraphDieCut.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGraphDieCut.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGraphDieCut.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPGraphDieCut.put("WithWasteStripping", CPWithWasteStripping != null ? CPWithWasteStripping : "");
+				CharCPGraphDieCut.put("Needtrimming", CPNeedtrimming != null ? CPNeedtrimming : "");
+				CharCPGraphDieCut.put("IsKnifeFormatInformed", CPIsKnifeFormatInformed != null ? CPIsKnifeFormatInformed : "");
+				CharCPGraphDieCut.put("ExistingDie", CPWExistingDie != null ? CPWExistingDie : "");
+				CharCPGraphDieCut.put("Informedcuttinglength", CPInformedcuttinglength != null ? CPInformedcuttinglength : "");
+				CharCPGraphDieCut.put("Difficulty", CPDifficulty != null ? CPDifficulty : "");
+				CharCPGraphDieCut.put("Notes", CPNotes != null ? CPNotes : "");
+
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphDieCut;
+		
+		
+	}
 
 	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{
@@ -1929,9 +2047,7 @@ public class ReadData extends Testbase{
 		Query.load(fis);
 		
 		String Query1=Query.getProperty("Query");
-		// opening database connection to MySQL serv
-		
-		
+				
 		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
 		
 		try

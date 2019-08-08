@@ -413,7 +413,8 @@ public class Estimate extends Testbase{
 	public static String NegotiaionAndPrint(String filename,String Estimate) throws Exception
 	{
 		DateFormat dateFormat = new SimpleDateFormat("hhmmssaa");
-		filename= filename+"_"+ dateFormat.format(new Date())+".pdf";
+		//filename= filename+"_"+ dateFormat.format(new Date())+".pdf";
+		filename= filename+".pdf";
 		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+filename;
 		System.out.println(filelocation);
 		Robot robot = new Robot();
@@ -1366,6 +1367,12 @@ public class Estimate extends Testbase{
   					break;
                   case "qttCModelPS.qttCPGenericCPOption":
   					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
+  					break;
+                  case "qttCModelPS.qttCPAOptionQty":
+  					EPC.Charactertics_CPAOptionQty(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					break;
+                  case "qttCModelGraphCarac.qttCPGraphDieCut":
+  					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
   					break;
 
 					default:
