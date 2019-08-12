@@ -44,6 +44,8 @@ public class ReadData extends Testbase{
 	public static HashMap<String, String> CharCPFileList	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphCollection = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphBleed      = new HashMap<String, String>();
+    
+    public static HashMap<String, String> CharCPGraphWireOBind      = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphPackPallet	 = new HashMap<String, String>();
     public static HashMap<String, String> CharCPGraphInitialLaminating      = new HashMap<String, String>();
     
@@ -347,7 +349,7 @@ public class ReadData extends Testbase{
 		ResultSet rs;
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL serv
-		System.out.println("fwe");
+		
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
@@ -2038,7 +2040,46 @@ public class ReadData extends Testbase{
 		
 		
 	}
-
+	public HashMap<String, String> CPGraphWireOBind(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
+	{
+		CharCPGraphWireOBind.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphWireOBind.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+				
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+				String Position=rs.getString("Position");
+				String Color=rs.getString("Color");
+				String WithHanger=rs.getString("WithHanger");
+				String Note=rs.getString("Note");
+				String ProductRingsQuantity=rs.getString("ProductRingsQuantity");
+				String SeperationBetweenRings=rs.getString("SeperationBetweenRings");
+				String InchesOfWireO=rs.getString("InchesOfWireO");
+				
+				CharCPGraphWireOBind.put("Position", Position != null ? Position : "");
+				CharCPGraphWireOBind.put("Color", Color != null ? Color : "");
+				CharCPGraphWireOBind.put("WithHanger", WithHanger != null ? WithHanger : "");
+				CharCPGraphWireOBind.put("Note", Note != null ? Note : "");
+				CharCPGraphWireOBind.put("ProductRingsQuantity", ProductRingsQuantity != null ? ProductRingsQuantity : "");
+				CharCPGraphWireOBind.put("SeperationBetweenRings", SeperationBetweenRings != null ? SeperationBetweenRings : "");
+				CharCPGraphWireOBind.put("InchesOfWireO", InchesOfWireO != null ? InchesOfWireO : "");
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGraphWireOBind;
+	}
+	
 	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{
 		CharCPGraphBleed.clear();
@@ -2386,10 +2427,11 @@ public class ReadData extends Testbase{
 
 				String FinishedFormatWidth=rs.getString("FinishedFormatWidth");
 				String FinishedFormatHeight=rs.getString("FinishedFormatHeight");
-				String PrintingDirection=rs.getString("PrintingDirection");
+				//String PrintingDirection=rs.getString("PrintingDirection");
 				String Note=rs.getString("Note");
 				String Margins=rs.getString("Margins");
 				String IrregularFit=rs.getString("IrregularFit");
+				String IrregularFitCB=rs.getString("IrregularFitCB");
 				String TopMargin=rs.getString("TopMargin");
 				String BottomMargin=rs.getString("BottomMargin");
 				String LeftMargin=rs.getString("LeftMargin");
@@ -2400,18 +2442,19 @@ public class ReadData extends Testbase{
 				String RightBleed=rs.getString("RightBleed");
 				String Splicing=rs.getString("Splicing");
 				String SplicingBleed=rs.getString("SplicingBleed");
-				String LayoutWidht=rs.getString("LayoutWidht");
+				/*String LayoutWidht=rs.getString("LayoutWidht");
 				String LayoutHeight=rs.getString("LayoutHeight");
 				String Utilization=rs.getString("Utilization");
-				String Numberup=rs.getString("Numberup");
+				String Numberup=rs.getString("Numberup");*/
 				
 				
 				CharCPGraphLargeFormat.put("FinishedFormatWidth", FinishedFormatWidth != null ? FinishedFormatWidth : "");
 				CharCPGraphLargeFormat.put("FinishedFormatHeight", FinishedFormatHeight != null ? FinishedFormatHeight : "");
-				CharCPGraphLargeFormat.put("PrintingDirection", PrintingDirection != null ? PrintingDirection : "");
+				//CharCPGraphLargeFormat.put("PrintingDirection", PrintingDirection != null ? PrintingDirection : "");
 				CharCPGraphLargeFormat.put("Note", Note != null ? Note : "");
 				CharCPGraphLargeFormat.put("Margins", Margins != null ? Margins : "");
 				CharCPGraphLargeFormat.put("IrregularFit", IrregularFit != null ? IrregularFit : "");
+				CharCPGraphLargeFormat.put("IrregularFitCB", IrregularFitCB != null ? IrregularFitCB : "");
 				CharCPGraphLargeFormat.put("TopMargin", TopMargin != null ? TopMargin : "");
 				CharCPGraphLargeFormat.put("BottomMargin", BottomMargin != null ? BottomMargin : "");
 				CharCPGraphLargeFormat.put("RightMargin", RightMargin != null ? RightMargin : "");
@@ -2422,10 +2465,10 @@ public class ReadData extends Testbase{
 				CharCPGraphLargeFormat.put("RightBleed", RightBleed != null ? RightBleed : "");
 				CharCPGraphLargeFormat.put("Splicing", Splicing != null ? Splicing : "");
 				CharCPGraphLargeFormat.put("SplicingBleed", SplicingBleed != null ? SplicingBleed : "");
-				CharCPGraphLargeFormat.put("LayoutWidht", LayoutWidht != null ? LayoutWidht : "");
+				/*CharCPGraphLargeFormat.put("LayoutWidht", LayoutWidht != null ? LayoutWidht : "");
 				CharCPGraphLargeFormat.put("LayoutHeight", LayoutHeight != null ? LayoutHeight : "");
 				CharCPGraphLargeFormat.put("Utilization", Utilization != null ? Utilization : "");
-				CharCPGraphLargeFormat.put("Numberup", Numberup != null ? Numberup : "");
+				CharCPGraphLargeFormat.put("Numberup", Numberup != null ? Numberup : "");*/
 				
 			}
 			

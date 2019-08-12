@@ -142,7 +142,7 @@ public class CreateEstimate extends Testbase {
 	}
 	@AfterTest
 	public void closebrowser() {
-		//driver.close();
+		driver.close();
 	}
 	
 }

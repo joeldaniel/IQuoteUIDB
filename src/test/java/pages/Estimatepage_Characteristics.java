@@ -919,6 +919,8 @@ public class Estimatepage_Characteristics extends Testbase {
 		String Note=CPGraphLargeFormat.get("Note");
 		String Margins=CPGraphLargeFormat.get("Margins");
 		String IrregularFit=CPGraphLargeFormat.get("IrregularFit");
+		String IrregularFitCB=CPGraphLargeFormat.get("IrregularFitCB");
+		
 		String TopMargin=CPGraphLargeFormat.get("TopMargin");
 		String BottomMargin=CPGraphLargeFormat.get("BottomMargin");
 		String LeftMargin=CPGraphLargeFormat.get("LeftMargin");
@@ -933,7 +935,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		String LayoutHeight=CPGraphLargeFormat.get("LayoutHeight");
 		String Utilization=CPGraphLargeFormat.get("Utilization");
 		String Numberup=CPGraphLargeFormat.get("Numberup");
-		
+		System.out.println("re");
 		if(FinishedFormatWidth!=null && FinishedFormatHeight!=null) {
 			String SFFinishedFormat=FinishedFormatWidth+" x "+FinishedFormatHeight;
 			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).clear();
@@ -946,7 +948,8 @@ public class Estimatepage_Characteristics extends Testbase {
 			Select dropDownObject = new Select(driver.findElement(By.xpath("//label[text()='Printing Direction']//following::span[@class='input-wraper simple-lookup2']")));
 			dropDownObject.selectByValue(PrintingDirection);
 		}
-		if(Integer.parseInt(Splicing)!=0 && Integer.parseInt(SplicingBleed)!=0) {
+		
+		if(Float.valueOf(Splicing).floatValue()!=0.0 && Float.valueOf(SplicingBleed).floatValue()!=0.0) {
 			driver.findElement(By.xpath("//label[text()='Splicing']")).click();
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Splicing']//following-sibling::span/input")).sendKeys(Splicing+Keys.TAB);
@@ -955,6 +958,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//button[@title='OK']")).click();
 		}
+		
 		WebElement ele=driver.findElement(By.xpath("//label[text()='Margins']//parent::button"));
 		String option=ele.getAttribute("aria-checked");
 		if(Margins.equals("1")) {
@@ -973,7 +977,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		WebElement ele1=driver.findElement(By.xpath("//label[text()='Irregular Fit']//parent::button"));
 		String option1=ele1.getAttribute("aria-checked");
 		String Layoutformat=LayoutWidht+" x "+LayoutHeight;
-		if(Margins.equals("1")) {
+		if(IrregularFitCB.equals("1")) {
 			if(option1.equalsIgnoreCase("true")) {
 				driver.findElement(By.xpath("//label[text()='Layout format (WxH)']/../span/div/span/input")).sendKeys(Layoutformat+Keys.TAB);
 				Thread.sleep(2000);
@@ -983,7 +987,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			}else {
 				ele1.click();
 			}
-		}else if(Margins.equals("0")){
+		}else if(IrregularFitCB.equals("0")){
 			if(option1.equalsIgnoreCase("true")) {
 				ele1.click();
 			}else {
@@ -1691,4 +1695,74 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		}
 	
 	}
+	
+	public void Charactertics_CPGraphWireOBind(String Estimateid, String IdItemOption, String Comporderval,String CharteristicDescp) throws Exception
+	{
+
+		HashMap<String, String> CharCPGraphWireOBind = new HashMap<String, String>();
+		CharCPGraphWireOBind=name.CPGraphWireOBind(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+
+
+		String CPGraphWireOBindPosition=CharCPGraphWireOBind.get("Position");
+		String CPGraphWireOBindColor=CharCPGraphWireOBind.get("Color");
+		String CPGraphWireOBindWithHanger=CharCPGraphWireOBind.get("WithHanger");
+		String CPGraphWireOBindNote=CharCPGraphWireOBind.get("Note");
+		String CPGraphWireOBindProductRingsQuantity=CharCPGraphWireOBind.get("ProductRingsQuantity");
+		String CPGraphWireOBindSeperationBetweenRings=CharCPGraphWireOBind.get("SeperationBetweenRings");
+		String CPGraphWireOBindInchesOfWireO=CharCPGraphWireOBind.get("InchesOfWireO");
+
+
+		String XpathWitCPGraphWireOBindPosition="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Position']/parent::span/span[@class='ltv__itemcont ltv_']/span/label ";
+		String XpathWitCPGraphWireOBindColor ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Color']/parent::span/span/span/input";
+		String XpathWitCPGraphWireOBindWithHanger ="//label[text()='Wire-o Binding']/..//ancestor::div[@class='list__item']//label[text()='With hanger']";
+		String XpathWitCPGraphWireOBindNote = "//label[text()='Wire-o Binding']/..//ancestor::div[@class='list__item']//label[text()='Note']/..//textarea";	
+		String XpathWitCPGraphWireOBindDetails="//label[text()='Wire-o Binding']/..//ancestor::div[@class='list__item']//label[text()='Details']/.//parent::button";
+		String XpathWitCPGraphWireOBindProductRings ="//label[text()='Product rings quantity']/..//input";
+		String XpathWitCPGraphWireOBindSeperationBetweenRings= "//label[text()='Separation between Rings']/..//span[@class='input-wraper simple-lookup2']";
+		String XpathWitCPGraphWireOBindInchesOfWireO= "//label[text()='Inches of Wire-O']/..//span[@class='input-wraper islookup']";
+
+		// for Position
+		CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindPosition, CPGraphWireOBindPosition); 
+
+		// for color
+		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphWireOBindColor, CPGraphWireOBindColor);
+
+		//for with Hanger
+		CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphWireOBindWithHanger, CPGraphWireOBindWithHanger);
+
+		// for Note
+		driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).clear(); 
+		driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).sendKeys(CPGraphWireOBindNote+Keys.TAB);
+
+		// for Details
+		driver.findElement(By.xpath(XpathWitCPGraphWireOBindDetails)).click();
+		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+		{
+			System.out.println("Details page is displayed");
+
+			//products rings quantity
+			driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).sendKeys(CPGraphWireOBindProductRingsQuantity+Keys.TAB);
+
+			//Separation between rings
+			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindSeperationBetweenRings, CPGraphWireOBindSeperationBetweenRings); 
+
+			// for inches of wire
+			//CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindInchesOfWireO, CPGraphWireOBindInchesOfWireO);
+			if(!CPGraphWireOBindInchesOfWireO.isEmpty()) {
+				driver.findElement(By.xpath(XpathWitCPGraphWireOBindInchesOfWireO)).sendKeys(CPGraphWireOBindInchesOfWireO+Keys.TAB);
+			}
+			Thread.sleep(2000);
+
+			//click on ok button
+			driver.findElement(By.xpath("//button[@title='OK']")).click();
+		}
+		else
+		{
+			System.err.println("Details page is not displayed. Please check");
+		}
+
+	
+	}
+	
 }

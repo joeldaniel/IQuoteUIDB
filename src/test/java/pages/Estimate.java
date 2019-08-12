@@ -1183,20 +1183,39 @@ public class Estimate extends Testbase{
 		
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
 			System.out.println(OptionName);
-			if(!OptionName.equalsIgnoreCase("Option")) {
+			/*if(!OptionName.equalsIgnoreCase("Option")) {
 				driver.findElement(By.xpath("//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+Optionqty+"/0']//span[contains(text(),'Option')]")).click();
 				Thread.sleep(5000);
 				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
 				Optionqty+=1;
-			}
+			}*/
 			
+			List <WebElement> options = driver.findElements(By.xpath("//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span"));
+			int size=options.size();
+			String xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)["+size+"]";
+			/*for(WebElement option:options) {
+				if(option.getAttribute("textContent")!=null)  {
+					if(option.getAttribute("textContent").contains("Option")) {
+						option.click();
+						Thread.sleep(5000);
+						option.sendKeys(OptionName+Keys.TAB);
+						break;
+						
+					}
+					
+				}
+			}*/
+			driver.findElement(By.xpath(xpath)).click();
+			Thread.sleep(5000);
+			driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
 			
 			//write save and handle the exception
 			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title=' ']")));
 			Thread.sleep(5000);
 			if(driver.findElements(By.xpath("//button[@class='lkv' and @title=' ']")).size()>0){
 				driver.findElement(By.xpath("//button[@class='lkv' and @title=' ']")).click();
-				Thread.sleep(2000);
+				//Thread.sleep(10000);
+				Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//button[@class='lkv' and @title=' ']"), "disabled", "true"));
 				if(driver.findElements(By.xpath("//button[@class='lkv' and @title='OK']")).size()>0){
 					Thread.sleep(2000);
 					driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
@@ -1205,7 +1224,7 @@ public class Estimate extends Testbase{
 				}
 			}
 			else {
-				System.out.println("Save is not enable to click to overcome the freeze issu");
+				System.out.println("Save is not enable to click to overcome the freeze issue");
 			}
 			
 			
@@ -1333,7 +1352,7 @@ public class Estimate extends Testbase{
 						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphGiantCoupling":
-						EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						//EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBleed":
 						EPC.Charactertics_CPGraphBleed(EstimateId,IdItemOption, Comporderval, Characteristic) ;
@@ -1373,6 +1392,9 @@ public class Estimate extends Testbase{
   					break;
                   case "qttCModelGraphCarac.qttCPGraphDieCut":
   					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					break;
+                  case "qttCModelGraphCarac.qttCPGraphWireOBind":
+  					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
   					break;
 
 					default:
