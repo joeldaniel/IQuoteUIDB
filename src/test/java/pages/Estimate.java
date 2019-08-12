@@ -481,7 +481,7 @@ public class Estimate extends Testbase{
 
 		}
 		Thread.sleep(3000);
-		CommonFunctions.SetOriginalWindowHandle(driver);
+		//CommonFunctions.SetOriginalWindowHandle(driver);
 		if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Default')]")).size()>0) {
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
 		}
@@ -494,7 +494,7 @@ public class Estimate extends Testbase{
 		}
 			
 
-				Thread.sleep(5000);
+				Thread.sleep(20000);
 		
 		/*Set<String> s=new HashSet<>();
 		
