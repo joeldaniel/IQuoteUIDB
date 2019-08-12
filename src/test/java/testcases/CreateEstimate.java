@@ -64,7 +64,7 @@ public class CreateEstimate extends Testbase {
 		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
 		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
-		
+		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Difference\\");
 		Desktop.NavigateToEstimatePage();
 		
 		
