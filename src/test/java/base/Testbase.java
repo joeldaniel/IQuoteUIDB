@@ -167,7 +167,7 @@ public class Testbase {
 	@AfterSuite
 	public void tearDown() throws SQLException {
 		
-		  driver.quit();
+		  //driver.quit();
 		  iqdb.Closeconnection();
 		 extent.flush();
 		
