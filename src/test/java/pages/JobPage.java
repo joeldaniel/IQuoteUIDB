@@ -1173,8 +1173,8 @@ public class JobPage extends Testbase{
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 		}*/
     	WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
-		
-		Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
+    	Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
+		//Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png"));
 		
 		BufferedImage actualImage = screenshot.getImage();
