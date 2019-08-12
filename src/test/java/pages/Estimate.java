@@ -244,13 +244,14 @@ public class Estimate extends Testbase{
        
         if(diff.hasDiff()==true)
         {
+    	 BufferedImage diffImage = diff.getDiffImage();
+         ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png"));
          System.out.println("ENG Images are Not Same");
         }
         else {
-        	 BufferedImage diffImage = diff.getMarkedImage();
-             ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png"));
+        	
              System.out.println("ENG Images are Same");
-        }
+          }
 		
 	}
 	public static void VerifyQty(String EstimateID) throws Exception {
@@ -267,7 +268,7 @@ public class Estimate extends Testbase{
 		}*/
 		
 		WebElement webElement = driver.findElement(By.cssSelector("div.wizard"));
-		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
+		Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png"));
 		
@@ -279,11 +280,12 @@ public class Estimate extends Testbase{
        
         if(diff.hasDiff()==true)
         {
+    	 BufferedImage diffImage = diff.getMarkedImage();
+         ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png"));
          System.out.println("QTY Images are Not Same");
         }
         else {
-    	 BufferedImage diffImage = diff.getMarkedImage();
-         ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png"));
+    	
          System.out.println("QTY Images are Same");
         }
 		

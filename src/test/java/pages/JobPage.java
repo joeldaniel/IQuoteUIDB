@@ -1185,11 +1185,12 @@ public class JobPage extends Testbase{
       
         if(diff.hasDiff()==true)
         {
+    	 BufferedImage diffImage = diff.getMarkedImage();
+         ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png"));
          System.out.println("ENG Images are Not Same");
         }
         else {
-    	  BufferedImage diffImage = diff.getMarkedImage();
-          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png"));
+    	 
           System.out.println("ENG Images are Same");
         }
 		
