@@ -232,8 +232,8 @@ public class Estimate extends Testbase{
 			
 		}*/
 		WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
-		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
 		
+		Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png"));
 		
 		BufferedImage actualImage = screenshot.getImage();
