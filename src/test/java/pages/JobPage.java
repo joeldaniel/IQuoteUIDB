@@ -1,5 +1,6 @@
 package pages;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -19,6 +22,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import base.Testbase;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.comparison.ImageDiff;
+import ru.yandex.qatools.ashot.comparison.ImageDiffer;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadAndUpdate;
@@ -1155,7 +1163,7 @@ public class JobPage extends Testbase{
     }
     public static void VerifyJobEngineering(String Estimate) throws Exception {
     	Estimate=Estimate.replace(",", "");
-		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "Job_ENG", "",Estimate);
+		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "Job_ENG", "",Estimate);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("Job_ENG.png",Actualname,(Estimate+"Job_ENG_Diff.png"), "No",Estimate);
 			System.out.println("Image Comparision of Quantity Diagram : "+Status);
@@ -1163,7 +1171,27 @@ public class JobPage extends Testbase{
 			String sFile2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualname;
 			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\"+Estimate+"Job_ENG_Diff.png";
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
-		}
+		}*/
+    	WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
+		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
+		
+		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png"));
+		
+		BufferedImage actualImage = screenshot.getImage();
+		
+		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png"));
+		ImageDiffer imgDiff = new ImageDiffer();
+        ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
+      
+        if(diff.hasDiff()==true)
+        {
+         System.out.println("ENG Images are Not Same");
+        }
+        else {
+    	  BufferedImage diffImage = diff.getMarkedImage();
+          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png"));
+          System.out.println("ENG Images are Same");
+        }
 		
     }
 }

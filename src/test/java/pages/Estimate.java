@@ -4,6 +4,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,11 +33,16 @@ import com.aventstack.extentreports.Status;
 
 import base.Testbase;
 import de.redsix.pdfcompare.PdfComparator;
+import ru.yandex.qatools.ashot.Screenshot;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
 import utilities.ScreenShot; 
-
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.comparison.ImageDiff;
+import ru.yandex.qatools.ashot.comparison.ImageDiffer;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
 public class Estimate extends Testbase{
 	
 	static String CommonOriginalHandle=null;
@@ -212,7 +220,7 @@ public class Estimate extends Testbase{
 	public static void VerifyEngineering(String EstimateID) throws Exception {
 		test.log(Status.INFO, "Verifying Engineering Diagrams");
 		
-		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
+		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("ENG.png",Actualname,(EstimateID+"ENG_Diff.png"), "No",EstimateID);
 			System.out.println("Image Comparision of Engineering Diagram : "+Status);
@@ -222,12 +230,32 @@ public class Estimate extends Testbase{
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 			
 			
-		}
+		}*/
+		WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
+		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
+		
+		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png"));
+		
+		BufferedImage actualImage = screenshot.getImage();
+		
+		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png"));
+		ImageDiffer imgDiff = new ImageDiffer();
+        ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
+       
+        if(diff.hasDiff()==true)
+        {
+         System.out.println("ENG Images are Not Same");
+        }
+        else {
+        	 BufferedImage diffImage = diff.getMarkedImage();
+             ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png"));
+             System.out.println("ENG Images are Same");
+        }
 		
 	}
 	public static void VerifyQty(String EstimateID) throws Exception {
 
-		String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//label[text()='Option']/parent::span/parent::div/ancestor::div[@class='grid__box']/ancestor::div[@class='wizard']"), "QTY", "",EstimateID);
+		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//label[text()='Option']/parent::span/parent::div/ancestor::div[@class='grid__box']/ancestor::div[@class='wizard']"), "QTY", "",EstimateID);
 		if(!Actualname.isEmpty()) {
 			String Status=ScreenShot.imageComparison("QTY.png",Actualname,(EstimateID+"QTY_Diff.png"), "No",EstimateID);
 			System.out.println("Image Comparision of Quantity Diagram : "+Status);
@@ -236,8 +264,28 @@ public class Estimate extends Testbase{
 			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\"+EstimateID+"QTY_Diff.png";
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 			
-		}
+		}*/
 		
+		WebElement webElement = driver.findElement(By.cssSelector("div.wizard"));
+		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
+		
+		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png"));
+		
+		BufferedImage actualImage = screenshot.getImage();
+		
+		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png"));
+		ImageDiffer imgDiff = new ImageDiffer();
+        ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
+       
+        if(diff.hasDiff()==true)
+        {
+         System.out.println("QTY Images are Not Same");
+        }
+        else {
+    	 BufferedImage diffImage = diff.getMarkedImage();
+         ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png"));
+         System.out.println("QTY Images are Same");
+        }
 		
 	
 	}
@@ -417,7 +465,7 @@ public class Estimate extends Testbase{
 		filename= filename+".pdf";
 		String filelocation=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+filename;
 		System.out.println(filelocation);
-		Robot robot = new Robot();
+		
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Negotiation_Tab")));
 		int val =driver.findElements(By.xpath(OR.getProperty("OtherFunctions_Label"))).size();
 		if (val>0)

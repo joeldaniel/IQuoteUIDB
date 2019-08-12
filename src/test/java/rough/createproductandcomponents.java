@@ -82,8 +82,8 @@ public class createproductandcomponents extends Testbase{
 			System.out.println("Fail");
 		}*/
 		//for image
-		/*JobPage.NavigateToJobPage();
-		JobPage.searchJobWithEstimateNumber(newest);
+		JobPage.NavigateToJobPage();
+		//JobPage.searchJobWithEstimateNumber(newest);
 		JobPage.NavigateToJobEngineering();
 		WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
 		//Screenshot screenshot= new AShot().takeScreenshot(driver, webElement);
@@ -107,7 +107,7 @@ public class createproductandcomponents extends Testbase{
         }
         else {
          System.out.println("Images are Same");
-        }*/
+        }
             
       //driver.quit();
 	}

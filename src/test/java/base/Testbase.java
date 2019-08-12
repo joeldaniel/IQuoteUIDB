@@ -1,4 +1,6 @@
 package base;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,29 +42,30 @@ public class Testbase {
     public static String browser;
     public static Actions actions;
     public static int Optionqty=0;
+    public static  Robot robot;
    
     protected static DBUtil iqdb = new DBUtil();
 	
    
 	@BeforeSuite
-	public void setUp() throws IOException {
+	public void setUp() throws IOException, AWTException {
 		if (driver == null) {
 			
 			System.out.println("DB Selected is : "+System.getenv("DataBase"));
 			System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
 			
 			//for Jenkins
-			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
-			Config.load(fis);
-			//for normal work
 			/*fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
 			Config.load(fis);*/
+			//for normal work
+			fis = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+			Config.load(fis);
 			
 			//uncomment this for jenkins
-			Config.setProperty("EstimateIDs", System.getenv("Estimates"));
-			saveProperties(Config,System.getenv("DataBase"));
+			//Config.setProperty("EstimateIDs", System.getenv("Estimates"));
+			//saveProperties(Config,System.getenv("DataBase"));
 			
 			//DBUtil iqdb=new DBUtil(Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"), Config.getProperty("DBUrl"));
 			
@@ -129,6 +132,7 @@ public class Testbase {
 	        htmlReporter.config().setReportName("My Own Report");
 	       // htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
 	        htmlReporter.config().setTheme(Theme.STANDARD);
+	       robot = new Robot();
 	        iqdb.Createconnection(Config.getProperty("DBUrl"), Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"));
 	    }	
 
