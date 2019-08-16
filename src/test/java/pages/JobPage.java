@@ -128,9 +128,9 @@ public class JobPage extends Testbase{
 			driver.findElement(By.xpath("//span[text()='"+eEstimateNumber+"']")).click();
 			Thread.sleep(6000);
 			CommonFunctions.ClickElement(driver, By.xpath("//button[@title='Duplicate Job']/../button[2]/span/img")); 
-			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Synchronization Status']"), 12000);
-			CommonFunctions.waitUntilElementisVisible(driver, By.xpath("//label[text()='Synchronization Status']"), 10000);
-			String JobPageValidation= "//label[text()='Synchronization Status']";
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Job']"), 12000);
+			CommonFunctions.waitUntilElementisVisible(driver, By.xpath("//header[text()='Job']"), 10000);
+			String JobPageValidation= "//header[text()='Job']";
 			if (driver.findElements(By.xpath(JobPageValidation)).size()==1)
 			{
 				System.out.println("Job Search Successful");
@@ -351,65 +351,65 @@ public class JobPage extends Testbase{
 			//System.err.println("After Click Value is "+val1);
 
 		}
-		
-		String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
-		List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
-		int rowCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-row"));
-		JavascriptExecutor js = (JavascriptExecutor)driver;
-
-		WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
-
-		Long scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
-		Long clientWidth = scrollWidth;
-		js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
-		scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
-		js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
-		Thread.sleep(2000);
-		List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
-		int colCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-index").split("/")[1]);
-		//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
-		Thread.sleep(1000);
-		js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
-		String[] colNames = {"Component","Activity","Planninggroup","ScheduledResource","Start","End","PlannedQty","Producedqty","Status","Productionstarted","Productionconcluded","Plant","ProductionDivision","MISJobID","MISWorkCenter","PlannedResource"};
-		RU.Create_Excel(ExcelPath, Sheetname, colNames);
-		for(int row=0;row<=rowCount;row++) {
-			for(int col=0;col<=colCount;col++) {
-				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
-				WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
-		        //This will scroll the page till the element is found		
-		        js.executeScript("arguments[0].scrollIntoView();", Element);
-				String innerHtml="";
-				try{
-					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
-				}catch(Exception e){
-					js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
-					scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
-					js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
-					CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
-					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+		if(driver.findElements(By.xpath("//div[@data-selected='true']//span[contains(@class,'grid__cell')]")).size()>0) {
+			String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
+			List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
+			int rowCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-row"));
+			JavascriptExecutor js = (JavascriptExecutor)driver;
+	
+			WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
+	
+			Long scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+			Long clientWidth = scrollWidth;
+			js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+			scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+			js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+			Thread.sleep(2000);
+			List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
+			int colCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-index").split("/")[1]);
+			//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
+			Thread.sleep(1000);
+			js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
+			String[] colNames = {"Component","Activity","Planninggroup","ScheduledResource","Start","End","PlannedQty","Producedqty","Status","Productionstarted","Productionconcluded","Plant","ProductionDivision","MISJobID","MISWorkCenter","PlannedResource"};
+			RU.Create_Excel(ExcelPath, Sheetname, colNames);
+			for(int row=0;row<=rowCount;row++) {
+				for(int col=0;col<=colCount;col++) {
+					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+					WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
+			        //This will scroll the page till the element is found		
+			        js.executeScript("arguments[0].scrollIntoView();", Element);
+					String innerHtml="";
+					try{
+						innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+					}catch(Exception e){
+						js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+						scrollWidth = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*10;
+						js.executeScript("arguments[0].scrollBy("+scrollWidth+",0)", gridBody);
+						CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+						innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+					}
+					String value="";
+					if (innerHtml.contains("label")) {
+						value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
+	
+					} else if(innerHtml.contains("span")) {
+						value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
+					} else {
+						value = "";
+					}
+					//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
+			
+				//	RU.UpdateFunction(SheetName, "Planning", scenario+Integer.toString(row), colNames[col], value);
+					RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
+					//Move ScrollBar to Starting Position after all Columns
+					/*if(col==colCount) {
+						js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
+						Thread.sleep(1000);
+					}*/
 				}
-				String value="";
-				if (innerHtml.contains("label")) {
-					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
-
-				} else if(innerHtml.contains("span")) {
-					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
-				} else {
-					value = "";
-				}
-				//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
-		
-			//	RU.UpdateFunction(SheetName, "Planning", scenario+Integer.toString(row), colNames[col], value);
-				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
-				//Move ScrollBar to Starting Position after all Columns
-				/*if(col==colCount) {
-					js.executeScript("arguments[0].scrollBy(-"+clientWidth+",0)", gridBody);
-					Thread.sleep(1000);
-				}*/
+	
 			}
-
 		}
-		
 		
 		
 	
@@ -421,71 +421,72 @@ public class JobPage extends Testbase{
 		String ExcelPath=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
 		ReadAndUpdate RU = new ReadAndUpdate();
 		String cellXpath = "//div[@data-selected='true']//span[contains(@class,'grid__cell')]";
-		List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
-		int colCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-index").split("/")[1]);
-
-		JavascriptExecutor js = (JavascriptExecutor)driver;
-		WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
-		Long scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*20;
-		js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
-		scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*10;
-		js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
-		Thread.sleep(2000);
-		List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
-		int rowCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-row"));
-
-		//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
-		Thread.sleep(1000);
-		js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
-
-		//String[] colNames = {"CmpType","ProcessGroupDescription","ProcessDescription","CmpName","Qty","UnitofMeasurement","IsSupplied","Inventoryitem","Plant","MISJobID"};
-		
-		String[] colNames={"Materialtype","Element","Process","Material","Quantity","Measurementunit","Provided","Inventoryitem","Plant","MISJobID"};
-		RU.Create_Excel(ExcelPath, Sheetname, colNames);
-		for(int row=0;row<=rowCount;row++) {
-			for(int col=0;col<=colCount;col++) {
-              
-				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
-				WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
-		        //This will scroll the page till the element is found		
-		        js.executeScript("arguments[0].scrollIntoView();", Element);
-			     //CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
-			     //driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
-			     
-				String innerHtml="";
-				try{
-					 CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
-					 CommonFunctions.waitUntilElementisVisible(driver, By.xpath(jobPlanningValueXpath), 180);
-					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
-				}catch(Exception e){
-					js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
-					scrollHeight = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*20;
-					js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
-					CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
-					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
-				}
-				String value="";
-				if (innerHtml.contains("label")) {
-					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
-
-				} else if(innerHtml.contains("span")) {
-					value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
-				} else {
-					value = "";
-				}
-				//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
-				
-				//RU.UpdateFunction(Sheetname, "Material", scenario_+Integer.toString(row), colNames[col], value);
-				RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
-				//Move ScrollBar to Starting Position after all Columns
-				/*if(row==rowCount) {
-					js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
-					Thread.sleep(1000);
-				}*/
-			}
-
-		}
+		if(driver.findElements(By.xpath(cellXpath)).size()>0) {
+			List<WebElement> ele = driver.findElements(By.xpath(cellXpath));	
+			int colCount = Integer.parseInt(ele.get(ele.size()-1).getAttribute("data-index").split("/")[1]);
 	
+			JavascriptExecutor js = (JavascriptExecutor)driver;
+			WebElement gridBody = driver.findElement(By.xpath("//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]"));
+			Long scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*20;
+			js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+			scrollHeight = (Long) js.executeScript("return arguments[0].scrollHeight", gridBody)*10;
+			js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+			Thread.sleep(2000);
+			List<WebElement> ele1 = driver.findElements(By.xpath(cellXpath));	
+			int rowCount = Integer.parseInt(ele1.get(ele1.size()-1).getAttribute("data-row"));
+	
+			//System.out.println("row count is: "+rowCount+" column count is :"+colCount);
+			Thread.sleep(1000);
+			js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
+	
+			//String[] colNames = {"CmpType","ProcessGroupDescription","ProcessDescription","CmpName","Qty","UnitofMeasurement","IsSupplied","Inventoryitem","Plant","MISJobID"};
+			
+			String[] colNames={"Materialtype","Element","Process","Material","Quantity","Measurementunit","Provided","Inventoryitem","Plant","MISJobID"};
+			RU.Create_Excel(ExcelPath, Sheetname, colNames);
+			for(int row=0;row<=rowCount;row++) {
+				for(int col=0;col<=colCount;col++) {
+	              
+					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+					WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
+			        //This will scroll the page till the element is found		
+			        js.executeScript("arguments[0].scrollIntoView();", Element);
+				     //CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
+				     //driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
+				     
+					String innerHtml="";
+					try{
+						 CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+						 CommonFunctions.waitUntilElementisVisible(driver, By.xpath(jobPlanningValueXpath), 180);
+						innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+					}catch(Exception e){
+						js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+						scrollHeight = (Long) js.executeScript("return arguments[0].scrollWidth", gridBody)*20;
+						js.executeScript("arguments[0].scrollBy(0,"+scrollHeight+")", gridBody);
+						CommonFunctions.waitUntilElementisPresent(driver, By.xpath(jobPlanningValueXpath), 180);
+						innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
+					}
+					String value="";
+					if (innerHtml.contains("label")) {
+						value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//label")).getText();
+	
+					} else if(innerHtml.contains("span")) {
+						value = 	driver.findElement(By.xpath(jobPlanningValueXpath+"//span")).getText();
+					} else {
+						value = "";
+					}
+					//System.out.println("Value At row "+row+" and col "+col+" is: "+value);
+					
+					//RU.UpdateFunction(Sheetname, "Material", scenario_+Integer.toString(row), colNames[col], value);
+					RU.UpdateFunction_Iquote(ExcelPath, Sheetname, colNames[col], value, row+1);
+					//Move ScrollBar to Starting Position after all Columns
+					/*if(row==rowCount) {
+						js.executeScript("arguments[0].scrollBy(0,-"+scrollHeight+")", gridBody);
+						Thread.sleep(1000);
+					}*/
+				}
+	
+			}
+		}
 	}
 	
 	//Author Sonali
@@ -800,8 +801,8 @@ public class JobPage extends Testbase{
     {//Author Sonali
           CommonFunctions.ClickElement(driver, By.xpath("//div[@class='wizard']/nav[@class='wizard__nav']//label[text()='General'] "));
           CommonFunctions.waitForPageLoad(driver);
-          CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Synchronization Status']"), 180);
-          int val =driver.findElements(By.xpath("//label[text()='Synchronization Status']")).size();
+          //CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Job']"), 180);
+          int val =driver.findElements(By.xpath("//header[text()='Job']")).size();
           //System.out.println(val);
           if (val>0)
           {
@@ -833,148 +834,154 @@ public class JobPage extends Testbase{
 	        ArrayList arr2 = new ArrayList();
 	        ArrayList arr3 = new ArrayList();
 	        ArrayList arr4 = new ArrayList();
-	        FileInputStream file1 = new FileInputStream(new File(
-	        		ExcelSheetPath1));
-
-	        FileInputStream file2 = new FileInputStream(new File(
-	        		ExcelSheetPath2));
-
-	        // Get the workbook instance for XLS file
-	        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
-	        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
-
-	        // Get first sheet from the workbook
-	     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
-	        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
-	    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
-	        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
-	        // Compare sheets
-
-	        // Get iterator to all the rows in current sheet1
-	        Iterator<Row> rowIterator1 = sheet1.iterator();
-	        Iterator<Row> rowIterator2 = sheet2.iterator();
-
-	        while (rowIterator1.hasNext()) {
-	            Row row = rowIterator1.next();
-	            // For each row, iterate through all the columns
-	            Iterator<Cell> cellIterator = row.cellIterator();
-	            
-	            //System.out.println("Get last row :-"+row.getLastCellNum()); 
-	            while (cellIterator.hasNext()) {
-
-	                Cell cell = cellIterator.next();
-	                 // System.out.println(cell.getRowIndex());
-	                // This is for read only one column from excel
-	                if (cell.getColumnIndex() >= 0) {
-	                    // Check the cell type and format accordingly
-	                    switch (cell.getCellType()) {
-	                    case Cell.CELL_TYPE_NUMERIC:
-	                       // System.out.print(cell.getNumericCellValue());
-	                        arr1.add(cell.getNumericCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_STRING:
-	                        arr1.add(cell.getStringCellValue());
-	                        //System.out.print(cell.getStringCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_BOOLEAN:
-	                        arr1.add(cell.getBooleanCellValue());
-	                        //System.out.print(cell.getBooleanCellValue());
-	                        break;
-	                    }
-
-	                }
-
-	            }
-
-	            //System.out.println(" ");
-	        }
-
-	        file1.close();
-
-	       // System.out.println("-----------------------------------");
-	        // For retrive the second excel data
-	        while (rowIterator2.hasNext()) {
-	            Row row1 = rowIterator2.next();
-	            // For each row, iterate through all the columns
-	            Iterator<Cell> cellIterator1 = row1.cellIterator();
-
-	            while (cellIterator1.hasNext()) {
-
-	                Cell cell1 = cellIterator1.next();
-	                // Check the cell type and format accordingly
-
-	                // This is for read only one column from excel
-	                if (cell1.getColumnIndex() >= 0) {
-	                 // System.out.println(cell1.getCellType());
-	                    switch (cell1.getCellType()) {
-	                    
-	           
-	                    case Cell.CELL_TYPE_NUMERIC:
-	                        arr2.add(cell1.getNumericCellValue());
-	                       // System.out.print(cell1.getNumericCellValue());
-	                        
-	                        break;
-	                    case Cell.CELL_TYPE_STRING:
-	                        arr2.add(cell1.getStringCellValue());
-	                        //System.out.print(cell1.getStringCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_BOOLEAN:
-	                        arr2.add(cell1.getBooleanCellValue());
-	                       // System.out.print(cell1.getBooleanCellValue());
-	                        break;
-
-	                    }
-
-	                }
-	                // this continue is for
-	                // continue;
-	            }
-
-	           // System.out.println("");
-	        }
-
-	       // System.out.println("book1.xls -- " + arr1.size());
-	        //System.out.println("book1.xls -- " + arr2.size());
-
-	        // compare two arrays
-	        for (Object process : arr1) 
-	        {
-	            if (!arr2.contains(process)) {
-	                arr3.add(process);
-	                //arr4.add()
-	               // System.out.println("False");
-	                Comp1=false;
-	            }
-	            else
-	            {
-	                //  System.out.println("True");
-	                  Comp1=true;
-	            }
-	            
-	            
-	        }
-	        //System.out.println("arr3 list values - = - = + " + arr3);
-	       
-	       
-
-	        // closing the files
-	        file1.close();
-	        file2.close();
 	        
-	        if (arr3.size()>0)
-	        {
-	        	//System.err.println("Difference in The Excel sheet as as follows:- ");
-	        	//System.err.println("arr3 list values - = - = + " + arr3);
-	        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
-	        	Comp1= false;
+	        File tempFile = new File(ExcelSheetPath1);
+	        if(tempFile.exists()) {
+		        FileInputStream file1 = new FileInputStream(new File(
+		        		ExcelSheetPath1));
+	
+		        FileInputStream file2 = new FileInputStream(new File(
+		        		ExcelSheetPath2));
+	
+		        // Get the workbook instance for XLS file
+		        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
+		        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
+	
+		        // Get first sheet from the workbook
+		     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
+		        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
+		    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
+		        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
+		        // Compare sheets
+	
+		        // Get iterator to all the rows in current sheet1
+		        Iterator<Row> rowIterator1 = sheet1.iterator();
+		        Iterator<Row> rowIterator2 = sheet2.iterator();
+	
+		        while (rowIterator1.hasNext()) {
+		            Row row = rowIterator1.next();
+		            // For each row, iterate through all the columns
+		            Iterator<Cell> cellIterator = row.cellIterator();
+		            
+		            //System.out.println("Get last row :-"+row.getLastCellNum()); 
+		            while (cellIterator.hasNext()) {
+	
+		                Cell cell = cellIterator.next();
+		                 // System.out.println(cell.getRowIndex());
+		                // This is for read only one column from excel
+		                if (cell.getColumnIndex() >= 0) {
+		                    // Check the cell type and format accordingly
+		                    switch (cell.getCellType()) {
+		                    case Cell.CELL_TYPE_NUMERIC:
+		                       // System.out.print(cell.getNumericCellValue());
+		                        arr1.add(cell.getNumericCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_STRING:
+		                        arr1.add(cell.getStringCellValue());
+		                        //System.out.print(cell.getStringCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_BOOLEAN:
+		                        arr1.add(cell.getBooleanCellValue());
+		                        //System.out.print(cell.getBooleanCellValue());
+		                        break;
+		                    }
+	
+		                }
+	
+		            }
+	
+		            //System.out.println(" ");
+		        }
+	
+		        file1.close();
+	
+		       // System.out.println("-----------------------------------");
+		        // For retrive the second excel data
+		        while (rowIterator2.hasNext()) {
+		            Row row1 = rowIterator2.next();
+		            // For each row, iterate through all the columns
+		            Iterator<Cell> cellIterator1 = row1.cellIterator();
+	
+		            while (cellIterator1.hasNext()) {
+	
+		                Cell cell1 = cellIterator1.next();
+		                // Check the cell type and format accordingly
+	
+		                // This is for read only one column from excel
+		                if (cell1.getColumnIndex() >= 0) {
+		                 // System.out.println(cell1.getCellType());
+		                    switch (cell1.getCellType()) {
+		                    
+		           
+		                    case Cell.CELL_TYPE_NUMERIC:
+		                        arr2.add(cell1.getNumericCellValue());
+		                       // System.out.print(cell1.getNumericCellValue());
+		                        
+		                        break;
+		                    case Cell.CELL_TYPE_STRING:
+		                        arr2.add(cell1.getStringCellValue());
+		                        //System.out.print(cell1.getStringCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_BOOLEAN:
+		                        arr2.add(cell1.getBooleanCellValue());
+		                       // System.out.print(cell1.getBooleanCellValue());
+		                        break;
+	
+		                    }
+	
+		                }
+		                // this continue is for
+		                // continue;
+		            }
+	
+		           // System.out.println("");
+		        }
+	
+		       // System.out.println("book1.xls -- " + arr1.size());
+		        //System.out.println("book1.xls -- " + arr2.size());
+	
+		        // compare two arrays
+		        for (Object process : arr1) 
+		        {
+		            if (!arr2.contains(process)) {
+		                arr3.add(process);
+		                //arr4.add()
+		               // System.out.println("False");
+		                Comp1=false;
+		            }
+		            else
+		            {
+		                //  System.out.println("True");
+		                  Comp1=true;
+		            }
+		            
+		            
+		        }
+		        //System.out.println("arr3 list values - = - = + " + arr3);
+		       
+		       
+	
+		        // closing the files
+		        file1.close();
+		        file2.close();
+		        
+		        if (arr3.size()>0)
+		        {
+		        	//System.err.println("Difference in The Excel sheet as as follows:- ");
+		        	//System.err.println("arr3 list values - = - = + " + arr3);
+		        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
+		        	Comp1= false;
+		        }
+		        else
+		        {
+		        	//System.out.println("Difference in The Excel sheet as as follows:- ");
+		        	//System.out.println("arr3 list values - = - = + " + arr3);
+		        	Comp1 =true;
+		        }
 	        }
-	        else
-	        {
-	        	//System.out.println("Difference in The Excel sheet as as follows:- ");
-	        	//System.out.println("arr3 list values - = - = + " + arr3);
-	        	Comp1 =true;
+	        else {
+	        	Comp1 = true;
 	        }
-	        
 	        
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -1000,148 +1007,153 @@ public class JobPage extends Testbase{
 	        ArrayList arr2 = new ArrayList();
 	        ArrayList arr3 = new ArrayList();
 	        ArrayList arr4 = new ArrayList();
-	        FileInputStream file1 = new FileInputStream(new File(
-	        		ExcelSheetPath1));
-
-	        FileInputStream file2 = new FileInputStream(new File(
-	        		ExcelSheetPath2));
-
-	        // Get the workbook instance for XLS file
-	        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
-	        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
-
-	        // Get first sheet from the workbook
-	     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
-	        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
-	    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
-	        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
-	        // Compare sheets
-
-	        // Get iterator to all the rows in current sheet1
-	        Iterator<Row> rowIterator1 = sheet1.iterator();
-	        Iterator<Row> rowIterator2 = sheet2.iterator();
-
-	        while (rowIterator1.hasNext()) {
-	            Row row = rowIterator1.next();
-	            // For each row, iterate through all the columns
-	            Iterator<Cell> cellIterator = row.cellIterator();
-	            
-	           // System.out.println("Get last row :-"+row.getLastCellNum()); 
-	            while (cellIterator.hasNext()) {
-
-	                Cell cell = cellIterator.next();
-	                 // System.out.println(cell.getRowIndex());
-	                // This is for read only one column from excel
-	                if (cell.getColumnIndex() >= 0) {
-	                    // Check the cell type and format accordingly
-	                    switch (cell.getCellType()) {
-	                    case Cell.CELL_TYPE_NUMERIC:
-	                       // System.out.print(cell.getNumericCellValue());
-	                        arr1.add(cell.getNumericCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_STRING:
-	                        arr1.add(cell.getStringCellValue());
-	                       // System.out.print(cell.getStringCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_BOOLEAN:
-	                        arr1.add(cell.getBooleanCellValue());
-	                       // System.out.print(cell.getBooleanCellValue());
-	                        break;
-	                    }
-
-	                }
-
-	            }
-
-	           // System.out.println(" ");
+	        File tempFile = new File(ExcelSheetPath1);
+	        if(tempFile.exists()) {
+		        FileInputStream file1 = new FileInputStream(new File(
+		        		ExcelSheetPath1));
+	
+		        FileInputStream file2 = new FileInputStream(new File(
+		        		ExcelSheetPath2));
+	
+		        // Get the workbook instance for XLS file
+		        XSSFWorkbook workbook1 = new XSSFWorkbook(file1);
+		        XSSFWorkbook workbook2 = new XSSFWorkbook(file2);
+	
+		        // Get first sheet from the workbook
+		     //   HSSFSheet sheet1 = workbook1.getSheetAt(0);
+		        XSSFSheet sheet1= workbook1.getSheet(SheetName1);
+		    //    HSSFSheet sheet2 = workbook2.getSheetAt(0);
+		        XSSFSheet sheet2 = workbook2.getSheet(SheetName1);
+		        // Compare sheets
+	
+		        // Get iterator to all the rows in current sheet1
+		        Iterator<Row> rowIterator1 = sheet1.iterator();
+		        Iterator<Row> rowIterator2 = sheet2.iterator();
+	
+		        while (rowIterator1.hasNext()) {
+		            Row row = rowIterator1.next();
+		            // For each row, iterate through all the columns
+		            Iterator<Cell> cellIterator = row.cellIterator();
+		            
+		           // System.out.println("Get last row :-"+row.getLastCellNum()); 
+		            while (cellIterator.hasNext()) {
+	
+		                Cell cell = cellIterator.next();
+		                 // System.out.println(cell.getRowIndex());
+		                // This is for read only one column from excel
+		                if (cell.getColumnIndex() >= 0) {
+		                    // Check the cell type and format accordingly
+		                    switch (cell.getCellType()) {
+		                    case Cell.CELL_TYPE_NUMERIC:
+		                       // System.out.print(cell.getNumericCellValue());
+		                        arr1.add(cell.getNumericCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_STRING:
+		                        arr1.add(cell.getStringCellValue());
+		                       // System.out.print(cell.getStringCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_BOOLEAN:
+		                        arr1.add(cell.getBooleanCellValue());
+		                       // System.out.print(cell.getBooleanCellValue());
+		                        break;
+		                    }
+	
+		                }
+	
+		            }
+	
+		           // System.out.println(" ");
+		        }
+	
+		        file1.close();
+	
+		        //System.out.println("-----------------------------------");
+		        // For retrive the second excel data
+		        while (rowIterator2.hasNext()) {
+		            Row row1 = rowIterator2.next();
+		            // For each row, iterate through all the columns
+		            Iterator<Cell> cellIterator1 = row1.cellIterator();
+	
+		            while (cellIterator1.hasNext()) {
+	
+		                Cell cell1 = cellIterator1.next();
+		                // Check the cell type and format accordingly
+	
+		                // This is for read only one column from excel
+		                if (cell1.getColumnIndex() >= 0) {
+		                 // System.out.println(cell1.getCellType());
+		                    switch (cell1.getCellType()) {
+		                    
+		           
+		                    case Cell.CELL_TYPE_NUMERIC:
+		                        arr2.add(cell1.getNumericCellValue());
+		                       // System.out.print(cell1.getNumericCellValue());
+		                        
+		                        break;
+		                    case Cell.CELL_TYPE_STRING:
+		                        arr2.add(cell1.getStringCellValue());
+		                      //  System.out.print(cell1.getStringCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_BOOLEAN:
+		                        arr2.add(cell1.getBooleanCellValue());
+		                       // System.out.print(cell1.getBooleanCellValue());
+		                        break;
+	
+		                    }
+	
+		                }
+		                // this continue is for
+		                // continue;
+		            }
+	
+		            //System.out.println("");
+		        }
+	
+		       // System.out.println("book1.xls -- " + arr1.size());
+		        //System.out.println("book1.xls -- " + arr2.size());
+	
+		        // compare two arrays
+		        for (Object process : arr1) 
+		        {
+		            if (!arr2.contains(process)) {
+		                arr3.add(process);
+		                //arr4.add()
+		               // System.out.println("False");
+		                Comp1=false;
+		            }
+		            else
+		            {
+		                //  System.out.println("True");
+		                  Comp1=true;
+		            }
+		            
+		            
+		        }
+		       // System.out.println("arr3 list values - = - = + " + arr3);
+		       
+		       
+	
+		        // closing the files
+		        file1.close();
+		        file2.close();
+		        
+		        if (arr3.size()>0)
+		        {
+		        	//System.err.println("Difference in The Excel sheet as as follows:- ");
+		        	//System.err.println("arr3 list values - = - = + " + arr3);
+		        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
+		        	Comp1= false;
+		        }
+		        else
+		        {
+		        	//System.out.println("Difference in The Excel sheet as as follows:- ");
+		        	//System.out.println("arr3 list values - = - = + " + arr3);
+		        	Comp1 =true;
+		        }
 	        }
-
-	        file1.close();
-
-	        //System.out.println("-----------------------------------");
-	        // For retrive the second excel data
-	        while (rowIterator2.hasNext()) {
-	            Row row1 = rowIterator2.next();
-	            // For each row, iterate through all the columns
-	            Iterator<Cell> cellIterator1 = row1.cellIterator();
-
-	            while (cellIterator1.hasNext()) {
-
-	                Cell cell1 = cellIterator1.next();
-	                // Check the cell type and format accordingly
-
-	                // This is for read only one column from excel
-	                if (cell1.getColumnIndex() >= 0) {
-	                 // System.out.println(cell1.getCellType());
-	                    switch (cell1.getCellType()) {
-	                    
-	           
-	                    case Cell.CELL_TYPE_NUMERIC:
-	                        arr2.add(cell1.getNumericCellValue());
-	                       // System.out.print(cell1.getNumericCellValue());
-	                        
-	                        break;
-	                    case Cell.CELL_TYPE_STRING:
-	                        arr2.add(cell1.getStringCellValue());
-	                      //  System.out.print(cell1.getStringCellValue());
-	                        break;
-	                    case Cell.CELL_TYPE_BOOLEAN:
-	                        arr2.add(cell1.getBooleanCellValue());
-	                       // System.out.print(cell1.getBooleanCellValue());
-	                        break;
-
-	                    }
-
-	                }
-	                // this continue is for
-	                // continue;
-	            }
-
-	            //System.out.println("");
-	        }
-
-	       // System.out.println("book1.xls -- " + arr1.size());
-	        //System.out.println("book1.xls -- " + arr2.size());
-
-	        // compare two arrays
-	        for (Object process : arr1) 
-	        {
-	            if (!arr2.contains(process)) {
-	                arr3.add(process);
-	                //arr4.add()
-	               // System.out.println("False");
-	                Comp1=false;
-	            }
-	            else
-	            {
-	                //  System.out.println("True");
-	                  Comp1=true;
-	            }
-	            
-	            
-	        }
-	       // System.out.println("arr3 list values - = - = + " + arr3);
-	       
-	       
-
-	        // closing the files
-	        file1.close();
-	        file2.close();
-	        
-	        if (arr3.size()>0)
-	        {
-	        	//System.err.println("Difference in The Excel sheet as as follows:- ");
-	        	//System.err.println("arr3 list values - = - = + " + arr3);
-	        	//Assert.fail("Difference in The Excel sheet is as follows:- " + arr3);
-	        	Comp1= false;
-	        }
-	        else
-	        {
-	        	//System.out.println("Difference in The Excel sheet as as follows:- ");
-	        	//System.out.println("arr3 list values - = - = + " + arr3);
+	        else {
 	        	Comp1 =true;
 	        }
-	        
 	        
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();

@@ -34,6 +34,7 @@ public class ReadData extends Testbase{
 	public static HashMap<String, String> CPGenericCPOptionDesc	 = new HashMap<String, String>();
 	public static HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat = new HashMap<String, HashMap<String, String>>();
 	public static HashMap<String, String> CharCPGraphPrintType	 = new HashMap<String, String>();
+	public static HashMap<String, String> CharCPGenericRawMaterial = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphDieCut	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPAOptionQty	 = new HashMap<String, String>();
 	public static HashMap<String, String> CharCPGraphHardCover	 = new HashMap<String, String>();
@@ -2079,6 +2080,55 @@ public class ReadData extends Testbase{
 		}
 		return CharCPGraphWireOBind;
 	}
+	public HashMap<String, String> CharCPGenericRawMaterial(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws IOException, ClassNotFoundException, SQLException
+	{
+		CharCPGenericRawMaterial.clear();
+		fis = new FileInputStream(
+				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGenericRawMaterial.properties");
+		Query.load(fis);
+		
+		String Query1=Query.getProperty("Query");
+				
+		rs = iqdb.RunQuery(Query1.replace("##Estimate##", Estimateid).replace("##CompOrder##", componentorder).replace("##IdItemOption##", IdItemOption).replace("##CharteristicDescp##", CharacteristicDescp));
+		
+		try
+		{
+			while(rs.next())
+			{
+
+				String OptionDescp=rs.getString("OptionDescription");
+				String CompFinal=rs.getString("ComponentFinal");
+				String CompOrder=rs.getString("ComponentOrder");
+				String CompDescp=rs.getString("ComponentDescription");
+				String CompTypeDescp=rs.getString("ComponentTypeDesc");
+				String CharDescp=rs.getString("CharacteristicDesc");
+				String CharidPSCmpCarac=rs.getString("idPSCmpCarac");
+				String CPGenericRawMaterialRawMaterial=rs.getString("RawMaterial");
+				String CPGenericRawMaterialValue=rs.getString("Value");
+				String CPGenericRawMaterialDescription=rs.getString("Description");
+
+				CharCPGenericRawMaterial.put("OptionDescription", OptionDescp != null ? OptionDescp : "");
+				CharCPGenericRawMaterial.put("ComponentDescription", CompDescp != null ? CompDescp : "");
+				CharCPGenericRawMaterial.put("ComponentFinal", CompFinal != null ? CompFinal : "");
+				CharCPGenericRawMaterial.put("ComponentOrder", CompOrder != null ? CompOrder : "");
+				CharCPGenericRawMaterial.put("ComponentTypeDesc", CompTypeDescp != null ? CompTypeDescp : "");
+				CharCPGenericRawMaterial.put("CharacteristicDesc", CharDescp != null ? CharDescp : "");
+				CharCPGenericRawMaterial.put("idPSCmpCarac", CharidPSCmpCarac != null ? CharidPSCmpCarac : "");
+				CharCPGenericRawMaterial.put("RawMaterial", CPGenericRawMaterialRawMaterial != null ? CPGenericRawMaterialRawMaterial : "");
+				CharCPGenericRawMaterial.put("Value", CPGenericRawMaterialValue != null ? CPGenericRawMaterialValue : "");
+				CharCPGenericRawMaterial.put("Description", CPGenericRawMaterialDescription != null ? CPGenericRawMaterialDescription : "");
+			
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("failed");
+		}
+		return CharCPGenericRawMaterial;
+	}
+	
+
 	
 	public HashMap<String, String> CPGraphBleed(String Estimateid,String IdItemOption, String componentorder, String CharacteristicDescp) throws ClassNotFoundException, IOException, SQLException
 	{

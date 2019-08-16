@@ -55,17 +55,17 @@ public class Testbase {
 			System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
 			
 			//for Jenkins
-			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
-			Config.load(fis);
-			//for normal work
 			/*fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
 			Config.load(fis);*/
+			//for normal work
+			fis = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+			Config.load(fis);
 			
 			//uncomment this for jenkins
-			Config.setProperty("EstimateIDs", System.getenv("Estimates"));
-			saveProperties(Config,System.getenv("DataBase"));
+			//Config.setProperty("EstimateIDs", System.getenv("Estimates"));
+			//saveProperties(Config,System.getenv("DataBase"));
 			
 			//DBUtil iqdb=new DBUtil(Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"), Config.getProperty("DBUrl"));
 			
@@ -117,7 +117,7 @@ public class Testbase {
 			//htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
 			htmlReporter = new ExtentHtmlReporter(
 					System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
-			System.out.println(System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
+			//System.out.println(System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
 			
 	        extent = new ExtentReports();
 	        extent.attachReporter(htmlReporter);

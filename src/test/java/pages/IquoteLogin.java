@@ -29,7 +29,7 @@ public class IquoteLogin extends Testbase{
 
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("First_ok")));
 			CommonFunctions.waitForPageLoad(driver);
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 			//wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(OR.getProperty("Login_OKButton"))));
 			if (driver.findElements(By.xpath("//label[text()='Desktop']")).size()==0)
 			{

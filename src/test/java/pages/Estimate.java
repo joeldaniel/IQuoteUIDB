@@ -298,7 +298,7 @@ public class Estimate extends Testbase{
 		String file1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile;
 		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
 		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
-		boolean isEquals = new PdfComparator(file1, file2).with(new PageArea(1, 1407, 58, 2277, 363)).compare().writeTo(diff);
+		boolean isEquals = new PdfComparator(file1, file2).with(new PageArea(1, 1407, 58, 2277, 363)).with(new PageArea(1,1798,483,1856,501)).compare().writeTo(diff);
 		String status =isEquals? "PASS" : "FAIL";
 		if (!isEquals) {
 		    System.out.println("Differences found in PDF's!");
@@ -1052,6 +1052,7 @@ public class Estimate extends Testbase{
 	    }
 		
 		DeleteRenamedProductsandComponents();
+		Thread.sleep(3000);
 	}
 	private static Object Ucase(String attribute) {
 		// TODO Auto-generated method stub
@@ -1124,7 +1125,9 @@ public class Estimate extends Testbase{
 		        	driver.findElement(By.xpath("//label[text()='"+childMap.get("ParentComponent")+"']")).click();
 					Thread.sleep(1000);
 					driver.findElement(By.xpath("//label[text()='"+childMap.get("ParentComponent")+"']")).click();
-					Thread.sleep(3000);
+					Thread.sleep(1000);
+					driver.findElement(By.xpath("//label[text()='"+childMap.get("ParentComponent")+"']")).click();
+					Thread.sleep(2000);
 					driver.findElement(By.xpath("//span[text()='Composition']")).click();
 					if(driver.findElements(By.xpath("//b[text()='Composition']/parent::label/parent::header")).size()>0)
 					{
@@ -1447,6 +1450,9 @@ public class Estimate extends Testbase{
   					break;
                   case "qttCModelGraphCarac.qttCPGraphWireOBind":
   					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					break;
+                  case "qttCModelPS.qttCPGenericRawMaterialValue":
+  					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
   					break;
 
 					default:

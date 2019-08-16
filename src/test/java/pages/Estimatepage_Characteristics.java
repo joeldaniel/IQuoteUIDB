@@ -500,6 +500,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath("//label[text()='Flat (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(FlatFormat+Keys.TAB);
 			break;
 		case "leaf format":
+		case "blank size regular":
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			break;
@@ -535,6 +536,9 @@ public class Estimatepage_Characteristics extends Testbase {
 				}
 			}
 			break;
+		
+			
+			
 			
 		default:
 			System.out.println("component type is not coded : "+CompTypedescp);
@@ -1393,11 +1397,13 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 
 			String xpathForClosedWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Closed (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
 			String xpathForFlatWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Flat (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
+			String xpathFormatDieWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Format Die layout (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
 			String xpathForQuantityIntheDieLayout="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Quantity in the die layout']/parent::span[@class='ltv__item ltv_']/following-sibling::span/input";
 			String xpathForDieApportionment="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Die Apportionment']/parent::span//input";
 
 			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForClosedWh, ValueforClosedwh);
 			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForFlatWh, ValueforFlatwh);
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathFormatDieWh, ValueforFlatwh);
 			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForDieApportionment, IrregFormatDieApportionment);
 
 			driver.findElement(By.xpath("//label[text()='Fit options']/parent::button")).click();
@@ -1405,6 +1411,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 				if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
 				{
 					System.out.println("Fit Option Window is displayed");
+					Thread.sleep(3000);
 					driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
 					if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
 					{
@@ -1420,7 +1427,14 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
 						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
 						driver.findElement(By.xpath("//button[@title='Confirm']")).click();
-						CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label/b[text()='New']"), 10000);
+						//CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='New']"), 10000);
+						List <WebElement> options = driver.findElements(By.xpath("//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]"));
+						int size=options.size();
+						String xpath="(//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')])["+(size-1)+"]";
+						driver.findElement(By.xpath(xpath)).click();
+						Thread.sleep(5000);
+						if(size>1)
+							driver.findElement(By.xpath("(//label[text()='Create Die']//following::button)[1]")).click();
 					}
 					else
 					{
@@ -1428,7 +1442,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 					}
 					//Selecting Newly added Coloum
 					Thread.sleep(5000);
-					int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
+					/*int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
 					String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
 					//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
 					
@@ -1444,7 +1458,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 						Thread.sleep(2000);
 						driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
 						Thread.sleep(2000);	
-					}
+					}*/
 					
 	//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
 	//				Thread.sleep(2000);
@@ -1764,5 +1778,30 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 
 	
 	}
+	
+	public void Charactertics_CPGenericRawMaterial(String Estimateid, String IdItemOption, String Comporderval, String CharteristicDescp) throws Exception
+	{
+
+		HashMap<String, String> CharCPGenericRawMateriald = new HashMap<String, String>();
+		CharCPGenericRawMateriald=name.CharCPGenericRawMaterial(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
+		String Materialval=CharCPGenericRawMateriald.get("RawMaterial");
+		String RMValue=CharCPGenericRawMateriald.get("Value");
+		String RMDescription=CharCPGenericRawMateriald.get("Description");
+
+		String XpathForRawmaterial="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Raw Material']/..//input";
+		String XpathForRMValue="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Value']/..//input";
+		String XpathForRMDescription="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Description']/..//input";
+
+		//For Raw material Field
+		CommonFunctions.SendValue(driver, By.xpath(XpathForRawmaterial), Materialval);
+		Thread.sleep(2000);
+		CommonFunctions.SendValue(driver, By.xpath(XpathForRMValue), RMValue);
+		Thread.sleep(2000);
+		CommonFunctions.SendValue(driver, By.xpath(XpathForRMDescription), RMDescription);
+		Thread.sleep(2000);
+	
+	
+	}
+	
 	
 }
