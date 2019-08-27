@@ -857,7 +857,7 @@ public class Estimatepage_Characteristics extends Testbase {
 
 		if(CPGraphPackBoxUnitsintheBox!=null) {
 			//String XpathForUnitsintheBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Box']/parent::span/span/input";
-			String XpathForUnitsintheBox="//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Units in the Box']/..//input";
+			String XpathForUnitsintheBox="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Units in the Box']/..//input";
 			driver.findElement(By.xpath(XpathForUnitsintheBox)).click();
 			Thread.sleep(2000);
 			driver.findElement(By.xpath(XpathForUnitsintheBox)).sendKeys(CPGraphPackBoxUnitsintheBox+Keys.ENTER);
@@ -867,7 +867,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		
 		if(CPGraphPackBoxBoxType!=null) {
 		//String XpathForBoxType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box Type']/parent::span/span//input";
-		String XpathForBoxType=	"//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box Type']/..//input";
+		String XpathForBoxType=	"//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box Type']/..//input";
 		driver.findElement(By.xpath(XpathForBoxType)).click();
 		Thread.sleep(2000);
 		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(CPGraphPackBoxBoxType+Keys.ENTER);
@@ -892,7 +892,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		if(!CPGraphPackNotes.isEmpty()) {
 			Thread.sleep(2000);
 		//String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
-		String XpathForNote="//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Note']/..//textarea";
+		String XpathForNote="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Note']/..//textarea";
 		driver.findElement(By.xpath(XpathForNote)).click();
 		Thread.sleep(2000);
 		driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);

@@ -1031,9 +1031,14 @@ public class Estimate extends Testbase{
 				Thread.sleep(5000);
 				String xpathforComp="//ul[@class='select ']//span[@class='renderer inline-img' and text()='"+childMap.get("ComponentTypeDesc")+"']";
 				System.out.println(xpathforComp);
+				int beforesize=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
+				int aftersize;
 				driver.findElement(By.xpath(xpathforComp)).click();
-
-				Thread.sleep(3000);
+				do {
+					aftersize=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
+					Thread.sleep(1000);
+				}while(aftersize!=beforesize+1);
+				
 				
 				int sizeval=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
 				Thread.sleep(3000);
@@ -1043,6 +1048,7 @@ public class Estimate extends Testbase{
 				driver.findElement(By.xpath(xpathval)).click(); 
 				Thread.sleep(2000);
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), "To be renamed");
+				Thread.sleep(2000);
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), childMap.get("ComponentDescription"));
 				
 				
