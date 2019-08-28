@@ -314,7 +314,7 @@ public class Estimate extends Testbase{
 			test.log(Status.INFO, "Creating Option : "+Option);
 			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-		   	 Thread.sleep(1000);
+		   	 Thread.sleep(3000);
 		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Option')]")));
 		   	 driver.findElement(By.xpath("//li[contains(text(),'New Option')]")).click();
 		   	 Thread.sleep(5000);

@@ -22,6 +22,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -43,7 +44,7 @@ public class Testbase {
     public static Actions actions;
     public static int Optionqty=0;
     public static  Robot robot;
-   
+    
     protected static DBUtil iqdb = new DBUtil();
 	
    
@@ -55,17 +56,17 @@ public class Testbase {
 			System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
 			
 			//for Jenkins
-			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
-			Config.load(fis);
-			//for normal work
 			/*fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
 			Config.load(fis);*/
+			//for normal work
+			fis = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+			Config.load(fis);
 			
 			//uncomment this for jenkins
-			Config.setProperty("EstimateIDs", System.getenv("Estimates"));
-			saveProperties(Config,System.getenv("DataBase"));
+			//Config.setProperty("EstimateIDs", System.getenv("Estimates"));
+			//saveProperties(Config,System.getenv("DataBase"));
 			
 			//DBUtil iqdb=new DBUtil(Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"), Config.getProperty("DBUrl"));
 			

@@ -31,10 +31,21 @@ public class IquoteLogin extends Testbase{
 			CommonFunctions.waitForPageLoad(driver);
 			Thread.sleep(10000);
 			//wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(OR.getProperty("Login_OKButton"))));
-			if (driver.findElements(By.xpath("//label[text()='Desktop']")).size()==0)
+			/*if (driver.findElements(By.xpath("//label[text()='Desktop']")).size()==0)
 			{
 			CommonFunctions.ClickElement(driver, By.cssSelector("input#company_ok"));
+			}*/
+			
+			try {
+				if(driver.findElements(By.cssSelector("input#company_ok")).size()>0) {
+					driver.findElement(By.cssSelector("input#company_ok")).click();
+				}
 			}
+			catch(Exception e) {
+				
+			}
+			
+			
 			CommonFunctions.waitForPageLoad(driver);
 			CommonFunctions.waitUntilElementisVisible(driver, By.xpath("//label[text()='Sales']"), 180000);
 			if (CommonFunctions.isElementPresent(driver, By.xpath(OR.getProperty("Desktop_Labl"))))

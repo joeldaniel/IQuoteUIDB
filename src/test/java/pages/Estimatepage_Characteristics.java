@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -875,7 +876,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(Keys.TAB);
 		}
 		
-		if(CPGraphPackBox!=null) {
+		if(CPGraphPackBox.length()>0) {
 			Thread.sleep(2000);
 		//String XpathForBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box']/parent::span/span//input";
 		/*String XpathForBox=	"//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box']/..//input";
@@ -1560,13 +1561,26 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 	{
 
 		HashMap<String, String> CharCPGenericCPOption = new HashMap<String, String>();
+		String XpathForComponent=null;
 		CharCPGenericCPOption=name.CPGenericCPOption(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
 		String CpGenericvalue=CharCPGenericCPOption.get("Description");
-
-		String XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
+		if(CharteristicDescp.equalsIgnoreCase("Shape"))
+			 XpathForComponent="//label[text()='Shape']/ancestor::header/following-sibling::div//span[@class='input-wraper islookup']//input";
+		else
+			XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
+		
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		WebElement Element = driver.findElement(By.xpath(XpathForComponent));
+		js.executeScript("arguments[0].scrollIntoView();", Element);	
+		 
 		driver.findElement(By.xpath(XpathForComponent)).click();
 		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForComponent)).sendKeys(CpGenericvalue+Keys.ENTER);
+		try {
+		driver.findElement(By.xpath(XpathForComponent)).sendKeys(CpGenericvalue);
+		driver.findElement(By.xpath(XpathForComponent)).sendKeys(Keys.ENTER);
+		}catch(Exception e) {
+			e.toString();
+		}
 
 	
 	}
