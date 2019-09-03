@@ -848,7 +848,8 @@ public class Estimatepage_Characteristics extends Testbase {
 	
 	}
 	public void Charactertics_CPGraphPackBox(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
-
+		
+		JavascriptExecutor js = (JavascriptExecutor)driver;
 		HashMap<String, String> CharCPGraphPackBox = new HashMap<String, String>();
 		CharCPGraphPackBox=name.CPGraphPackBox(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
 		String CPGraphPackBoxUnitsintheBox=CharCPGraphPackBox.get("UnitsInThebox");
@@ -869,6 +870,9 @@ public class Estimatepage_Characteristics extends Testbase {
 		if(CPGraphPackBoxBoxType!=null) {
 		//String XpathForBoxType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box Type']/parent::span/span//input";
 		String XpathForBoxType=	"//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box Type']/..//input";
+		WebElement Element = driver.findElement(By.xpath(XpathForBoxType));
+        //This will scroll the page till the element is found		
+        js.executeScript("arguments[0].scrollIntoView();", Element);
 		driver.findElement(By.xpath(XpathForBoxType)).click();
 		Thread.sleep(2000);
 		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(CPGraphPackBoxBoxType+Keys.ENTER);

@@ -299,6 +299,7 @@ public class Estimate extends Testbase{
 		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
 		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
 		boolean isEquals = new PdfComparator(file1, file2).with(new PageArea(1, 1407, 58, 2277, 363)).with(new PageArea(1,1798,483,1856,501)).compare().writeTo(diff);
+		//boolean isEquals = new PdfComparator(file1, file2).compare().writeTo(diff);
 		String status =isEquals? "PASS" : "FAIL";
 		if (!isEquals) {
 		    System.out.println("Differences found in PDF's!");
@@ -950,7 +951,12 @@ public class Estimate extends Testbase{
 			Thread.sleep(5000);
 			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Specification']")));
 			//CommonFunctions.WaitFor_ElementVisiblity(driver, By.xpath("//span[text()='Specification']"));
-			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Specification']")));
+			try {
+				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Specification']")));
+			}catch(Exception e) {
+				e.toString();
+			}
+			
 			int vale =driver.findElements(By.xpath(OR.getProperty("NewEstimate_Spec"))).size();
 			if (vale>0)
 			{
