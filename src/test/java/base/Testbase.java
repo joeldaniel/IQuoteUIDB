@@ -56,13 +56,13 @@ public class Testbase {
 			//System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
 			
 			//for Jenkins
-			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
-			Config.load(fis);
-			//for normal work
 			/*fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+System.getenv("DataBase")+".properties");
 			Config.load(fis);*/
+			//for normal work
+			fis = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+			Config.load(fis);
 			
 			//uncomment this for jenkins
 			//Config.setProperty("EstimateIDs", System.getenv("Estimates"));
@@ -117,7 +117,7 @@ public class Testbase {
 			//Extent
 			//htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir") + "\\src\\test\\resources\\runner\\MyOwnReport.html");
 			htmlReporter = new ExtentHtmlReporter(
-					System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
+					System.getProperty("user.dir") + "\\HTMLReports\\Extent Reports\\"+Config.getProperty("EstimateIDs")+".html");
 			//System.out.println(System.getProperty("user.dir") + "\\target\\surefire-reports\\MyOwnReport.html");
 			
 	        extent = new ExtentReports();
@@ -168,7 +168,7 @@ public class Testbase {
 	@AfterSuite
 	public void tearDown() throws SQLException {
 		
-		  //driver.quit();
+		 // driver.quit();
 		  iqdb.Closeconnection();
 		 extent.flush();
 		

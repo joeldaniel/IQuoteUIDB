@@ -1,3 +1,4 @@
+
 package pages;
 
 import java.awt.image.BufferedImage;
@@ -21,6 +22,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.Status;
+
 import base.Testbase;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
@@ -35,9 +38,7 @@ import utilities.ScreenShot;
 public class JobPage extends Testbase{
 
 
-	//ReadAndUpdate dbConnection = new ReadAndUpdate();
 	
-	//Author Sonali
 	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	
       
@@ -63,7 +64,7 @@ public class JobPage extends Testbase{
                   
             }
               
-//         TakeScreenShot.ScreenShotWindow(driver,"JobPage");            
+         
       }
 
       public static void NavigateToJobGeneralSettingage() throws Exception
@@ -374,7 +375,7 @@ public class JobPage extends Testbase{
 			RU.Create_Excel(ExcelPath, Sheetname, colNames);
 			for(int row=0;row<=rowCount;row++) {
 				for(int col=0;col<=colCount;col++) {
-					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[starts-with(@data-index,'"+row+"/"+col+"')]";
 					WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
 			        //This will scroll the page till the element is found		
 			        js.executeScript("arguments[0].scrollIntoView();", Element);
@@ -446,7 +447,7 @@ public class JobPage extends Testbase{
 			for(int row=0;row<=rowCount;row++) {
 				for(int col=0;col<=colCount;col++) {
 	              
-					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+					String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[starts-with(@data-index,'"+row+"/"+col+"')]";
 					WebElement Element = driver.findElement(By.xpath(jobPlanningValueXpath));
 			        //This will scroll the page till the element is found		
 			        js.executeScript("arguments[0].scrollIntoView();", Element);
@@ -603,7 +604,7 @@ public class JobPage extends Testbase{
 		String[] colNames = {"Component","Activity","Planninggroup","ScheduledResource","Start","End","PlannedQty","Producedqty","Status","Productionstarted","Productionconcluded","Plant","ProductionDivision","MISJobID","MISWorkCenter","PlannedResource"};
 		for(int row=0;row<=rowCount;row++) {
 			for(int col=0;col<=colCount;col++) {
-				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[starts-with(@data-index,'"+row+"/"+col+"')]";
 				String innerHtml="";
 				try{
 					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
@@ -681,7 +682,7 @@ public class JobPage extends Testbase{
 		//RU.Create_Excel(ExcelPath, Sheetname, colNames);
 		for(int row=0;row<=rowCount;row++) {
 			for(int col=0;col<=colCount;col++) {
-				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[starts-with(@data-index,'"+row+"/"+col+"')]";
 				String innerHtml="";
 				try{
 					innerHtml=driver.findElement(By.xpath(jobPlanningValueXpath)).getAttribute("innerHTML").toString();
@@ -748,7 +749,7 @@ public class JobPage extends Testbase{
 		for(int row=0;row<=rowCount;row++) {
 			for(int col=0;col<=colCount;col++) {
               
-				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[@data-index='"+row+"/"+col+"']";
+				String jobPlanningValueXpath="//div[@data-selected='true']//div[@role='grid' and contains(@class,'body')]//span[starts-with(@data-index,'"+row+"/"+col+"')]";
 			     CommonFunctions.ClickElement(driver, By.xpath(jobPlanningValueXpath));
 			     driver.findElement(By.xpath(jobPlanningValueXpath)).sendKeys(Keys.DOWN);
 			     
@@ -812,6 +813,7 @@ public class JobPage extends Testbase{
     			HTMLF.addrow("Comment","Job Creation" , "", "", "", "",Config.getProperty("EstimateIDs")+".html");
           		String CustomerID= driver.findElement(By.xpath("//label[text()='Customer']/parent::span//input[1]")).getAttribute("value");
           		System.out.println("Job Number and customerID : "+Jobnum+","+CustomerID);
+          		test.log(Status.INFO, "Job Number# is : "+Jobnum);
     		}
           else
           {
@@ -826,6 +828,9 @@ public class JobPage extends Testbase{
     	Estimate=Estimate.replace(",", "");
     	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
     	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx";
+    	
+    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx'>JobPlanning Actual Report</a>");
+    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx'>JobPlanning Base Report</a>");
     	
 	      boolean Comp1 = false;
 	      try {
@@ -999,6 +1004,9 @@ public class JobPage extends Testbase{
     	Estimate=Estimate.replace(",", "");
     	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
     	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx";
+    	
+    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx'>JobMaterial Actual Report</a>");
+    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx'>JobMaterial Base Report</a>");
     	
 	      boolean Comp1 = false;
 	      try {
@@ -1184,14 +1192,24 @@ public class JobPage extends Testbase{
 			String Differencepath=System.getProperty("user.dir")+ "\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\"+Estimate+"Job_ENG_Diff.png";
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 		}*/
+    	Thread.sleep(10000);
     	WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
     	Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
 		//Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png"));
 		
 		BufferedImage actualImage = screenshot.getImage();
+		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png";
+		
+		test.log(Status.INFO,"Job_ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png", "Actual");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png'>Job_ENG Actual Image</a>");
 		
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png"));
+		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png";
+		
+		test.log(Status.INFO,"Job_ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png", "Base");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png'>Job_ENG Base Image</a>");
+		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
       
@@ -1199,12 +1217,18 @@ public class JobPage extends Testbase{
         {
     	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png"));
-         System.out.println("ENG Images are Not Same");
+         System.out.println("Job_ENG Images are Not Same");
+         test.log(Status.FAIL, "Job_ENG Images are Not Same");
+         test.log(Status.INFO,"Job_ENG Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png", "Difference");
+         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png'>Job_ENG Diff Image</a>");
         }
         else {
     	 
-          System.out.println("ENG Images are Same");
+          System.out.println("Job_ENG Images are Same");
+          test.log(Status.PASS, "Job_ENG Images are  Same");
         }
+        String status =diff.hasDiff()? "PASS" : "FAIL";
+    	HTMLF.addrow("Step 6", "Job Engineering  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
 		
     }
 }

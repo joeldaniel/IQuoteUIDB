@@ -18,7 +18,7 @@ public class IquoteLogin extends Testbase{
 		
         System.out.println("Login Started");
         
-		//Thread.sleep(5000);
+		Thread.sleep(5000);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("user")));
 		
 		if (CommonFunctions.isElementPresent(driver, By.id("user")))

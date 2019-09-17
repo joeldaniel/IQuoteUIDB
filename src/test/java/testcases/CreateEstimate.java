@@ -1,7 +1,5 @@
 package testcases;
 
-
-
 import java.io.File;
 import java.util.HashSet;
 
@@ -52,7 +50,7 @@ public class CreateEstimate extends Testbase {
 	@Test(dataProvider = "dp")
 	public void createestimate(String value) throws Exception {
 		
-		test = extent.createTest("createestimate for : "+value);
+		test = extent.createTest("Creating Estimate for : "+value,"This test creates an estimate from base estimate");
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
 		
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
@@ -102,6 +100,7 @@ public class CreateEstimate extends Testbase {
 		Estimate.VerifyQty(value);
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
+		test.log(Status.INFO, "New Estimate Number is : "+newest);
 		String Actualname= Estimate.NegotiaionAndPrint(filename,value);
 		Estimate.VerifyNegotiation(Actualname,value);
 		
@@ -121,13 +120,17 @@ public class CreateEstimate extends Testbase {
 		JobPage.CloseJobTab();
 		if(JobPage.VerifyJobPlanning(value, "Planning")) {
 			System.out.println("Pass");
+			test.log(Status.PASS, "Job Planning data is verified");
 		}else {
 			System.out.println("Fail");
+			test.log(Status.FAIL, "Job Planning verification failed");
 		}
 		if(JobPage.VerifyJobMaterial(value, "Material")) {
 			System.out.println("Pass");
+			test.log(Status.PASS, "Job Material data is verified");
 		}else {
 			System.out.println("Fail");
+			test.log(Status.FAIL, "Job Material verification failed");
 		}
 		Optionqty=0;
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
@@ -142,7 +145,7 @@ public class CreateEstimate extends Testbase {
 	}
 	@AfterTest
 	public void closebrowser() {
-		//driver.close();
+		driver.close();
 	}
 	
 }

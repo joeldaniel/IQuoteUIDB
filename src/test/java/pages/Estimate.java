@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -232,28 +233,43 @@ public class Estimate extends Testbase{
 			
 			
 		}*/
+		Thread.sleep(10000);
 		WebElement webElement = driver.findElement(By.cssSelector("svg.diagram__canvas"));
 		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
 		//Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png"));
 		
+		test.log(Status.INFO,"ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png", "Actual");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png'>ENG Actual Image</a>");
+		
 		BufferedImage actualImage = screenshot.getImage();
+		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png";
 		
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png"));
+		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png";
+		
+		test.log(Status.INFO,"ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png", "Base");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png'>ENG Base Image</a>");
+		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
        
         if(diff.hasDiff()==true)
         {
-    	 BufferedImage diffImage = diff.getDiffImage();
+    	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png"));
          System.out.println("ENG Images are Not Same");
+         test.log(Status.FAIL, "ENG Images are Not Same");
+         test.log(Status.INFO,"ENG Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png", "Difference");
+         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png'>ENG Diff Image</a>");
         }
         else {
         	
              System.out.println("ENG Images are Same");
+             test.log(Status.PASS, "ENG Images are Same");
           }
-		
+        String status =diff.hasDiff()? "PASS" : "FAIL";
+    	HTMLF.addrow("Step 6", "Estimate Engineering  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
 	}
 	public static void VerifyQty(String EstimateID) throws Exception {
 
@@ -267,7 +283,7 @@ public class Estimate extends Testbase{
 			 HTMLF.addrow("","EST-Engineering Diagram", sFile1, sFile2, Differencepath, Status,Config.getProperty("EstimateIDs")+".html");
 			
 		}*/
-		
+		Thread.sleep(10000);
 		WebElement webElement = driver.findElement(By.cssSelector("div.wizard"));
 		Screenshot screenshot = new AShot().coordsProvider(new WebDriverCoordsProvider()).takeScreenshot(driver, webElement);
 		//Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
@@ -275,8 +291,17 @@ public class Estimate extends Testbase{
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png"));
 		
 		BufferedImage actualImage = screenshot.getImage();
+		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png";
+		
+		test.log(Status.INFO,"QTY Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png", "Actual");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png'>QTY Actual Image</a>");
 		
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png"));
+		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png";
+		
+		test.log(Status.INFO,"QTY Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png", "Base");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png'>QTY Base Image</a>");
+		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
        
@@ -285,33 +310,44 @@ public class Estimate extends Testbase{
     	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png"));
          System.out.println("QTY Images are Not Same");
+         test.log(Status.FAIL, "QTY Images are Not Same");
+         test.log(Status.INFO,"QTY Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png", "Difference");
+         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png'>QTY Diff Image</a>");
         }
         else {
     	
          System.out.println("QTY Images are Same");
+         test.log(Status.PASS, "QTY Images are  Same");
         }
-		
+        String status =diff.hasDiff()? "PASS" : "FAIL";
+        HTMLF.addrow("Step ", "Estimate Quantiy  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
 	
 	}
 	public static void VerifyNegotiation(String Actualfile,String Estimate) throws IOException {
 		 
 		String file1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile;
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile+"'>NEG Actual PDF</a>");
 		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf'>NEG Base PDF</a>");
 		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
 		boolean isEquals = new PdfComparator(file1, file2).with(new PageArea(1, 1407, 58, 2277, 363)).with(new PageArea(1,1798,483,1856,501)).compare().writeTo(diff);
 		//boolean isEquals = new PdfComparator(file1, file2).compare().writeTo(diff);
 		String status =isEquals? "PASS" : "FAIL";
 		if (!isEquals) {
 		    System.out.println("Differences found in PDF's!");
+		    test.log(Status.FAIL, "Differences found in PDF's!");
+		    test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput.pdf'>NEG Diff Report</a>");
 		}
 		if (isEquals) {
 		    System.out.println("No Differences found in PDF's!");
+		    test.log(Status.PASS, "No Differences found in PDF's!");
 		}
 		HTMLF.addrow("Step 4", "Estimate Negotiation PDF Validation", file2, file1, "", status,Config.getProperty("EstimateIDs")+".html");
 		test.log(Status.INFO, "Creation Of estimate ends");
 	}
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
+			
 			test.log(Status.INFO, "Creating Option : "+Option);
 			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
@@ -331,8 +367,29 @@ public class Estimate extends Testbase{
 		   	 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 		   	driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 		   	 Thread.sleep(2000);
-		   	 System.out.println("//li[contains(text(),'Option "+(Option)+"')]//following::li"+1+"");
-		   	driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).click();
+		   	/* System.out.println("//li[contains(text(),'Option "+(Option)+"')]//following::li"+1+"");
+		   	 try {
+		   		if (driver.findElements(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).size()>0) {
+		   			driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).click();
+		   		}
+		   		else if(driver.findElements(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).size()>0) {
+		   			driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).click();
+		   		}
+		   	 }
+		   	 catch(WebDriverException e) {
+		   		 e.printStackTrace();
+		   	 }
+		   	*/
+		   	List <WebElement> options = driver.findElements(By.xpath("//li[@class='item-option-qty']"));
+			int size=options.size();
+			String xpath;
+			xpath="(//li[@class='item-option-qty'])["+size+"]";
+			try {
+				driver.findElement(By.xpath(xpath)).click();
+			}
+			catch(WebDriverException e) {
+		   		 e.printStackTrace();
+		   	 }
 		   	System.out.println("Option : "+Option);
 		   	//Navigate to product screen
 		    Thread.sleep(1000);
@@ -484,7 +541,7 @@ public class Estimate extends Testbase{
 		}
 		Thread.sleep(3000);
 		//CommonFunctions.SetOriginalWindowHandle(driver);
-		if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Default')]")).size()>0) {
+		if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Default') or contains(text(),'Standard')]")).size()>0) {
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Print_Button")));
 		}
 		else if(driver.findElements(By.xpath("//span[@class='input-wraper simple-lookup2']//label[contains(text(),'Analysis')]")).size()>0){
@@ -669,6 +726,7 @@ public class Estimate extends Testbase{
 				for(String s:RemoveCharacteristicsList)
 				{
 					System.out.println("Remove Characteristics :- "+s.trim());
+					test.log(Status.INFO, "Characteristics removed are :- "+s.trim());
 					String RemoveChar=s.trim();
 					String rCharxpath="//label[text()='"+RemoveChar+"']/ancestor::header[@class='layout-header']/button/div";
 					driver.findElement(By.xpath(rCharxpath)).click();
@@ -730,6 +788,7 @@ public class Estimate extends Testbase{
 		}
 
 		System.out.println("All the Charaecteristic to be added :- "+AddCharacteristicsList);
+		test.log(Status.INFO, "Charaecteristics to be added :- "+AddCharacteristicsList);
 		for(String s:AddCharacteristicsList)
 
 		{	
@@ -906,7 +965,7 @@ public class Estimate extends Testbase{
 			driver.findElement(By.xpath(OR.getProperty("Ne_SalespaersonCode"))).sendKeys(Keys.TAB);
 		
 			//Select Product and Product Line
-			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Product Line']/following-sibling::span/span/input", ProdLine);
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Product Line' or text()='Product line']/following-sibling::span/span/input", ProdLine);
 			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Sub-line product']/following-sibling::span/span/input", Sublineprod);
 			
 			//////////Enter Agency
@@ -916,8 +975,17 @@ public class Estimate extends Testbase{
 		
 			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Ne_CSR"))));
 			/////////Enter CSR
-			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_CSR")), CSRN);
-			driver.findElement(By.xpath(OR.getProperty("Ne_CSR"))).sendKeys(Keys.TAB);
+			/*CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_CSR")), CSRN);
+			driver.findElement(By.xpath(OR.getProperty("Ne_CSR"))).sendKeys(Keys.TAB);*/
+			int size=driver.findElements(By.xpath("//label[text()='CSR']/..//span//input")).size();
+			if(size>1) {
+				driver.findElement(By.xpath("(//label[text()='CSR']/..//span//input)[1]")).click();
+				driver.findElement(By.xpath("(//label[text()='CSR']/..//span//input)[1]")).sendKeys(CSRN);
+			}
+			else {
+				driver.findElement(By.xpath(OR.getProperty("Ne_CSR"))).click();
+				driver.findElement(By.xpath(OR.getProperty("Ne_CSR"))).sendKeys(CSRN);
+			}
 			//Thread.sleep(5000);
 			
 			/////////Enter Project COde
@@ -1051,12 +1119,21 @@ public class Estimate extends Testbase{
 				String xpathval="//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']["+sizeval+"]/label";
 				System.out.println("Xpath is :- "+xpathval);
 				Thread.sleep(3000);
-				driver.findElement(By.xpath(xpathval)).click(); 
+				try {
+					driver.findElement(By.xpath(xpathval)).click();
+				}
+				catch(WebDriverException e) {
+					e.printStackTrace();
+				}
+				finally {
+					driver.findElement(By.xpath(xpathval)).click();
+				}
+				 
 				Thread.sleep(2000);
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), "To be renamed");
 				Thread.sleep(2000);
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), childMap.get("ComponentDescription"));
-				
+				test.log(Status.INFO, "Component type has been added and named as : "+childMap.get("ComponentDescription"));
 				
 				Thread.sleep(3000);
 	        }
@@ -1149,6 +1226,7 @@ public class Estimate extends Testbase{
 						int totalrow=totalcells/6;
 						int nextrow=totalrow;
 		                System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
+		                test.log(Status.INFO, "Parent Component : "+childMap.get("ParentComponent")+" is linked to : "+childMap.get("ChildComponent"));
 						int valuepresent=driver.findElements(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid']//span[text()='"+childMap.get("ChildComponent")+"']")).size();
 						String valuepresentStr=Integer.toString(valuepresent);
 						System.out.println("Element Present is :- "+valuepresentStr);
@@ -1156,7 +1234,7 @@ public class Estimate extends Testbase{
 						{
 							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div/span/div/div/div/button[1]")).click();
 							Thread.sleep(2000);
-							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid'][2]//span[@data-index='"+nextrow+"/0']")).click();
+							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid'][2]//span[starts-with(@data-index,'"+nextrow+"/0')]")).click();
 							Thread.sleep(2000);
 							String Level1SelectChild="//b[text()='Composition']/ancestor::div[@class='popup__portal program__popup']/following-sibling::div//li/label[text()='"+childMap.get("ChildComponent")+"']";
 							System.out.println(Level1SelectChild);
@@ -1189,6 +1267,8 @@ public class Estimate extends Testbase{
 			HashMap<Integer, HashMap<String, String>> LinkProductandComp = new HashMap<Integer, HashMap<String, String>>();
 			LinkProductandComp=val.QtyForEst(EstimateId, Option);
 			System.out.println(LinkProductandComp.size());
+			String s="Option,Component and Quanity :"+LinkProductandComp.size();
+			test.log(Status.INFO, s);
 			Thread.sleep(2000);
 			//int i=1;
 			 int j=0;
@@ -1208,8 +1288,8 @@ public class Estimate extends Testbase{
 			            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
 			             driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 				    	 Thread.sleep(5000);
-				    	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New quantity')]")));
-				    	 driver.findElement(By.xpath("//li[contains(text(),'New quantity')]")).click();
+				    	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[text()='New Quantity' or text()='New quantity']")));
+				    	 driver.findElement(By.xpath("//li[text()='New Quantity' or text()='New quantity']")).click();
 				    	
 			            for (int q=0;q<Qtyval.size();q++) {
 			            	
@@ -1259,7 +1339,13 @@ public class Estimate extends Testbase{
 			
 			List <WebElement> options = driver.findElements(By.xpath("//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span"));
 			int size=options.size();
-			String xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)["+size+"]";
+			String xpath;
+			if(size==0) {
+				 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)";
+			}else {
+				 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)["+size+"]";
+			}
+			
 			/*for(WebElement option:options) {
 				if(option.getAttribute("textContent")!=null)  {
 					if(option.getAttribute("textContent").contains("Option")) {
@@ -1328,6 +1414,7 @@ public class Estimate extends Testbase{
 
 				Characteristicsforcomp.clear();
 				System.out.println("Component order is  :- "+Comporderval);
+				test.log(Status.INFO, "Component order is  :- "+Comporderval);
 				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
 				String XpathForComponent="//label[text()='"+CompDescp+"']";
@@ -1348,27 +1435,32 @@ public class Estimate extends Testbase{
 					FixedCharComponents.add(fChar);
 				}
 				System.out.println("Fixed Characteristics Value are :- "+FixedCharComponents);
+				test.log(Status.INFO, "Fixed Characteristics Value are :- "+FixedCharComponents);
 				//Removing and adding the characteristics Starts
 				Estimate.UncheckUnwantedCharacteristics(FixedCharComponents);
 				Estimate.AddCharacteristics(FixedCharComponents, CompDescp);
 				for(String Characteristic:CharacterCompCharacterComp)
 				{
 					System.out.println("Characteristic is :- "+Characteristic);
+					
 					String FixedCharDescp=Characteristicsforcomp.get(Characteristic).get("FixedCharacteristicDesc");
 
 					System.out.println("Fixed Characteristic Description is :- "+FixedCharDescp);
-					
+					test.log(Status.INFO, "Characteristic filling for : "+Characteristic+" using the description "+FixedCharDescp);
 					switch(FixedCharDescp)
 					{
 					
 					case "qttCModelGraphCarac.qttCPGraphMedia":
-						EPC.Charactertics_CPGraphMedia(EstimateId,IdItemOption, Comporderval);	    
+						EPC.Charactertics_CPGraphMedia(EstimateId,IdItemOption, Comporderval);	
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;			
 					case "qttCModelGraphCarac.qttCPGraphBindStitch":
 						EPC.Charactertics_CPGraphBindStitch(EstimateId, IdItemOption,Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphColorVanish":
 						EPC.Charactertics_CPGraphColorVanish(EstimateId, IdItemOption,Comporderval);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverFormat":
 					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
@@ -1377,94 +1469,121 @@ public class Estimate extends Testbase{
 					case "qttCModelGraphCarac.qttCPGraphEndSheetFormat":	
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverOpenFormat":
 						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphHotStamping":
 						EPC.Charactertics_CPGraphHotStamping(EstimateId, IdItemOption,Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBindGlue":
 						EPC.Charactertics_CPGraphBindGlue(EstimateId, IdItemOption,Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPPlant":
 						EPC.Charactertics_CPPlant(EstimateId, IdItemOption,Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPGenericCPOptionDesc":
 					case "qttCModelPS.qttCPGenericCPOptionValues":
 						EPC.Charactertics_CPGenericCPOptionDesc(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPNote":
 						EPC.Charactertics_CPNote(EstimateId, IdItemOption,Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
 					case "qttCModelGraphCarac.qttCPAGraphPageProof2":
 					case "qttCModelGraphCarac.qttCPAGraphPageProof3":
 						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPValue":
 						EPC.Charactertics_CPValue(EstimateId,IdItemOption, Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPASimpleQty":
 					case "qttCModelPS.qttCPASimple":
 						EPC.Charactertics_CPASimpleQty(EstimateId,IdItemOption, Comporderval, Characteristic);
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphFiber":
 						EPC.Charactertics_CPGraphFiber(EstimateId, IdItemOption,Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphPackagingBox":
 						EPC.Charactertics_CPGraphPackBox(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelPS.qttCPFileList":
 						//EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphLargeFormat":
 						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphGiantCoupling":
 						//EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBleed":
 						EPC.Charactertics_CPGraphBleed(EstimateId,IdItemOption, Comporderval, Characteristic) ;
+						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 						break;
 					case "qttCModelGraphCarac.qttCPGraphUnfinishedFormat":
                         EPC.Charactertics_CPGraphUnfinishedFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
+                        test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
                         break;                        
                   case "qttCModelGraphCarac.qttCPGraphLaminating":
                         EPC.Charactertics_CPGraphInitialLaminating(EstimateId,IdItemOption, Comporderval, Characteristic);
+                        test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
                         break;
                   case "qttCModelGraphCarac.qttCPGraphHardCover":
-  						EPC.Charactertics_CPGraphHardCover(EstimateId, IdItemOption,Comporderval, Characteristic) ;     
+  						EPC.Charactertics_CPGraphHardCover(EstimateId, IdItemOption,Comporderval, Characteristic) ;    
+  						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 	  					break;
                   case "qttCModelGraphCarac.qttCPGraphMaxMultiline":
 	  					EPC.Charactertics_CPGraphMaxMultiLine(EstimateId, IdItemOption,Comporderval, Characteristic);
+	  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
 	  					break;
                   case "qttCModelGraphCarac.qttCPGraphPackagingPallet":
   						EPC.Charactertics_CPGraphPackPallet(EstimateId,IdItemOption, Comporderval, Characteristic) ; 
+  						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   						break;
                   case "qttCModelGraphCarac.qttCPGraphPrintType":	
   					EPC.Charactertics_CPGraphPrintType(EstimateId,IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelGraphCarac.qttCPGraphPackagingStrapping":
                 	 EPC.Charactertics_CPGraphPackagingStrapping(EstimateId,IdItemOption, Comporderval, Characteristic);
+                	 test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
                 	  break;
                   case "qttCModelGraphCarac.qttCPGraphGIrregFormat":
   					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelGraphCarac.qttCPGraphLabelFormat":
   					EPC.Charactertics_CPGraphLabelFormat(EstimateId, IdItemOption,Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelPS.qttCPGenericCPOption":
   					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelPS.qttCPAOptionQty":
   					EPC.Charactertics_CPAOptionQty(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelGraphCarac.qttCPGraphDieCut":
   					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelGraphCarac.qttCPGraphWireOBind":
   					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
                   case "qttCModelPS.qttCPGenericRawMaterialValue":
   					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
+  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
   					break;
 
 					default:
@@ -1559,16 +1678,16 @@ public class Estimate extends Testbase{
 			System.out.println("Total rows to select for data Change is :- "+TotalRowsFordelivery);
 			for(int i=0;i<=TotalRowsFordelivery;i++)
 			{
-				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']")).click();
-				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).click();
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[starts-with(@data-index,'"+i+"/2')]")).click();
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[starts-with(@data-index,'"+i+"/2')]/div/span[@class='datepicker input-wraper']/input")).click();
 				/*driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.chord(Keys.CONTROL,"a"));
 				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.DELETE);
 				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).sendKeys(Keys.TAB);*/
 				Thread.sleep(2000);
 				//driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span/input")).click();
-				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.HOME);
-				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Futuredate);
-				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[@data-index='"+i+"/2']/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.TAB);
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[starts-with(@data-index,'"+i+"/2')]/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.HOME);
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[starts-with(@data-index,'"+i+"/2')]/div/span[@class='datepicker input-wraper']/input")).sendKeys(Futuredate);
+				driver.findElement(By.xpath("//label[text()='Apply Delivery Date']/ancestor::div[@class='grid grid-normal']//span[starts-with(@data-index,'"+i+"/2')]/div/span[@class='datepicker input-wraper']/input")).sendKeys(Keys.TAB);
 				Thread.sleep(2000);
 //				driver.findElement(By.xpath("//header[text()='Deliveries']")).click();
 //				Thread.sleep(2000);
@@ -1578,7 +1697,7 @@ public class Estimate extends Testbase{
 			{
 
 				System.out.println("Entering Inventory data :"+Inventory);
-				CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']"));
+				CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[starts-with(@data-index,'0/3')]"));
 				Thread.sleep(2000);
 				//          driver.findElement(By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']/span/input[1]")).sendKeys(Inventory);
 				//              driver.findElement(By.xpath("//header[text()='Select the option that will be approved']/parent::div//div[@class='grid__box']//span[@data-index='0/3']/span/input[1]")).sendKeys(Keys.TAB);
@@ -1607,11 +1726,13 @@ public class Estimate extends Testbase{
 		if (StatusChange.contains(ValidateStatus))
 		{
 			System.out.println("Status Changed Successfully ");
+			test.log(Status.INFO, "Estimate released to production");
 		}
 
 		else
 		{
 			System.err.println("Status not Changed Successfully");
+			test.log(Status.INFO, "Estimate not able release to production");
 		}
 		
 		return ScreenShotStatusChange;

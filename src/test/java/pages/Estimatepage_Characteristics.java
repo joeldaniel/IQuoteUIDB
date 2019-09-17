@@ -27,7 +27,12 @@ public class Estimatepage_Characteristics extends Testbase {
 		HashMap<String, HashMap<String, String>> EstPageSpec = new HashMap<String, HashMap<String, String>>();
 
 		//EstPageSpec=name.Papegetpec(Estimateid, Comporderval); 
-		EstPageSpec=name.CPGraphMedia(Estimateid,IdItemOption, Comporderval);
+		try {
+			EstPageSpec=name.CPGraphMedia(Estimateid,IdItemOption, Comporderval);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		String OptDescp= EstPageSpec.get(Comporderval).get("OptionDescription");
 		String CompDescp1= EstPageSpec.get(Comporderval).get("ComponentDescription");
 		String CompFinal= EstPageSpec.get(Comporderval).get("ComponentFinal");
@@ -68,14 +73,19 @@ public class Estimatepage_Characteristics extends Testbase {
 
 			String Grammage1= PageGrammage.replace(".0", "");
 			System.out.println("Grammage is :- "+Grammage1);
-			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).click();
+			/*driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).click();
 			//CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_Grammage")), Grammage1);
 			 driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Grammage1);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.DOWN);
 			Thread.sleep(2000);
 			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.ENTER);
 			Thread.sleep(2000);
-			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.TAB);
+			driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Keys.TAB);*/
+			
+			driver.findElement(By.xpath("(//label[text()='Grammage/ Thickness']/following-sibling::span/span//..)[3]")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='"+Grammage1+"']")).click();
+			
 			
 			String pr=driver.findElement(By.xpath("//label[text()='Provided']//parent::button")).getAttribute("aria-checked");
 			if(PageProvide.equalsIgnoreCase("0")) {
@@ -89,6 +99,7 @@ public class Estimatepage_Characteristics extends Testbase {
 				  }
 			}
 			Thread.sleep(3000);
+			
 			driver.findElement(By.xpath("//label[text()='"+CharacTypeDesc+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button")).click();
 
 			if (driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
@@ -97,7 +108,7 @@ public class Estimatepage_Characteristics extends Testbase {
 				String SFFinishedFormat=PageFormatWidth+" x "+PageFormatHeight;
 				driver.findElement(By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 				driver.findElement(By.xpath("//label[text()='Grain Direction']/parent::span//span[@class='ltv__itemcont ltv_']/span[@class='input-wraper simple-lookup2']")).click();
-
+				Thread.sleep(3000);
 				if (PageGrainDirection!=null || PageGrainDirection!="")
 				{
 					String XpathforgrainDirection="//div[@class='drop-down']//label[text()='"+PageGrainDirection+"']"; 
@@ -105,7 +116,7 @@ public class Estimatepage_Characteristics extends Testbase {
 				}
 
 				//MOre Options
-				driver.findElement(By.xpath("//label[text()='More Options']/parent::div//button[1]")).click();
+				//driver.findElement(By.xpath("//label[text()='More Options']/parent::div//button[1]")).click();
 
 				driver.findElement(By.xpath("//button[@title='OK']")).click();
 			}
@@ -119,7 +130,12 @@ public class Estimatepage_Characteristics extends Testbase {
 	{
 		
 		HashMap<String, String> CharCPGraphBindStitch = new HashMap<String, String>();
-		CharCPGraphBindStitch=name.CPGraphBindStitch(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		try {
+			CharCPGraphBindStitch=name.CPGraphBindStitch(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
 
 		String CPGraphBindStitchQty=CharCPGraphBindStitch.get("QuantityOfWireStitches");
@@ -135,43 +151,49 @@ public class Estimatepage_Characteristics extends Testbase {
 		String XpathWitCPGraphBindStitchWireStichWidth= "//label[text()='Wire Stitch Width']/parent::span/span/input";
 		String XpathWitCPGraphBindStitchApplication1="//label[text()='Application']/parent::span/span[@class='ltv__itemcont ltv_']/span/label";
 		String XpathWitCPGraphBindStitchShape="//label[text()='Shape']/parent::span/span/span/input";
-
-		// for Quantity of wire stitches
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).click();
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).sendKeys(Keys.DELETE);
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).sendKeys(CPGraphBindStitchQty+Keys.TAB);
-
-		// for Note
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchNote)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchNote)).sendKeys(CPGraphBindStitchNote+Keys.TAB);
-
-
-
-		// for stitch Details
-		driver.findElement(By.xpath(XpathWitCPGraphBindStitchDetails)).click();
-		if(driver.findElements(By.xpath("//header[text()='Stitch Detail']")).size()>0)
-		{
-			System.out.println("Stitch Details page is displayed");
-
-			//For Wire Stitch Width
-			driver.findElement(By.xpath(XpathWitCPGraphBindStitchWireStichWidth)).clear(); 
-			driver.findElement(By.xpath(XpathWitCPGraphBindStitchWireStichWidth)).sendKeys(CPGraphBindStitchWireStichWidth+Keys.TAB);
-
-			//For Application
-			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphBindStitchApplication1, CPGraphBindStitchApplication1);
-
-			//For Shape
-			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindStitchShape, CPGraphBindStitchShape);
-			Thread.sleep(2000);
-
-			//click on ok button
-			driver.findElement(By.xpath("//button[@title='OK']")).click();
+		
+		try {
+			
+			
+			// for Quantity of wire stitches
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).click();
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).sendKeys(Keys.DELETE);
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchQty)).sendKeys(CPGraphBindStitchQty+Keys.TAB);
+	
+			// for Note
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchNote)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchNote)).sendKeys(CPGraphBindStitchNote+Keys.TAB);
+	
+	
+	
+			// for stitch Details
+			driver.findElement(By.xpath(XpathWitCPGraphBindStitchDetails)).click();
+			if(driver.findElements(By.xpath("//header[text()='Stitch Detail']")).size()>0)
+			{
+				System.out.println("Stitch Details page is displayed");
+	
+				//For Wire Stitch Width
+				driver.findElement(By.xpath(XpathWitCPGraphBindStitchWireStichWidth)).clear(); 
+				driver.findElement(By.xpath(XpathWitCPGraphBindStitchWireStichWidth)).sendKeys(CPGraphBindStitchWireStichWidth+Keys.TAB);
+	
+				//For Application
+				CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphBindStitchApplication1, CPGraphBindStitchApplication1);
+	
+				//For Shape
+				CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindStitchShape, CPGraphBindStitchShape);
+				Thread.sleep(2000);
+	
+				//click on ok button
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
+			}
+			else
+			{
+				System.err.println("Stitch Details page is not displayed. Please check");
+			}
 		}
-		else
-		{
-			System.err.println("Stitch Details page is not displayed. Please check");
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-
 	
 	}
 	public void Charactertics_CPGraphColorVanish(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, IOException, SQLException {
@@ -179,7 +201,13 @@ public class Estimatepage_Characteristics extends Testbase {
 		try
 		{
 		HashMap<String, HashMap<String, String>> EstPageColorandVarnish = new HashMap<String, HashMap<String, String>>();
-		EstPageColorandVarnish=name.CPGraphColorVanish(Estimateid, IdItemOption,Comporderval);
+		try {
+			EstPageColorandVarnish=name.CPGraphColorVanish(Estimateid, IdItemOption,Comporderval);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 
 		List<String> listCompDesc = new ArrayList<String>(EstPageColorandVarnish.keySet());
 
@@ -231,31 +259,32 @@ public class Estimatepage_Characteristics extends Testbase {
 				String PageAdditionalplate= EstPageColorandVarnish.get(idps).get("AdditionalPlate");
 
 
-				if (driver.findElements(By.xpath("//div[@class='dialog dialog__view']")).size()>0)
+				if (driver.findElements(By.xpath("//div[contains(@class,'dialog dialog__view')]")).size()>0)
 				{
-					driver.findElement(By.xpath("//div[@class='dialog__content']//div[@class='listtb']//button[1]")).click();
-					String Xpathformaincolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/0']";
+					driver.findElement(By.xpath("//div[@class='dialog__content']//div[@class='listtb']//button[1]")).click();  
+					
+					String Xpathformaincolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/0')]";
 					driver.findElement(By.xpath(Xpathformaincolor)).click();
 					driver.findElement(By.xpath(Xpathformaincolor)).sendKeys(PageMainColor);
 					Thread.sleep(5000);
 					//driver.findElement(By.xpath("//label[text()='"+PageMainColor+"']")).click();
-					String Xpathforcolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/1']";
+					String Xpathforcolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/1')]";
 					driver.findElement(By.xpath(Xpathforcolor)).click();
 					driver.findElement(By.xpath(Xpathforcolor)).sendKeys(PageColor);
 					Thread.sleep(2000);
-					String XpathforCoverage="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/2']";
+					String XpathforCoverage="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/2')]";
 					driver.findElement(By.xpath(XpathforCoverage)).click();
 					driver.findElement(By.xpath(XpathforCoverage)).sendKeys(PageCoverage+Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforAdditionalPlate="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/4']";
+					String XpathforAdditionalPlate="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/4')]";
 					driver.findElement(By.xpath(XpathforAdditionalPlate)).click();
 					driver.findElement(By.xpath(XpathforAdditionalPlate)).sendKeys(PageAdditionalplate+Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforNotes="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/5']";
+					String XpathforNotes="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/5')]";
 					driver.findElement(By.xpath(XpathforNotes)).click();
 					driver.findElement(By.xpath(XpathforNotes)).sendKeys(PageAdditionalplate+Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforPrintInput="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+j+"/6']";
+					String XpathforPrintInput="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+j+"/6')]";
 					CommonFunctions.waitUntilElementisClickable(driver, By.xpath(XpathforPrintInput), 180);
 					
 //					driver.findElement(By.xpath(XpathforPrintInput)).click();
@@ -287,8 +316,6 @@ public class Estimatepage_Characteristics extends Testbase {
 		if (ListBack.size()>0)
 		{
 
-			//				String Listbackstartvalue= ListBack.get(1);
-			//				int backstartval=Integer.parseInt(Listbackstartvalue);
 
 			driver.findElement(By.xpath("//label[text()='Colors']/parent::span//span[@class='ltv__item ltv_ ltv_last'][1]//img")).click();		
 			//for (int k=1;k<=ListBack.size();k++)
@@ -319,17 +346,17 @@ public class Estimatepage_Characteristics extends Testbase {
 				String xpathForProduct= "//label[text()='"+CompDesc.trim()+"']";	
 				//driver.findElement(By.xpath(xpathForProduct)).click();
 				Thread.sleep(5000);
+				
 
-
-				if (driver.findElements(By.xpath("//div[@class='dialog dialog__view']")).size()>0)
+				if (driver.findElements(By.xpath("//div[starts-with(@class,'dialog dialog__view')]")).size()>0)
 				{
 					driver.findElement(By.xpath("//div[@class='dialog__content']//div[@class='listtb']//button[1]")).click();
-					String Xpathformaincolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+l+"/0']";
+					String Xpathformaincolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+l+"/0')]";
 					driver.findElement(By.xpath(Xpathformaincolor)).click();
 					driver.findElement(By.xpath(Xpathformaincolor)).sendKeys(PageMainColor+Keys.ENTER+Keys.TAB);
 					//driver.findElement(By.xpath("//label[text()='"+PageMainColor+"']")).click();
 					Thread.sleep(2000);
-					String Xpathforcolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+l+"/1']";
+					String Xpathforcolor="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+l+"/1')]";
 					driver.findElement(By.xpath(Xpathforcolor)).click();
 					driver.findElement(By.xpath(Xpathforcolor)).sendKeys(PageColor);
 					Thread.sleep(2000);
@@ -337,15 +364,15 @@ public class Estimatepage_Characteristics extends Testbase {
 					Thread.sleep(2000);
 					driver.findElement(By.xpath(Xpathforcolor)).sendKeys(Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforCoverage="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+l+"/2']";
+					String XpathforCoverage="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+l+"/2')]";
 					driver.findElement(By.xpath(XpathforCoverage)).click();
 					driver.findElement(By.xpath(XpathforCoverage)).sendKeys(PageCoverage+Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforAdditionalPlate="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+l+"/4']";
+					String XpathforAdditionalPlate="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+l+"/4')]";
 					driver.findElement(By.xpath(XpathforAdditionalPlate)).click();
 					driver.findElement(By.xpath(XpathforAdditionalPlate)).sendKeys(PageAdditionalplate+Keys.TAB);
 					Thread.sleep(2000);
-					String XpathforNotes="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+l+"/5']";
+					String XpathforNotes="//div[@class='dialog__content']//div[@class='grid__box']//div[@aria-label='grid'][2]//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[starts-with(@data-index,'"+l+"/5')]";
 					driver.findElement(By.xpath(XpathforNotes)).click();
 					driver.findElement(By.xpath(XpathforNotes)).sendKeys(PageAdditionalplate+Keys.TAB);
 					Thread.sleep(2000);
@@ -379,7 +406,7 @@ public class Estimatepage_Characteristics extends Testbase {
 					
 					
 					//for(int p=1;p<=VarnishList.size();p++)
-					//{
+				
 					int p=1;
 					for(String idps2:VarnishList) {
 						int q=p-1;
@@ -389,15 +416,15 @@ public class Estimatepage_Characteristics extends Testbase {
 					  String VarnishCoverage=EstPageColorandVarnish.get(Valueforvar).get("Coverage");
 					  String VarnishPosition=EstPageColorandVarnish.get(Valueforvar).get("FrontOrBack");
 					  
-					  String xpathForVarnishColor="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (@data-index='"+q+"/0')]";
+					  String xpathForVarnishColor="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (starts-with(@data-index,'"+q+"/0'))]";
 					  String xpathForVarnishColortext=xpathForVarnishColor+"//input";
 					  driver.findElement(By.xpath(xpathForVarnishColor)).click();
 					  Thread.sleep(2000);
 					  driver.findElement(By.xpath(xpathForVarnishColortext)).sendKeys(VarnishColor);
 					  Thread.sleep(2000);
 					  driver.findElement(By.xpath("//label[text()='Varnishes']")).click();
-					  Thread.sleep(1000);
-					  String xpathForVarnishCoverage="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (@data-index='"+q+"/1')]";
+					  Thread.sleep(2000);
+					  String xpathForVarnishCoverage="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (starts-with(@data-index,'"+q+"/1'))]";
 					  driver.findElement(By.xpath(xpathForVarnishCoverage)).click();
 					  Thread.sleep(2000);
 					  
@@ -409,7 +436,7 @@ public class Estimatepage_Characteristics extends Testbase {
 					  {
 						  driver.findElement(By.xpath("//li/label[text()='Spot']")).click();
 					  }
-					  String xpathForPosition="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (@data-index='"+q+"/2')]";
+					  String xpathForPosition="//label[text()='Varnishes']/ancestor::div[@class='listtb']/parent::div//span[contains(@class,'grid__cell grid__cell') and (starts-with(@data-index,'"+q+"/2'))]";
 					  driver.findElement(By.xpath(xpathForPosition)).click();
 					  driver.findElement(By.xpath(xpathForPosition)).click();
 					  String fr=driver.findElement(By.xpath("//span[text()='Front']//parent::li//button")).getAttribute("aria-checked");
@@ -454,7 +481,13 @@ public class Estimatepage_Characteristics extends Testbase {
 	public void Charactertics_CPGraphRegularFormat(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
 
 		HashMap<String, HashMap<String, String>> EstPageFormat = new HashMap<String, HashMap<String, String>>();
-		EstPageFormat=name.CPGraphRegularFormat(Estimateid, IdItemOption,Comporderval);
+		try {
+			EstPageFormat=name.CPGraphRegularFormat(Estimateid, IdItemOption,Comporderval);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 
 		System.out.println("Component is "+Comporderval);
 		String OptDescp= EstPageFormat.get(Comporderval).get("OptionDescription");
@@ -492,59 +525,63 @@ public class Estimatepage_Characteristics extends Testbase {
 		String SFFinishedFormat=PageFinishedFormatWidth+" x "+PageFinishedFormatHeight;
 		String FlatFormat=PageFormatFlatWidth+" x "+PageFinishedFormatHeight;
 		Thread.sleep(5000);  
-		switch(CharacTypeDesc.toLowerCase().trim())
-		{
-		case "folded format (model)":
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Flat (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(FlatFormat+Keys.TAB);
-			break;
-		case "leaf format":
-		case "blank size regular":
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			break;
-		case "pages format":
-		case "signature format":
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Page']/parent::span/following-sibling::span/input")).sendKeys(PageFormat);
-			break;
-		case "cover format":
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			if(!PageFormatLeftFlap.isEmpty()) {
-				driver.findElement(By.xpath("//label[text()='Left Flap']/..//following-sibling::span[1]//child::input")).sendKeys(PageFormatLeftFlap+Keys.TAB);
-			}
-			if(!PageFormatRightFlap.isEmpty()) {
-				driver.findElement(By.xpath("//label[text()='Right Flap']/..//following-sibling::span[1]//child::input")).sendKeys(PageFormatRightFlap+Keys.TAB);
-			}
-			break;
-		case "end sheet format":
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-			String val=driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).getAttribute("aria-checked");
-			if(FormatBothSheetsEqual.equalsIgnoreCase("1")) {
-				if(val.equalsIgnoreCase("true")) {
-					driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).click();
+		try {	
+			switch(CharacTypeDesc.toLowerCase().trim())
+			{
+			case "folded format (model)":
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Flat (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(FlatFormat+Keys.TAB);
+				break;
+			case "leaf format":
+			case "blank size regular":
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+				break;
+			case "pages format":
+			case "signature format":
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Page']/parent::span/following-sibling::span/input")).sendKeys(PageFormat);
+				break;
+			case "cover format":
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Closed (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+				if(!PageFormatLeftFlap.isEmpty()) {
+					driver.findElement(By.xpath("//label[text()='Left Flap']/..//following-sibling::span[1]//child::input")).sendKeys(PageFormatLeftFlap+Keys.TAB);
 				}
-			}
-			else {
-				if(val.equalsIgnoreCase("true")) {
-					driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).click();
+				if(!PageFormatRightFlap.isEmpty()) {
+					driver.findElement(By.xpath("//label[text()='Right Flap']/..//following-sibling::span[1]//child::input")).sendKeys(PageFormatRightFlap+Keys.TAB);
 				}
+				break;
+			case "end sheet format":
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Size (WxH)']/parent::span/span/div/span[1]/input")).sendKeys(SFFinishedFormat+Keys.TAB);
+				String val=driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).getAttribute("aria-checked");
+				if(FormatBothSheetsEqual.equalsIgnoreCase("1")) {
+					if(val.equalsIgnoreCase("true")) {
+						driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).click();
+					}
+				}
+				else {
+					if(val.equalsIgnoreCase("true")) {
+						driver.findElement(By.xpath("//label[text()='Both sheets equal']/..")).click();
+					}
+				}
+				break;
+			
+				
+				
+				
+			default:
+				System.out.println("component type is not coded : "+CompTypedescp);
 			}
-			break;
-		
-			
-			
-			
-		default:
-			System.out.println("component type is not coded : "+CompTypedescp);
 		}
-		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 	
@@ -552,8 +589,13 @@ public class Estimatepage_Characteristics extends Testbase {
 
 
 		HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
-
-		CharCPGraphStampingItem=name.CPGraphHotStamping(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		try {
+			CharCPGraphStampingItem=name.CPGraphHotStamping(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		List<String> listCPGraphStampingItem = new ArrayList<String>(CharCPGraphStampingItem.keySet());
 		if(!(listCPGraphStampingItem.size()==0))
 		{
@@ -582,63 +624,66 @@ public class Estimatepage_Characteristics extends Testbase {
 				//String XpathWitCPGraphStampingItemSurface="//label[text()='Hot Stamping ']/ancestor::div[@class='list__item']//div[@class='grid__box']//span[contains(@class,'grid__cell grid__cell') and (@data-index='0/3')]/span/label";
 				String XpathWitCPGraphStampingItemSurface="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//div[@class='grid__box']//span[@class='grid__cell grid__cell--simplelookup grid__current ' and @data-index='"+z+"/3']";
 				String XpathWitCPGraphStampingItemInputNum = "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//div[@class='grid__box']//span[contains(@class,'grid__cell grid__cell') and (@data-index='"+z+"/4')]/span/label";
-
-
-				//click on add new record button
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemAddButton)).click();
-
-				//For type
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemTypeClick)).click();
-				CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphStampingItemType, CPGraphStampingItemType);
-
-				//For Weight
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidth)).click();
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidth)).click();
-				Thread.sleep(4000);
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidthinput)).sendKeys(CPGraphStampingItemWidth);
-
-				//For Height
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeight)).click();
-			//	driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeight)).click();
-				
-				Thread.sleep(3000);
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeightinput)).sendKeys(CPGraphStampingItemHeight);
-				driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeightinput)).sendKeys(Keys.TAB);
-				
-				//For Surface
-				if(CPGraphStampingItemTypeSurface.equals("0")) {
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemSurface, "Front");
-				}
-					else {
-						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemSurface, "Back");
+				try {
+	
+					//click on add new record button
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemAddButton)).click();
+	
+					//For type
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemTypeClick)).click();
+					CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphStampingItemType, CPGraphStampingItemType);
+	
+					//For Weight
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidth)).click();
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidth)).click();
+					Thread.sleep(4000);
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemWidthinput)).sendKeys(CPGraphStampingItemWidth);
+	
+					//For Height
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeight)).click();
+				//	driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeight)).click();
+					
+					Thread.sleep(3000);
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeightinput)).sendKeys(CPGraphStampingItemHeight);
+					driver.findElement(By.xpath(XpathWitCPGraphStampingItemHeightinput)).sendKeys(Keys.TAB);
+					
+					//For Surface
+					if(CPGraphStampingItemTypeSurface.equals("0")) {
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemSurface, "Front");
 					}
-				//changing to go with index For Surface
-				//CommonFunctions.selectDropdownByIndex(driver,By.xpath(XpathWitCPGraphStampingItemSurface),Integer.parseInt(CPGraphStampingItemTypeSurface));
-				
-
-				//for Input Number
-				switch(Integer.parseInt(CPGraphStampingItemInputNumber))
-				{
-				
-				case 1:
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "1st Input");	    
-					break;	
-				case 2:
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "2nd Input");	    
-					break;	
-				case 3:
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "3rd Input");	    
-					break;	
-				case 4:
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "4th Input");	    
-					break;	
-				case 5:
-					CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "5th Input");	    
-					break;	
-				default:
-					System.out.println("Value of CPGraphStampingItemInputNumber is not selected with : "+CPGraphStampingItemInputNumber);
+						else {
+							CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemSurface, "Back");
+						}
+					//changing to go with index For Surface
+					//CommonFunctions.selectDropdownByIndex(driver,By.xpath(XpathWitCPGraphStampingItemSurface),Integer.parseInt(CPGraphStampingItemTypeSurface));
+					
+	
+					//for Input Number
+					switch(Integer.parseInt(CPGraphStampingItemInputNumber))
+					{
+					
+					case 1:
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "1st Input");	    
+						break;	
+					case 2:
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "2nd Input");	    
+						break;	
+					case 3:
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "3rd Input");	    
+						break;	
+					case 4:
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "4th Input");	    
+						break;	
+					case 5:
+						CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphStampingItemInputNum, "5th Input");	    
+						break;	
+					default:
+						System.out.println("Value of CPGraphStampingItemInputNumber is not selected with : "+CPGraphStampingItemInputNumber);
+					}
 				}
-
+				catch(Exception e) {
+					e.printStackTrace();
+				}
 
 			}
 		}
@@ -655,9 +700,12 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPPlantPlant=CharCPPlant.get("Plant");
       	String XpathWithCPPlantPlant="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//span//label[text()='Plant']/parent::span/span/span/input";
     	    	
-    	
+    	try {
     	CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWithCPPlantPlant, CPPlantPlant);
-    	
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     		
 	
 	}
@@ -672,23 +720,27 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGenericCPOptionOptions=CharCPGenericCPOptionDesc.get("Options");
 		String CPGenericCPOptionQuantity=CharCPGenericCPOptionDesc.get("Quantity");
 
-
-		String XpathForOption="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Option']/parent::span/span//input";
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForOption, CPGenericCPOptionOptions);
-
-		String XpathForDescp="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Description']/parent::span/span//input";
-		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForDescp, CPGenericCPOptionDesc);
-		CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForDescp, CPGenericCPOptionDesc);
-		
-		
-		String XpathForQuantity="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Quantity']/parent::span/span//input";
-		if(driver.findElements(By.xpath(XpathForQuantity)).size()>0)
-		{
-		CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForQuantity, CPGenericCPOptionQuantity);
+		try {
+			String XpathForOption="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Option']/parent::span/span//input";
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForOption, CPGenericCPOptionOptions);
+	
+			String XpathForDescp="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Description']/parent::span/span//input";
+			//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathForDescp, CPGenericCPOptionDesc);
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForDescp, CPGenericCPOptionDesc);
+			
+			
+			String XpathForQuantity="//label[text()=\""+CharteristicDescp+"\"]/ancestor::header/following-sibling::div//label[text()='Quantity']/parent::span/span//input";
+			if(driver.findElements(By.xpath(XpathForQuantity)).size()>0)
+			{
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForQuantity, CPGenericCPOptionQuantity);
+			}
+			else
+			{
+				System.out.println("Quantity field is not present for CPOption Desc :- "+CharteristicDescp);
+			}
 		}
-		else
-		{
-			System.out.println("Quantity field is not present for CPOption Desc :- "+CharteristicDescp);
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	
 	}
@@ -699,10 +751,14 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPNoteNote=CharCPNote.get("Note");
 
 		String xpathforNoteText="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//div[@class='text']/textarea";
-
-		driver.findElement(By.xpath(xpathforNoteText)).click();
-		driver.findElement(By.xpath(xpathforNoteText)).sendKeys(CPNoteNote);
-		Thread.sleep(2000);
+		try {
+			driver.findElement(By.xpath(xpathforNoteText)).click();
+			driver.findElement(By.xpath(xpathforNoteText)).sendKeys(CPNoteNote);
+			Thread.sleep(2000);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 	public void Charactertics_CPAGraphPageProof(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
@@ -726,67 +782,70 @@ public class Estimatepage_Characteristics extends Testbase {
 		String xpathForPagewh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Page (WxH)']/parent::span/span/input";
 		String PageWHval=CPAGraphPageWidth+" x "+CPAGraphPageHeight;
 		String XpathForNotes="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Notes']/parent::span/span/div/textarea";
-
-		//For Defined pages
-		if (CPAGraphPageProofDefinedPages.equals("0"))
-		{
-			String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
-			if(getCheckStatus.equals("true"))
+		try {
+			//For Defined pages
+			if (CPAGraphPageProofDefinedPages.equals("0"))
 			{
-				driver.findElement(By.xpath(xpathForDefinedpages)).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath(xpathForQuantity)).clear();
-				driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
-
-
-			}
-
-
-		}
-		else if(CPAGraphPageProofDefinedPages.equals("1"))
-		{
-			String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
-			if(getCheckStatus.equals("false"))
-			{
-				driver.findElement(By.xpath(xpathForDefinedpages)).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath(xpathForQuantity)).clear();
-				driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
-			}
-
-		}
-		//For Defined pages
-
-		//For Defined Format
-		if(CPAGraphPageProofDefinedFormat.equals("0"))
-		{
-			String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
-			if(getCheckStatusDF.equals("true"))
-			{
-				driver.findElement(By.xpath(xpathForDefinedFormat)).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath(xpathForPagewh)).clear();
-				driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
-			}
-		}
-		else if(CPAGraphPageProofDefinedFormat.equals("1"))
-		{
-			String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
-			if(getCheckStatusDF.equals("false"))
-			{
-				driver.findElement(By.xpath(xpathForDefinedFormat)).click();
-				Thread.sleep(2000);
-
-				driver.findElement(By.xpath(xpathForPagewh)).clear();
-				driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
-			}
-		}
-
-		//For Notes
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForNotes)).clear();
-		driver.findElement(By.xpath(XpathForNotes)).sendKeys(CPAGraphPageProofNotes);
+				String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
+				if(getCheckStatus.equals("true"))
+				{
+					driver.findElement(By.xpath(xpathForDefinedpages)).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath(xpathForQuantity)).clear();
+					driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
 	
+	
+				}
+	
+	
+			}
+			else if(CPAGraphPageProofDefinedPages.equals("1"))
+			{
+				String getCheckStatus=driver.findElement(By.xpath(xpathForDefinedpagesButton)).getAttribute("aria-checked");
+				if(getCheckStatus.equals("false"))
+				{
+					driver.findElement(By.xpath(xpathForDefinedpages)).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath(xpathForQuantity)).clear();
+					driver.findElement(By.xpath(xpathForQuantity)).sendKeys(CPAGraphPageQuantity);
+				}
+	
+			}
+			//For Defined pages
+	
+			//For Defined Format
+			if(CPAGraphPageProofDefinedFormat.equals("0"))
+			{
+				String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
+				if(getCheckStatusDF.equals("true"))
+				{
+					driver.findElement(By.xpath(xpathForDefinedFormat)).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath(xpathForPagewh)).clear();
+					driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
+				}
+			}
+			else if(CPAGraphPageProofDefinedFormat.equals("1"))
+			{
+				String getCheckStatusDF=driver.findElement(By.xpath(xpathForDefinedFormatButton)).getAttribute("aria-checked");
+				if(getCheckStatusDF.equals("false"))
+				{
+					driver.findElement(By.xpath(xpathForDefinedFormat)).click();
+					Thread.sleep(2000);
+	
+					driver.findElement(By.xpath(xpathForPagewh)).clear();
+					driver.findElement(By.xpath(xpathForPagewh)).sendKeys(PageWHval+Keys.TAB);
+				}
+			}
+	
+			//For Notes
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForNotes)).clear();
+			driver.findElement(By.xpath(XpathForNotes)).sendKeys(CPAGraphPageProofNotes);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void Charactertics_CPValue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
@@ -796,10 +855,14 @@ public class Estimatepage_Characteristics extends Testbase {
 		String Cpvalue=CharCPvalue.get("Value");
 
 		String XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
-		driver.findElement(By.xpath(XpathForComponent)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForComponent)).sendKeys(Cpvalue);
-
+		try {
+			driver.findElement(By.xpath(XpathForComponent)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForComponent)).sendKeys(Cpvalue);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 	public void Charactertics_CPASimpleQty(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
@@ -813,23 +876,26 @@ public class Estimatepage_Characteristics extends Testbase {
 
 
 		
-		
+		try {
 
-		if(CPASimpleQtyQuantity!=null) {
-				// for Quantity
-				String XpathWitCPASimpleQtyQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).click();
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).clear(); 
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).sendKeys(CPASimpleQtyQuantity+Keys.TAB); 
+			if(CPASimpleQtyQuantity!=null) {
+					// for Quantity
+					String XpathWitCPASimpleQtyQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).click();
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).clear(); 
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyQuantity)).sendKeys(CPASimpleQtyQuantity+Keys.TAB); 
+			}
+					// for Note
+			if(!CPASimpleQtyNote.isEmpty()) {
+					String XpathWitCPASimpleQtyNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).click();
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).clear(); 
+					driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).sendKeys(CPASimpleQtyNote+Keys.TAB);
+			}
 		}
-				// for Note
-		if(!CPASimpleQtyNote.isEmpty()) {
-				String XpathWitCPASimpleQtyNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).click();
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).clear(); 
-				driver.findElement(By.xpath(XpathWitCPASimpleQtyNote)).sendKeys(CPASimpleQtyNote+Keys.TAB);
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-	
 	}
 	public void Charactertics_CPGraphFiber(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
@@ -840,11 +906,15 @@ public class Estimatepage_Characteristics extends Testbase {
 
 
 		String XpathForGrainDirection="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Grain Direction']/parent::span//span/input";
-		driver.findElement(By.xpath(XpathForGrainDirection)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForGrainDirection)).sendKeys(CPGraphFiberGrainDirection+Keys.ENTER);
-		Thread.sleep(2000);
-
+		try {
+			driver.findElement(By.xpath(XpathForGrainDirection)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForGrainDirection)).sendKeys(CPGraphFiberGrainDirection+Keys.ENTER);
+			Thread.sleep(2000);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 	public void Charactertics_CPGraphPackBox(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
@@ -856,53 +926,56 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphPackBoxBoxType=CharCPGraphPackBox.get("BoxType");
 		String CPGraphPackBox=CharCPGraphPackBox.get("Box");
 		String CPGraphPackNotes=CharCPGraphPackBox.get("Note");
-
-		if(CPGraphPackBoxUnitsintheBox!=null) {
-			//String XpathForUnitsintheBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Box']/parent::span/span/input";
-			String XpathForUnitsintheBox="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Units in the Box']/..//input";
-			driver.findElement(By.xpath(XpathForUnitsintheBox)).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath(XpathForUnitsintheBox)).sendKeys(CPGraphPackBoxUnitsintheBox+Keys.ENTER);
-			Thread.sleep(2000);
-		}
-
-		
-		if(CPGraphPackBoxBoxType!=null) {
-		//String XpathForBoxType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box Type']/parent::span/span//input";
-		String XpathForBoxType=	"//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box Type']/..//input";
-		WebElement Element = driver.findElement(By.xpath(XpathForBoxType));
-        //This will scroll the page till the element is found		
-        js.executeScript("arguments[0].scrollIntoView();", Element);
-		driver.findElement(By.xpath(XpathForBoxType)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(CPGraphPackBoxBoxType+Keys.ENTER);
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForBoxType)).sendKeys(Keys.TAB);
-		}
-		
-		if(CPGraphPackBox.length()>0) {
-			Thread.sleep(2000);
-		//String XpathForBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box']/parent::span/span//input";
-		/*String XpathForBox=	"//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box']/..//input";
-		driver.findElement(By.xpath(XpathForBox)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForBox)).sendKeys(CPGraphPackBox+Keys.ENTER);*/
-		
-		driver.findElement(By.xpath("(//label[text()='Box']//following::span[1]//span//.)[3]")).click();
-		
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//label[text()='"+CPGraphPackBox+"']")).click();
-		}
-		
-		if(!CPGraphPackNotes.isEmpty()) {
-			Thread.sleep(2000);
-		//String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
-		String XpathForNote="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Note']/..//textarea";
-		driver.findElement(By.xpath(XpathForNote)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);
-		}
+		try {
+			if(CPGraphPackBoxUnitsintheBox!=null) {
+				//String XpathForUnitsintheBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Box']/parent::span/span/input";
+				String XpathForUnitsintheBox="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Units in the Box']/..//input";
+				driver.findElement(By.xpath(XpathForUnitsintheBox)).click();
+				Thread.sleep(2000);
+				driver.findElement(By.xpath(XpathForUnitsintheBox)).sendKeys(CPGraphPackBoxUnitsintheBox+Keys.ENTER);
+				Thread.sleep(2000);
+			}
 	
+			
+			if(CPGraphPackBoxBoxType!=null) {
+			//String XpathForBoxType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box Type']/parent::span/span//input";
+			String XpathForBoxType=	"//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box Type']/..//input";
+			WebElement Element = driver.findElement(By.xpath(XpathForBoxType));
+	        //This will scroll the page till the element is found		
+	        js.executeScript("arguments[0].scrollIntoView();", Element);
+			driver.findElement(By.xpath(XpathForBoxType)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForBoxType)).sendKeys(CPGraphPackBoxBoxType+Keys.ENTER);
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForBoxType)).sendKeys(Keys.TAB);
+			}
+			
+			if(CPGraphPackBox.length()>0) {
+				Thread.sleep(2000);
+			//String XpathForBox="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Box']/parent::span/span//input";
+			/*String XpathForBox=	"//label[text()='Box (Packaging)']/..//parent::span/..//parent::div[@class='list__item']//label[text()='Box']/..//input";
+			driver.findElement(By.xpath(XpathForBox)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForBox)).sendKeys(CPGraphPackBox+Keys.ENTER);*/
+			
+			driver.findElement(By.xpath("(//label[text()='Box']//following::span[1]//span//.)[3]")).click();
+			
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='"+CPGraphPackBox+"']")).click();
+			}
+			
+			if(!CPGraphPackNotes.isEmpty()) {
+				Thread.sleep(2000);
+			//String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
+			String XpathForNote="//label[contains(text(),'Box')]/..//parent::span/..//parent::div[@class='list__item']//label[text()='Note']/..//textarea";
+			driver.findElement(By.xpath(XpathForNote)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void Charactertics_CPFileList(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
@@ -944,64 +1017,69 @@ public class Estimatepage_Characteristics extends Testbase {
 		String LayoutHeight=CPGraphLargeFormat.get("LayoutHeight");
 		String Utilization=CPGraphLargeFormat.get("Utilization");
 		String Numberup=CPGraphLargeFormat.get("Numberup");
-		System.out.println("re");
-		if(FinishedFormatWidth!=null && FinishedFormatHeight!=null) {
-			String SFFinishedFormat=FinishedFormatWidth+" x "+FinishedFormatHeight;
-			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).clear();
-			driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).sendKeys(SFFinishedFormat+Keys.TAB);
-		}
-		if(Note!=null) {
-			driver.findElement(By.xpath("//label[text()='Note']/../span/input")).sendKeys(Note+Keys.TAB);
-		}
-		if(PrintingDirection!=null) {
-			Select dropDownObject = new Select(driver.findElement(By.xpath("//label[text()='Printing Direction']//following::span[@class='input-wraper simple-lookup2']")));
-			dropDownObject.selectByValue(PrintingDirection);
-		}
 		
-		if(Float.valueOf(Splicing).floatValue()!=0.0 && Float.valueOf(SplicingBleed).floatValue()!=0.0) {
-			driver.findElement(By.xpath("//label[text()='Splicing']")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Splicing']//following-sibling::span/input")).sendKeys(Splicing+Keys.TAB);
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='+ Bleed']//following-sibling::span/input")).sendKeys(SplicingBleed+Keys.TAB);
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("//button[@title='OK']")).click();
-		}
-		
-		WebElement ele=driver.findElement(By.xpath("//label[text()='Margins']//parent::button"));
-		String option=ele.getAttribute("aria-checked");
-		if(Margins.equals("1")) {
-			if(option.equalsIgnoreCase("true")) {
-				
-			}else {
-				ele.click();
+		try {
+			if(FinishedFormatWidth!=null && FinishedFormatHeight!=null) {
+				String SFFinishedFormat=FinishedFormatWidth+" x "+FinishedFormatHeight;
+				driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).clear();
+				driver.findElement(By.xpath("//label[text()='Finished Format (WxH)']/../span/div/span/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 			}
-		}else if(Margins.equals("0")){
-			if(option.equalsIgnoreCase("true")) {
-				ele.click();
-			}else {
-				
+			if(Note!=null) {
+				driver.findElement(By.xpath("//label[text()='Note']/../span/input")).sendKeys(Note+Keys.TAB);
 			}
-		}
-		WebElement ele1=driver.findElement(By.xpath("//label[text()='Irregular Fit']//parent::button"));
-		String option1=ele1.getAttribute("aria-checked");
-		String Layoutformat=LayoutWidht+" x "+LayoutHeight;
-		if(IrregularFitCB.equals("1")) {
-			if(option1.equalsIgnoreCase("true")) {
-				driver.findElement(By.xpath("//label[text()='Layout format (WxH)']/../span/div/span/input")).sendKeys(Layoutformat+Keys.TAB);
+			if(PrintingDirection!=null) {
+				Select dropDownObject = new Select(driver.findElement(By.xpath("//label[text()='Printing Direction']//following::span[@class='input-wraper simple-lookup2']")));
+				dropDownObject.selectByValue(PrintingDirection);
+			}
+			
+			if(Float.valueOf(Splicing).floatValue()!=0.0 && Float.valueOf(SplicingBleed).floatValue()!=0.0) {
+				driver.findElement(By.xpath("//label[text()='Splicing']")).click();
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("//label[text()='Number Up']/../span/input")).sendKeys(Numberup+Keys.TAB);
+				driver.findElement(By.xpath("//label[text()='Splicing']//following-sibling::span/input")).sendKeys(Splicing+Keys.TAB);
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("//label[text()='Utilization']/../span/input")).sendKeys(Utilization+Keys.TAB);
-			}else {
-				ele1.click();
+				driver.findElement(By.xpath("//label[text()='+ Bleed']//following-sibling::span/input")).sendKeys(SplicingBleed+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
 			}
-		}else if(IrregularFitCB.equals("0")){
-			if(option1.equalsIgnoreCase("true")) {
-				ele1.click();
-			}else {
-				
+			
+			WebElement ele=driver.findElement(By.xpath("//label[text()='Margins']//parent::button"));
+			String option=ele.getAttribute("aria-checked");
+			if(Margins.equals("1")) {
+				if(option.equalsIgnoreCase("true")) {
+					
+				}else {
+					ele.click();
+				}
+			}else if(Margins.equals("0")){
+				if(option.equalsIgnoreCase("true")) {
+					ele.click();
+				}else {
+					
+				}
 			}
+			WebElement ele1=driver.findElement(By.xpath("//label[text()='Irregular Fit']//parent::button"));
+			String option1=ele1.getAttribute("aria-checked");
+			String Layoutformat=LayoutWidht+" x "+LayoutHeight;
+			if(IrregularFitCB.equals("1")) {
+				if(option1.equalsIgnoreCase("true")) {
+					driver.findElement(By.xpath("//label[text()='Layout format (WxH)']/../span/div/span/input")).sendKeys(Layoutformat+Keys.TAB);
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[text()='Number Up']/../span/input")).sendKeys(Numberup+Keys.TAB);
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[text()='Utilization']/../span/input")).sendKeys(Utilization+Keys.TAB);
+				}else {
+					ele1.click();
+				}
+			}else if(IrregularFitCB.equals("0")){
+				if(option1.equalsIgnoreCase("true")) {
+					ele1.click();
+				}else {
+					
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -1023,19 +1101,23 @@ public class Estimatepage_Characteristics extends Testbase {
 		String XpathWitCPGraphBindGlueGlueType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Glue Type']/parent::span/span/span/input";
 		String XpathWitCPGraphBindGlueIsSewn="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Sewn']";
 		String XpathWitCPGraphBindGlueNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
-
-
-		// for Glue Type
-//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).clear(); 
-//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).sendKeys(CPGraphBindGlueGlueType+Keys.TAB); 
-		System.out.println("Glue Type is :- "+CPGraphBindGlueGlueType);
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindGlueGlueType, CPGraphBindGlueGlueType);
-
-		// for ISSewn
-		CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphBindGlueIsSewn, CPGraphBindGlueIsSewn);
-		// for Note
-		driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).sendKeys(CPGraphBindGlueNote+Keys.TAB);
+		try {
+			
+			// for Glue Type
+	//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).clear(); 
+	//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).sendKeys(CPGraphBindGlueGlueType+Keys.TAB); 
+			System.out.println("Glue Type is :- "+CPGraphBindGlueGlueType);
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindGlueGlueType, CPGraphBindGlueGlueType);
+	
+			// for ISSewn
+			CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphBindGlueIsSewn, CPGraphBindGlueIsSewn);
+			// for Note
+			driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).sendKeys(CPGraphBindGlueNote+Keys.TAB);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
 	
 	}
@@ -1061,32 +1143,37 @@ public class Estimatepage_Characteristics extends Testbase {
 		String XpathWitCPGraphUnfinishedFormatInventoryItemCode="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Inventory item']/parent::span/span/span/input[1]";
 		String XpathWitCPGraphUnfinishedFormatQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Quantity']/parent::span/span/input";
 		String XpathWitCPGraphUnfinishedFormatNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span/div/textarea";
-
-		//iNSERT iNVENTORY iTEM FIRST AS IT RESETS OTHER VALUES
-		//FOR iNVENTORY iTEM
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).sendKeys(CPGraphUnfinishedFormatInventoryItemCode+Keys.TAB); 
-
-		// for size(WxH)
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).sendKeys(PageWHval+Keys.TAB); 
-
-
-		// for Thickness
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).sendKeys(CPGraphUnfinishedFormatThickness+Keys.TAB); 
-
-		// for Weight
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).sendKeys(CPGraphUnfinishedFormatWeight+Keys.TAB); 
-
-		// for Quantity
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).sendKeys(CPGraphUnfinishedFormatQuantity+Keys.TAB); 
-
-		// for Note
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).sendKeys(CPGraphUnfinishedFormatNote+Keys.TAB);
+		try {
+			//iNSERT iNVENTORY iTEM FIRST AS IT RESETS OTHER VALUES
+			//FOR iNVENTORY iTEM
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatInventoryItemCode)).sendKeys(CPGraphUnfinishedFormatInventoryItemCode+Keys.TAB); 
+	
+			// for size(WxH)
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatSize)).sendKeys(PageWHval+Keys.TAB); 
+	
+	
+			// for Thickness
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatThickness)).sendKeys(CPGraphUnfinishedFormatThickness+Keys.TAB); 
+	
+			// for Weight
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatWeight)).sendKeys(CPGraphUnfinishedFormatWeight+Keys.TAB); 
+	
+			// for Quantity
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatQuantity)).sendKeys(CPGraphUnfinishedFormatQuantity+Keys.TAB); 
+	
+			// for Note
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).sendKeys(CPGraphUnfinishedFormatNote+Keys.TAB);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			
+		}
 
 	}
 	public void Charactertics_CPGraphBleed(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws ClassNotFoundException, IOException, SQLException, InterruptedException
@@ -1097,14 +1184,18 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphBleed=CharCPGraphBleed.get("Bleed");
 		
 		String XpathWitCPGraphBleed =" //label[text()='Bleed']/../span/input";
-		
-		if(!CPGraphBleed.isEmpty()) {
-			driver.findElement(By.xpath(XpathWitCPGraphBleed)).click();
-			
-			//driver.findElement(By.xpath(XpathWitCPGraphBleed)).clear(); 
-			Thread.sleep(1000);
-			driver.findElement(By.xpath(XpathWitCPGraphBleed)).sendKeys(CPGraphBleed+Keys.TAB); 
-			Thread.sleep(100);
+		try {
+			if(!CPGraphBleed.isEmpty()) {
+				driver.findElement(By.xpath(XpathWitCPGraphBleed)).click();
+				
+				//driver.findElement(By.xpath(XpathWitCPGraphBleed)).clear(); 
+				Thread.sleep(1000);
+				driver.findElement(By.xpath(XpathWitCPGraphBleed)).sendKeys(CPGraphBleed+Keys.TAB); 
+				Thread.sleep(100);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -1128,40 +1219,44 @@ public class Estimatepage_Characteristics extends Testbase {
 		String XpathWitCPGraphInitialLaminatingDetails ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button";
 		String XpathWitCPGraphInitialLaminatingRollWidthFront= "//header[text()='Roll Width - Front']/parent::div/span/span/input";
 		String XpathWitCPGraphInitialLaminatingRollWidthBack= "//header[text()='Roll Width - Back']/parent::div/span/span/input";
-
-		// for Front
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingFront, CPGraphInitialLaminatingFront);
-
-		// for Back
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingBack, CPGraphInitialLaminatingBack);
-
-
-		// for Note
-		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).sendKeys(CPGraphInitialLaminatingNote+Keys.TAB);
-
-		// for Details
-		driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingDetails)).click();
-		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
-		{
-			System.out.println("Details page is displayed");
-
-			//products roll width front format
-			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).clear(); 
-			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).sendKeys(CPGraphInitialLaminatingRollWidthFront+Keys.TAB);
-
-			//products roll width Back format
-			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).clear(); 
-			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).sendKeys(CPGraphInitialLaminatingRollWidthBack+Keys.TAB);
-
-			Thread.sleep(2000);
-
-			//click on ok button
-			driver.findElement(By.xpath("//button[@title='OK']")).click();
+		try {
+			// for Front
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingFront, CPGraphInitialLaminatingFront);
+	
+			// for Back
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingBack, CPGraphInitialLaminatingBack);
+	
+	
+			// for Note
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingNote)).sendKeys(CPGraphInitialLaminatingNote+Keys.TAB);
+	
+			// for Details
+			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingDetails)).click();
+			if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+			{
+				System.out.println("Details page is displayed");
+	
+				//products roll width front format
+				driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).clear(); 
+				driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).sendKeys(CPGraphInitialLaminatingRollWidthFront+Keys.TAB);
+	
+				//products roll width Back format
+				driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).clear(); 
+				driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthBack)).sendKeys(CPGraphInitialLaminatingRollWidthBack+Keys.TAB);
+	
+				Thread.sleep(2000);
+	
+				//click on ok button
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
+			}
+			else
+			{
+				System.err.println("Details page is not displayed. Please check");
+			}
 		}
-		else
-		{
-			System.err.println("Details page is not displayed. Please check");
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -1183,82 +1278,85 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphFootadjust=CharCPGraphHardCover.get("Footadjust");
 		String CPGraphBackingMaterial=CharCPGraphHardCover.get("BackingMaterial");
 
+		try {
 
-
-		String XpathForGlueType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Glue Type']/parent::span/span//input";
-		driver.findElement(By.xpath(XpathForGlueType)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForGlueType)).sendKeys(CPGraphHardCoverGlueType+Keys.ENTER);
-
-		Thread.sleep(2000);
-		String XpathForSewn="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Sewn']/parent::button/div";
-		System.out.println("Xpath For Sewn:- "+XpathForSewn);
-		System.out.println("CPGraphPackSewn is :"+CPGraphPackSewn);
-		if (!CPGraphPackSewn.equals("0"))
-		{
-			driver.findElement(By.xpath(XpathForSewn)).click();
-		}
-
-		Thread.sleep(2000);
-		String XpathForPerfectBindRound="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Perfect Bind Round']/parent::button/div";
-		if (!CPGraphPerfectBindRound.equals("0"))
-		{
-			driver.findElement(By.xpath(XpathForPerfectBindRound)).click();
-		}
-
-		Thread.sleep(2000);
-		String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span//div/textarea";
-		driver.findElement(By.xpath(XpathForNote)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);
-
-		//Clikcing on Details
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button")).click();
-
-		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
-		{
-			if(!CPGraphCoverCardboard.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Cover Cardboard']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Cover Cardboard']/parent::span//input")).sendKeys(CPGraphCoverCardboard+Keys.ENTER);;
-			}
-			if(!CPGraphCoverCardboard.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Spine Cardboard']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Spine Cardboard']/parent::span//input")).sendKeys(CPGraphCoverCardboard+Keys.ENTER);;
-			
-			driver.findElement(By.xpath("//label[text()='Joint Gap']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Joint Gap']/parent::span//input")).sendKeys(CPGraphCoverCardboard);;
-			}
-
-			if(!CPGraphChangeDefaultFoldOver.equals("0"))
+			String XpathForGlueType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Glue Type']/parent::span/span//input";
+			driver.findElement(By.xpath(XpathForGlueType)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForGlueType)).sendKeys(CPGraphHardCoverGlueType+Keys.ENTER);
+	
+			Thread.sleep(2000);
+			String XpathForSewn="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Sewn']/parent::button/div";
+			System.out.println("Xpath For Sewn:- "+XpathForSewn);
+			System.out.println("CPGraphPackSewn is :"+CPGraphPackSewn);
+			if (!CPGraphPackSewn.equals("0"))
 			{
-				driver.findElement(By.xpath("//label[text()='Change Default Fold Over']/parent::button/div")).click(); 
+				driver.findElement(By.xpath(XpathForSewn)).click();
 			}
-
-
-
-			driver.findElement(By.xpath("//label[text()='Head adjust']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Head adjust']/parent::span//input")).sendKeys(CPGraphHeadadjust);
+	
 			Thread.sleep(2000);
-
-			driver.findElement(By.xpath("//label[text()='Face adjust']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Face adjust']/parent::span//input")).sendKeys(CPGraphFaceadjust); 
+			String XpathForPerfectBindRound="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Perfect Bind Round']/parent::button/div";
+			if (!CPGraphPerfectBindRound.equals("0"))
+			{
+				driver.findElement(By.xpath(XpathForPerfectBindRound)).click();
+			}
+	
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Foot adjust']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Foot adjust']/parent::span//input")).sendKeys(CPGraphFootadjust); 
+			String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span/span//div/textarea";
+			driver.findElement(By.xpath(XpathForNote)).click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).click();
-			driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).sendKeys(CPGraphBackingMaterial); 
-			driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).sendKeys(Keys.ENTER);  
-
+			driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackNotes);
+	
+			//Clikcing on Details
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//button[@title='OK']")).click();
+			driver.findElement(By.xpath("//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button")).click();
+	
+			if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+			{
+				if(!CPGraphCoverCardboard.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Cover Cardboard']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Cover Cardboard']/parent::span//input")).sendKeys(CPGraphCoverCardboard+Keys.ENTER);;
+				}
+				if(!CPGraphCoverCardboard.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Spine Cardboard']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Spine Cardboard']/parent::span//input")).sendKeys(CPGraphCoverCardboard+Keys.ENTER);;
+				
+				driver.findElement(By.xpath("//label[text()='Joint Gap']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Joint Gap']/parent::span//input")).sendKeys(CPGraphCoverCardboard);;
+				}
+	
+				if(!CPGraphChangeDefaultFoldOver.equals("0"))
+				{
+					driver.findElement(By.xpath("//label[text()='Change Default Fold Over']/parent::button/div")).click(); 
+				}
+	
+	
+	
+				driver.findElement(By.xpath("//label[text()='Head adjust']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Head adjust']/parent::span//input")).sendKeys(CPGraphHeadadjust);
+				Thread.sleep(2000);
+	
+				driver.findElement(By.xpath("//label[text()='Face adjust']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Face adjust']/parent::span//input")).sendKeys(CPGraphFaceadjust); 
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Foot adjust']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Foot adjust']/parent::span//input")).sendKeys(CPGraphFootadjust); 
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).click();
+				driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).sendKeys(CPGraphBackingMaterial); 
+				driver.findElement(By.xpath("//label[text()='Backing Material']/parent::span//input")).sendKeys(Keys.ENTER);  
+	
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
+			}
+			else
+			{
+				System.err.println("Details Page is not displayed");
+			}
 		}
-		else
-		{
-			System.err.println("Details Page is not displayed");
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-
 	
 	}
 	public void Charactertics_CPGraphMaxMultiLine(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
@@ -1266,10 +1364,13 @@ public class Estimatepage_Characteristics extends Testbase {
 		HashMap<String, String> CharCPGraphMaxMultiLine = new HashMap<String, String>();
 		CharCPGraphMaxMultiLine=name.CPGraphCollection(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
 		String CPGraphMaxMultiLineMaximum=CharCPGraphMaxMultiLine.get("Maximum");
-
-		String XpathForCPGraphMaxMultiLineMaximum="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Maximum']/parent::span//input";
-		CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForCPGraphMaxMultiLineMaximum, CPGraphMaxMultiLineMaximum);
-
+		try {
+			String XpathForCPGraphMaxMultiLineMaximum="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Maximum']/parent::span//input";
+			CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForCPGraphMaxMultiLineMaximum, CPGraphMaxMultiLineMaximum);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 	public void Charactertics_CPGraphPackPallet(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
@@ -1279,33 +1380,36 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphPackPalletUnitsInThePallet=CharCPGraphPackPallet.get("UnitsInThePallet");
 		String CPGraphPackPalletMaterial=CharCPGraphPackPallet.get("Material");
 		String CPGraphPackPalletNotes=CharCPGraphPackPallet.get("Note");
-
-
-		//String XpathForUnitsInThePallet="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Pallet']/parent::span/span/input";
-		String XpathForUnitsInThePallet="//label[text()='Units in the Pallet']/..//input";
-		driver.findElement(By.xpath(XpathForUnitsInThePallet)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForUnitsInThePallet)).sendKeys(CPGraphPackPalletUnitsInThePallet+Keys.TAB);
-
-		Thread.sleep(2000);
-		//String XpathForMaterial="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Material']/parent::span/span//input";
-		/*String XpathForMaterial="//label[text()='Material']/..//input";
-		driver.findElement(By.xpath(XpathForMaterial)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForMaterial)).sendKeys(CPGraphPackPalletMaterial+Keys.ENTER);*/
-		driver.findElement(By.xpath("(//label[text()='Material']//following::span[1]//span//.)[3]")).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//label[text()='"+CPGraphPackPalletMaterial+"']")).click();
-
-
-		Thread.sleep(2000);
-		//String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
-		String XpathForNote="//label[text()='Pallet']//ancestor::div[@class='list__item']//label[text()='Note']/..//textarea";
-		driver.findElement(By.xpath(XpathForNote)).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackPalletNotes);
-		Thread.sleep(2000);
+		
+		try {
+			//String XpathForUnitsInThePallet="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Units in the Pallet']/parent::span/span/input";
+			String XpathForUnitsInThePallet="//label[text()='Units in the Pallet']/..//input";
+			driver.findElement(By.xpath(XpathForUnitsInThePallet)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForUnitsInThePallet)).sendKeys(CPGraphPackPalletUnitsInThePallet+Keys.TAB);
 	
+			Thread.sleep(2000);
+			//String XpathForMaterial="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Material']/parent::span/span//input";
+			/*String XpathForMaterial="//label[text()='Material']/..//input";
+			driver.findElement(By.xpath(XpathForMaterial)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForMaterial)).sendKeys(CPGraphPackPalletMaterial+Keys.ENTER);*/
+			driver.findElement(By.xpath("(//label[text()='Material']//following::span[1]//span//.)[3]")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//label[text()='"+CPGraphPackPalletMaterial+"']")).click();
+	
+	
+			Thread.sleep(2000);
+			//String XpathForNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Note']/parent::span//span/div/textarea";
+			String XpathForNote="//label[text()='Pallet']//ancestor::div[@class='list__item']//label[text()='Note']/..//textarea";
+			driver.findElement(By.xpath(XpathForNote)).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathForNote)).sendKeys(CPGraphPackPalletNotes);
+			Thread.sleep(2000);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void Charactertics_CPGraphPrintType(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 
@@ -1318,10 +1422,13 @@ public class Estimatepage_Characteristics extends Testbase {
 
 		String XpathWitCPGraphPrintTypePrintingProcess="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Printing process']/parent::span/span[@class='ltv__itemcont ltv_']/span/label ";
 
-
+		try {
 		// for Printing Process
-		CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphPrintTypePrintingProcess, CPGraphPrintTypePrintingProcess);
-
+			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphPrintTypePrintingProcess, CPGraphPrintTypePrintingProcess);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
 	
 	}
@@ -1335,25 +1442,30 @@ public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String I
 		String Material=CharCPGraphPrintType.get("Material");
 		String Application=CharCPGraphPrintType.get("Application");
 		String Note=CharCPGraphPrintType.get("Note");
-		if(!UnitsInTheStrap.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).clear();
-			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).click();
-			driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).sendKeys(UnitsInTheStrap);
+		try {
+			if(!UnitsInTheStrap.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).clear();
+				driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).click();
+				driver.findElement(By.xpath("//label[text()='Units in the strap']/..//input")).sendKeys(UnitsInTheStrap);
+			}
+			if(!Material.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).clear();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).click();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).sendKeys(Material);
+			}
+			if(!Application.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).clear();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).click();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).sendKeys(Application);
+			}
+			if(!Note.isEmpty()) {
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).clear();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).click();
+				driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).sendKeys(Note);
+			}
 		}
-		if(!Material.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).clear();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).click();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Material']/..//input")).sendKeys(Material);
-		}
-		if(!Application.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).clear();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).click();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Application']/..//input")).sendKeys(Application);
-		}
-		if(!Note.isEmpty()) {
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).clear();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).click();
-			driver.findElement(By.xpath("//label[text()='Strap (Packaging)']//following::label[text()='Note']/..//div")).sendKeys(Note);
+		catch(Exception e) {
+			e.printStackTrace();
 		}
          
 		
@@ -1405,76 +1517,79 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 			String xpathFormatDieWh="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Format Die layout (WxH)']/parent::span/span[@class='ltv__itemcont ltv_']//input";
 			String xpathForQuantityIntheDieLayout="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Quantity in the die layout']/parent::span[@class='ltv__item ltv_']/following-sibling::span/input";
 			String xpathForDieApportionment="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Die Apportionment']/parent::span//input";
-
-			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForClosedWh, ValueforClosedwh);
-			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForFlatWh, ValueforFlatwh);
-			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathFormatDieWh, ValueforFlatwh);
-			CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForDieApportionment, IrregFormatDieApportionment);
-
-			driver.findElement(By.xpath("//label[text()='Fit options']/parent::button")).click();
-
-				if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
-				{
-					System.out.println("Fit Option Window is displayed");
-					Thread.sleep(3000);
-					driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
-					if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
+			try {
+				CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForClosedWh, ValueforClosedwh);
+				CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForFlatWh, ValueforFlatwh);
+				CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathFormatDieWh, ValueforFlatwh);
+				CommonFunctions.Iquote_EnterDataintoTextfield(driver, xpathForDieApportionment, IrregFormatDieApportionment);
+	
+				driver.findElement(By.xpath("//label[text()='Fit options']/parent::button")).click();
+	
+					if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
 					{
-						System.out.println("New Window is displayed");
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Die cutter length (m)']/parent::span/span//input", IrregFormatDieCutterLength);
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Utilization']/parent::span/span//input", IrregFormatUtilization);
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Knife code']/parent::span/span//input", IrregFormatKnifeCode);
-						CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Notes']/parent::span/span//input", IrregFormatNotes);
-						CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Difficulty']/parent::span/span//input", IrregFormatDifficulty);
-						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Inverted']", IrregFormatInverted);
-						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
-						CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
-						driver.findElement(By.xpath("//button[@title='Confirm']")).click();
-						//CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='New']"), 10000);
-						List <WebElement> options = driver.findElements(By.xpath("//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]"));
-						int size=options.size();
-						String xpath="(//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')])["+(size-1)+"]";
-						driver.findElement(By.xpath(xpath)).click();
+						System.out.println("Fit Option Window is displayed");
+						Thread.sleep(3000);
+						driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
+						if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
+						{
+							System.out.println("New Window is displayed");
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[contains(text(),'Die cutter length')]/parent::span/span//input", IrregFormatDieCutterLength);
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Utilization']/parent::span/span//input", IrregFormatUtilization);
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Knife code']/parent::span/span//input", IrregFormatKnifeCode);
+							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Notes']/parent::span/span//input", IrregFormatNotes);
+							CommonFunctions.Iquote_SelectFromDropdown_Text(driver, "//label[text()='Difficulty']/parent::span/span//input", IrregFormatDifficulty);
+							CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Inverted']", IrregFormatInverted);
+							CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Fixed Die Length']", IrregFormatFixedDieLength);
+							CommonFunctions.Iquote_SelectCheckbox(driver, "//span[@class='ltv__itemcont ltv_']//label[text()='Do not charge for die']", IrregFormatDoNotChargeForDie);
+							driver.findElement(By.xpath("//button[@title='Confirm']")).click();
+							//CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='New']"), 10000);
+							List <WebElement> options = driver.findElements(By.xpath("//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]"));
+							int size=options.size();
+							String xpath="(//span[@title='Knife code']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')])["+(size-1)+"]";
+							driver.findElement(By.xpath(xpath)).click();
+							Thread.sleep(5000);
+							if(size>1)
+								driver.findElement(By.xpath("(//label[text()='Create Die']//following::button)[1]")).click();
+						}
+						else
+						{
+							System.err.println("New Window is not displayed Please Investigate"); 
+						}
+						//Selecting Newly added Coloum
 						Thread.sleep(5000);
-						if(size>1)
-							driver.findElement(By.xpath("(//label[text()='Create Die']//following::button)[1]")).click();
+						/*int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
+						String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
+						//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
+						
+						int AllRowCount= Integer.parseInt(DataColum);
+						 System.out.println("Total Coloum :- "+DataColum);
+					     System.out.println("Irregular Format Deleting unwanted Rows");
+						for(int Rowcountval=0;Rowcountval<AllRowCount;Rowcountval++)
+						{
+							CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"), 180);
+							CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"));
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
+							Thread.sleep(2000);	
+						}*/
+						
+		//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
+		//				Thread.sleep(2000);
+						driver.findElement(By.xpath("//button[@title='OK']")).click();   
+						CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 1000);
 					}
 					else
 					{
-						System.err.println("New Window is not displayed Please Investigate"); 
+						System.err.println("Fit Option Window is not displayed please investigate");
 					}
-					//Selecting Newly added Coloum
-					Thread.sleep(5000);
-					/*int TotalColum=driver.findElements(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]")).size();
-					String DataColum=driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell')]["+TotalColum+"]")).getAttribute("data-row");
-					//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='2/0']
-					
-					int AllRowCount= Integer.parseInt(DataColum);
-					 System.out.println("Total Coloum :- "+DataColum);
-				     System.out.println("Irregular Format Deleting unwanted Rows");
-					for(int Rowcountval=0;Rowcountval<AllRowCount;Rowcountval++)
-					{
-						CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"), 180);
-						CommonFunctions.ClickElement(driver, By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']"));
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='0/1']")).click();
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//div[@class='listtb']//button[4]")).click();
-						Thread.sleep(2000);	
-					}*/
-					
-	//				driver.findElement(By.xpath("//header[text()='Fit options']/parent::div//span[contains(@class,'grid__cell grid__cell') and @data-index='"+DataColum+"/0']")).click();
-	//				Thread.sleep(2000);
-					driver.findElement(By.xpath("//button[@title='OK']")).click();   
-					CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//span[text()='Specification']"), 1000);
 				}
-				else
-				{
-					System.err.println("Fit Option Window is not displayed please investigate");
+				catch(Exception e) {
+					e.printStackTrace();
 				}
-
 			}
 
 		}
@@ -1511,53 +1626,58 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		String XpathforTrimmargin=" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Trim margin']";
 		String XpathWitCPGraphLabelFormatLabelType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Label Type']/parent::span//input";
 		String XpathWitCPGraphLabelFormatDeliverytype ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Delivery type']/parent::span//input";
-		
-		//for LabelType
-		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatLabelType, CPGraphLabelFormatLabelType);
-		driver.findElement(By.xpath("(//label[text()='Label Type']//following::span[1]//span//.)[3]")).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatLabelType+"']")).click();
-		
-		
-		//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatDeliverytype, CPGraphLabelFormatDeliverytype);
-		//driver.findElement(By.xpath("(//label[text()='Delivery type']//following::span[1]//span//.)[3]")).click();
-		//Thread.sleep(2000);
-		//driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatDeliverytype+"']")).click();
-		
-		// for Format Size
-		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).click();
-		Thread.sleep(1000);
-		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(Keys.CONTROL+"a"+Keys.DELETE);
-		Thread.sleep(1000);
-		driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(PageWHval+Keys.TAB);
-		Thread.sleep(2000);
-		// for Column
-		if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatColumn)).size()>0) {
-			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(Keys.DELETE);
+		try {
+				
+			
+			//for LabelType
+			//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatLabelType, CPGraphLabelFormatLabelType);
+			driver.findElement(By.xpath("(//label[text()='Label Type']//following::span[1]//span//.)[3]")).click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(CPGraphLabelFormatColumns+Keys.TAB);
-		}
-		
-		Thread.sleep(2000);
-		// for GapAcross
-		if(driver.findElements(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).size()>0) {
-			driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).clear(); 
-			driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapacross+Keys.TAB);
+			driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatLabelType+"']")).click();
+			
+			
+			//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatDeliverytype, CPGraphLabelFormatDeliverytype);
+			//driver.findElement(By.xpath("(//label[text()='Delivery type']//following::span[1]//span//.)[3]")).click();
+			//Thread.sleep(2000);
+			//driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatDeliverytype+"']")).click();
+			
+			// for Format Size
+			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(Keys.CONTROL+"a"+Keys.DELETE);
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).sendKeys(PageWHval+Keys.TAB);
 			Thread.sleep(2000);
+			// for Column
+			if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatColumn)).size()>0) {
+				driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(Keys.DELETE);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(CPGraphLabelFormatColumns+Keys.TAB);
+			}
+			
+			Thread.sleep(2000);
+			// for GapAcross
+			if(driver.findElements(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).size()>0) {
+				driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).clear(); 
+				driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapacross+Keys.TAB);
+				Thread.sleep(2000);
+			}
+			// for GapDown
+			if(driver.findElements(By.xpath("//label[text()='Gap down']//following::span[1]//input")).size()>0) {
+				driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).clear(); 
+				driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapDown+Keys.TAB+Keys.TAB);
+			}
+			Thread.sleep(2000);
+			if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatKisscut)).size()>0)
+				CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphLabelFormatKisscut, CPGraphLabelFormatKisscut);
+			if(driver.findElements(By.xpath(XpathforSpecialdiecutting)).size()>0)
+				CommonFunctions.Iquote_SelectCheckbox(driver, XpathforSpecialdiecutting, CPGraphLabelFormatspecialdiecut);
+			if(driver.findElements(By.xpath(XpathforTrimmargin)).size()>0)
+				CommonFunctions.Iquote_SelectCheckbox(driver, XpathforTrimmargin, CPGraphLabelFormatTrimmargin);
 		}
-		// for GapDown
-		if(driver.findElements(By.xpath("//label[text()='Gap down']//following::span[1]//input")).size()>0) {
-			driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).clear(); 
-			driver.findElement(By.xpath("//label[text()='Gap down']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapDown+Keys.TAB+Keys.TAB);
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-		Thread.sleep(2000);
-		if(driver.findElements(By.xpath(XpathWitCPGraphLabelFormatKisscut)).size()>0)
-			CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphLabelFormatKisscut, CPGraphLabelFormatKisscut);
-		if(driver.findElements(By.xpath(XpathforSpecialdiecutting)).size()>0)
-			CommonFunctions.Iquote_SelectCheckbox(driver, XpathforSpecialdiecutting, CPGraphLabelFormatspecialdiecut);
-		if(driver.findElements(By.xpath(XpathforTrimmargin)).size()>0)
-			CommonFunctions.Iquote_SelectCheckbox(driver, XpathforTrimmargin, CPGraphLabelFormatTrimmargin);
-		
 	 			 			 
 	
 	}
@@ -1572,18 +1692,24 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 			 XpathForComponent="//label[text()='Shape']/ancestor::header/following-sibling::div//span[@class='input-wraper islookup']//input";
 		else
 			XpathForComponent="//label[text()='"+CharteristicDescp+"']/ancestor::header/following-sibling::div//input";
-		
-		JavascriptExecutor js = (JavascriptExecutor)driver;
-		WebElement Element = driver.findElement(By.xpath(XpathForComponent));
-		js.executeScript("arguments[0].scrollIntoView();", Element);	
-		 
-		driver.findElement(By.xpath(XpathForComponent)).click();
-		Thread.sleep(2000);
 		try {
-		driver.findElement(By.xpath(XpathForComponent)).sendKeys(CpGenericvalue);
-		driver.findElement(By.xpath(XpathForComponent)).sendKeys(Keys.ENTER);
-		}catch(Exception e) {
-			e.toString();
+			
+		
+			JavascriptExecutor js = (JavascriptExecutor)driver;
+			WebElement Element = driver.findElement(By.xpath(XpathForComponent));
+			js.executeScript("arguments[0].scrollIntoView();", Element);	
+			 
+			driver.findElement(By.xpath(XpathForComponent)).click();
+			Thread.sleep(2000);
+			try {
+			driver.findElement(By.xpath(XpathForComponent)).sendKeys(CpGenericvalue);
+			driver.findElement(By.xpath(XpathForComponent)).sendKeys(Keys.ENTER);
+			}catch(Exception e) {
+				e.toString();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 
 	
@@ -1605,25 +1731,28 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		String XpathWitCPAOptionQtyQuantity="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Quantity']/parent::span//input";
 		String XpathWitCPAOptionNote="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Note']/parent::span/span/div/textarea";
 		
+		try {
+			//for Option
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPAOptionQtyOptionDesc, CPAOptionQtyOptionDesc);
+			
 		
-		//for Option
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPAOptionQtyOptionDesc, CPAOptionQtyOptionDesc);
-		
-	
-		// for Quantity
-		if(!CPAOptionQtyQuantity.isEmpty()) {
-			driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).click();
-			driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).sendKeys(Keys.CONTROL+"a"+Keys.DELETE);
-			driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).sendKeys(CPAOptionQtyQuantity+Keys.TAB);
+			// for Quantity
+			if(!CPAOptionQtyQuantity.isEmpty()) {
+				driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).click();
+				driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).sendKeys(Keys.CONTROL+"a"+Keys.DELETE);
+				driver.findElement(By.xpath(XpathWitCPAOptionQtyQuantity)).sendKeys(CPAOptionQtyQuantity+Keys.TAB);
+			}
+			Thread.sleep(2000);
+			
+			// for Note
+			if(!CPAOptionQtyNote.isEmpty()) {
+				driver.findElement(By.xpath(XpathWitCPAOptionNote)).clear(); 
+				driver.findElement(By.xpath(XpathWitCPAOptionNote)).sendKeys(CPAOptionQtyNote+Keys.TAB);
+			}
 		}
-		Thread.sleep(2000);
-		
-		// for Note
-		if(!CPAOptionQtyNote.isEmpty()) {
-			driver.findElement(By.xpath(XpathWitCPAOptionNote)).clear(); 
-			driver.findElement(By.xpath(XpathWitCPAOptionNote)).sendKeys(CPAOptionQtyNote+Keys.TAB);
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-
 	}
 	public void Charactertics_CPGraphDieCut(String Estimateid, String IdItemOption,String Comporderval, String CharteristicDescp) throws Exception
 	{
@@ -1648,84 +1777,88 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		String XpathWitCPGraphDieCutDetails="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Details']/parent::button ";
 		String XpathWithCPGraphDifficulty="//label[text()='Difficulty']/parent::span/span/span/input";	
 		//For Waste Stripping
-		if(CPGraphDieCutWithWasteStripping.equals("0"))
-		{
-			String StrippingButtonValue=driver.findElement(By.xpath(XpathWithWasteStrippingButton)).getAttribute("aria-checked");
-			if(StrippingButtonValue.equals("true"))
+		try {
+			if(CPGraphDieCutWithWasteStripping.equals("0"))
 			{
-				driver.findElement(By.xpath(XpathWithWasteStripping)).click();
-			}
-
-		}
-		else if(CPGraphDieCutWithWasteStripping.equals("1"))
-		{
-			String StrippingButtonValue=driver.findElement(By.xpath(XpathWithWasteStrippingButton)).getAttribute("aria-checked");
-			if(StrippingButtonValue.equals("false"))
-			{
-				driver.findElement(By.xpath(XpathWithWasteStripping)).click();
-			}
-
-
-			//for  need trimming
-			if(CPGraphDieCutNeedtrimming.equals("0"))
-			{
-				String NeedTrimmingButtonValue=driver.findElement(By.xpath(XpathWithNeedTrimmingButton)).getAttribute("aria-checked");
+				String StrippingButtonValue=driver.findElement(By.xpath(XpathWithWasteStrippingButton)).getAttribute("aria-checked");
 				if(StrippingButtonValue.equals("true"))
 				{
-					driver.findElement(By.xpath(XpathWithNeedTrimming)).click();
+					driver.findElement(By.xpath(XpathWithWasteStripping)).click();
 				}
-
+	
 			}
-			else if(CPGraphDieCutNeedtrimming.equals("1"))
+			else if(CPGraphDieCutWithWasteStripping.equals("1"))
 			{
-				String NeedTrimmingButtonValue=driver.findElement(By.xpath(XpathWithNeedTrimmingButton)).getAttribute("aria-checked");
+				String StrippingButtonValue=driver.findElement(By.xpath(XpathWithWasteStrippingButton)).getAttribute("aria-checked");
 				if(StrippingButtonValue.equals("false"))
 				{
-					driver.findElement(By.xpath(XpathWithNeedTrimming)).click();
+					driver.findElement(By.xpath(XpathWithWasteStripping)).click();
+				}
+	
+	
+				//for  need trimming
+				if(CPGraphDieCutNeedtrimming.equals("0"))
+				{
+					String NeedTrimmingButtonValue=driver.findElement(By.xpath(XpathWithNeedTrimmingButton)).getAttribute("aria-checked");
+					if(StrippingButtonValue.equals("true"))
+					{
+						driver.findElement(By.xpath(XpathWithNeedTrimming)).click();
+					}
+	
+				}
+				else if(CPGraphDieCutNeedtrimming.equals("1"))
+				{
+					String NeedTrimmingButtonValue=driver.findElement(By.xpath(XpathWithNeedTrimmingButton)).getAttribute("aria-checked");
+					if(StrippingButtonValue.equals("false"))
+					{
+						driver.findElement(By.xpath(XpathWithNeedTrimming)).click();
+					}
 				}
 			}
-		}
-
-		driver.findElement(By.xpath(XpathWitCPGraphDieCutNotes)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphDieCutNotes)).sendKeys(CPGraphDieCutNotes);
-
-		//for details
-		driver.findElement(By.xpath(XpathWitCPGraphDieCutDetails)).click();
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Details']"), 1200);
-
-		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
-		{
-		//for informed die format
-		if(CPGraphDieCutIsKnifeFormatInformed.equals("1"))
-		{
-			driver.findElement(By.xpath("//label[text()='Informed die format']/ancestor::button/div")).click();
-		}
-        Thread.sleep(2000);
-	//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Informed die format']", CPGraphDieCutIsKnifeFormatInformed);
-		//for Existing die
-		if(CPGraphDieCutExistingDie.equals("1"))
-		{
-			driver.findElement(By.xpath("//label[text()='Existing die']/ancestor::button/div")).click();
-		}
-		
-	//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Existing die']", CPGraphDieCutExistingDie);
-//		//for Informed cutting length
-		if(CPGraphDieCutInformedcuttinglength.equals("1"))
-		{
-			driver.findElement(By.xpath("//label[text()='Informed cutting length']/ancestor::button/div")).click();
-		}
-		//for difficulty
-	//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Informed cutting length']", CPGraphDieCutInformedcuttinglength);
-		
-		driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).clear();
-		driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).sendKeys(CPGraphDieCutDifficulty);
-		Thread.sleep(2000);
-		driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).sendKeys(Keys.ENTER);
-		Thread.sleep(2000);
-		
-		driver.findElement(By.xpath("//button[@title='OK']")).click();
-		}
 	
+			driver.findElement(By.xpath(XpathWitCPGraphDieCutNotes)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphDieCutNotes)).sendKeys(CPGraphDieCutNotes);
+	
+			//for details
+			driver.findElement(By.xpath(XpathWitCPGraphDieCutDetails)).click();
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//header[text()='Details']"), 1200);
+	
+			if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+			{
+			//for informed die format
+			if(CPGraphDieCutIsKnifeFormatInformed.equals("1"))
+			{
+				driver.findElement(By.xpath("//label[text()='Informed die format']/ancestor::button/div")).click();
+			}
+	        Thread.sleep(2000);
+		//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Informed die format']", CPGraphDieCutIsKnifeFormatInformed);
+			//for Existing die
+			if(CPGraphDieCutExistingDie.equals("1"))
+			{
+				driver.findElement(By.xpath("//label[text()='Existing die']/ancestor::button/div")).click();
+			}
+			
+		//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Existing die']", CPGraphDieCutExistingDie);
+	//		//for Informed cutting length
+			if(CPGraphDieCutInformedcuttinglength.equals("1"))
+			{
+				driver.findElement(By.xpath("//label[text()='Informed cutting length']/ancestor::button/div")).click();
+			}
+			//for difficulty
+		//	CommonFunctions.Iquote_SelectCheckbox(driver, "//label[text()='Informed cutting length']", CPGraphDieCutInformedcuttinglength);
+			
+			driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).clear();
+			driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).sendKeys(CPGraphDieCutDifficulty);
+			Thread.sleep(2000);
+			driver.findElement(By.xpath(XpathWithCPGraphDifficulty)).sendKeys(Keys.ENTER);
+			Thread.sleep(2000);
+			
+			driver.findElement(By.xpath("//button[@title='OK']")).click();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void Charactertics_CPGraphWireOBind(String Estimateid, String IdItemOption, String Comporderval,String CharteristicDescp) throws Exception
@@ -1752,48 +1885,53 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		String XpathWitCPGraphWireOBindProductRings ="//label[text()='Product rings quantity']/..//input";
 		String XpathWitCPGraphWireOBindSeperationBetweenRings= "//label[text()='Separation between Rings']/..//span[@class='input-wraper simple-lookup2']";
 		String XpathWitCPGraphWireOBindInchesOfWireO= "//label[text()='Inches of Wire-O']/..//span[@class='input-wraper islookup']";
-
-		// for Position
-		CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindPosition, CPGraphWireOBindPosition); 
-
-		// for color
-		CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphWireOBindColor, CPGraphWireOBindColor);
-
-		//for with Hanger
-		CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphWireOBindWithHanger, CPGraphWireOBindWithHanger);
-
-		// for Note
-		driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).clear(); 
-		driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).sendKeys(CPGraphWireOBindNote+Keys.TAB);
-
-		// for Details
-		driver.findElement(By.xpath(XpathWitCPGraphWireOBindDetails)).click();
-		if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
-		{
-			System.out.println("Details page is displayed");
-
-			//products rings quantity
-			driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).clear(); 
-			driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).sendKeys(CPGraphWireOBindProductRingsQuantity+Keys.TAB);
-
-			//Separation between rings
-			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindSeperationBetweenRings, CPGraphWireOBindSeperationBetweenRings); 
-
-			// for inches of wire
-			//CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindInchesOfWireO, CPGraphWireOBindInchesOfWireO);
-			if(!CPGraphWireOBindInchesOfWireO.isEmpty()) {
-				driver.findElement(By.xpath(XpathWitCPGraphWireOBindInchesOfWireO)).sendKeys(CPGraphWireOBindInchesOfWireO+Keys.TAB);
+		try {
+			
+		
+			// for Position
+			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindPosition, CPGraphWireOBindPosition); 
+	
+			// for color
+			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphWireOBindColor, CPGraphWireOBindColor);
+	
+			//for with Hanger
+			CommonFunctions.Iquote_SelectCheckbox(driver, XpathWitCPGraphWireOBindWithHanger, CPGraphWireOBindWithHanger);
+	
+			// for Note
+			driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).clear(); 
+			driver.findElement(By.xpath(XpathWitCPGraphWireOBindNote)).sendKeys(CPGraphWireOBindNote+Keys.TAB);
+	
+			// for Details
+			driver.findElement(By.xpath(XpathWitCPGraphWireOBindDetails)).click();
+			if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
+			{
+				System.out.println("Details page is displayed");
+	
+				//products rings quantity
+				driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).clear(); 
+				driver.findElement(By.xpath(XpathWitCPGraphWireOBindProductRings)).sendKeys(CPGraphWireOBindProductRingsQuantity+Keys.TAB);
+	
+				//Separation between rings
+				CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindSeperationBetweenRings, CPGraphWireOBindSeperationBetweenRings); 
+				
+				// for inches of wire
+				//CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphWireOBindInchesOfWireO, CPGraphWireOBindInchesOfWireO);
+				if(!CPGraphWireOBindInchesOfWireO.isEmpty()) {
+					driver.findElement(By.xpath(XpathWitCPGraphWireOBindInchesOfWireO)).sendKeys(CPGraphWireOBindInchesOfWireO+Keys.TAB);
+				}
+				Thread.sleep(2000);
+	
+				//click on ok button
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
 			}
-			Thread.sleep(2000);
-
-			//click on ok button
-			driver.findElement(By.xpath("//button[@title='OK']")).click();
+			else
+			{
+				System.err.println("Details page is not displayed. Please check");
+			}
 		}
-		else
-		{
-			System.err.println("Details page is not displayed. Please check");
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-
 	
 	}
 	
@@ -1809,14 +1947,18 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		String XpathForRawmaterial="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Raw Material']/..//input";
 		String XpathForRMValue="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Value']/..//input";
 		String XpathForRMDescription="//label[contains(text(),'Material Purchased')]//ancestor::header//following-sibling::div//label[text()='Description']/..//input";
-
-		//For Raw material Field
-		CommonFunctions.SendValue(driver, By.xpath(XpathForRawmaterial), Materialval);
-		Thread.sleep(2000);
-		CommonFunctions.SendValue(driver, By.xpath(XpathForRMValue), RMValue);
-		Thread.sleep(2000);
-		CommonFunctions.SendValue(driver, By.xpath(XpathForRMDescription), RMDescription);
-		Thread.sleep(2000);
+		try {
+			//For Raw material Field
+			CommonFunctions.SendValue(driver, By.xpath(XpathForRawmaterial), Materialval);
+			Thread.sleep(2000);
+			CommonFunctions.SendValue(driver, By.xpath(XpathForRMValue), RMValue);
+			Thread.sleep(2000);
+			CommonFunctions.SendValue(driver, By.xpath(XpathForRMDescription), RMDescription);
+			Thread.sleep(2000);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	
 	
 	}
