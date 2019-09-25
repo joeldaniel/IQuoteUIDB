@@ -1,6 +1,7 @@
 package testcases;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.HashSet;
 
 import java.util.concurrent.TimeUnit;
@@ -9,8 +10,10 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.Status;
@@ -24,13 +27,14 @@ import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
 
+@Listeners(utilities.ListenerUtils.class)
 public class CreateEstimate extends Testbase {
 	
-	@BeforeTest
+	@BeforeClass
 	public void launchbrowser() throws Exception {
-		Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
+		/*Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
 		Thread.sleep(2000);
-		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");
+		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");*/
 		if (Config.getProperty("browser").equals("chrome")) {
 
 			System.setProperty("webdriver.chrome.driver",
@@ -50,7 +54,7 @@ public class CreateEstimate extends Testbase {
 	@Test(dataProvider = "dp")
 	public void createestimate(String value) throws Exception {
 		
-		test = extent.createTest("Creating Estimate for : "+value,"This test creates an estimate from base estimate");
+		 test = extent.createTest("Creating Estimate for : "+value,"This test creates an estimate from base estimate");
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
 		
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
@@ -143,9 +147,6 @@ public class CreateEstimate extends Testbase {
 		return Config.getProperty("EstimateIDs").split(",");
 
 	}
-	@AfterTest
-	public void closebrowser() {
-		driver.close();
-	}
+	
 	
 }

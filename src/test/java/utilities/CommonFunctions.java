@@ -258,6 +258,7 @@ public class CommonFunctions extends Testbase {
 	}
 	public static void SendValueWithoutClear(WebDriver driver, By locator, String sValue) throws Exception
 	{
+		WebElement ele=wait.until(ExpectedConditions.elementToBeClickable(locator));
 		if (isElementPresent(driver, locator))
 		{			
 			driver.findElement(locator).sendKeys(sValue+Keys.TAB);
@@ -267,7 +268,7 @@ public class CommonFunctions extends Testbase {
 	}
 	public static void Iquote_SelectFromDropdown(WebDriver driver, String XpathForLocator, String Fieldvalue) throws Exception
 	{
-		
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(XpathForLocator)));
 		driver.findElement(By.xpath(XpathForLocator)).click();
 		Thread.sleep(2000);
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//li/label[contains(text(),'"+Fieldvalue+"')]"), 180);
@@ -277,7 +278,7 @@ public class CommonFunctions extends Testbase {
 		String Selectedval= driver.findElement(By.xpath(XpathForLocator)).getText();
 		if (Selectedval.contains(Fieldvalue))
 		{
-			System.out.println("Correct value is selected from dropdown");
+			System.out.println("Selected from dropdown : "+Selectedval);
 		}
 		else
 		{
@@ -298,7 +299,7 @@ public class CommonFunctions extends Testbase {
           String Selectedval= driver.findElement(By.xpath(XpathForLocator)).getAttribute("value");
           if (Selectedval.equals(Fieldvalue))
           {
-                System.out.println("Correct value is selected from dropdown");
+                System.out.println("Selected from dropdown : "+Selectedval);
           }
           else
           {

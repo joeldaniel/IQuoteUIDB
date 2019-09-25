@@ -8,10 +8,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -29,10 +34,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 public class Testbase {
 
-	public static WebDriver driver;
+	public static  WebDriver driver;
 	public static Properties Config = new Properties();
 	public static Properties OR = new Properties();
 	public static FileInputStream fis;
@@ -48,11 +54,15 @@ public class Testbase {
     protected static DBUtil iqdb = new DBUtil();
 	
    
-	@BeforeSuite
-	public void setUp() throws IOException, AWTException {
-		if (driver == null) {
+	@BeforeTest(alwaysRun = true)
+	@Parameters({ "propertyfile" })
+	public void setUp(@Optional("null") String propertyfile) throws IOException, AWTException {
+		/*ITestContext testContext = null;
+		if(testContext.getCurrentXmlTest()!=null)
+			System.out.printf("Running test suite %1$s%n", testContext.getCurrentXmlTest().getSuite().getName());*/
+		//if (driver == null) {
 			
-			System.out.println("DB Selected is : "+System.getenv("DataBase"));
+			//System.out.println("DB Selected is : "+System.getenv("DataBase"));
 			//System.out.println("Estimate ID's are : "+System.getenv("Estimates"));
 			
 			//for Jenkins
@@ -61,7 +71,7 @@ public class Testbase {
 			Config.load(fis);*/
 			//for normal work
 			fis = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+propertyfile+".properties");
 			Config.load(fis);
 			
 			//uncomment this for jenkins
@@ -135,7 +145,8 @@ public class Testbase {
 	        htmlReporter.config().setTheme(Theme.STANDARD);
 	       robot = new Robot();
 	        iqdb.Createconnection(Config.getProperty("DBUrl"), Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"));
-	    }	
+	       
+	  //  }	
 
 	}
 	protected static void saveProperties(Properties p,String val) throws IOException
@@ -164,14 +175,16 @@ public class Testbase {
         }
        
     }
-	
-	@AfterSuite
+	@AfterTest
 	public void tearDown() throws SQLException {
-		
-		 // driver.quit();
-		  iqdb.Closeconnection();
+		if(driver!=null) {
+			driver.quit();
+			
+		}
+		 iqdb.Closeconnection();
 		 extent.flush();
 		
 	}
+	
 
 }

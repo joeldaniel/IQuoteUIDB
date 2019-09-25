@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Iquote TEST-JR">
+
+
+	<test name="Test-JR">
+		<parameter name="propertyfile" value="JohnRoberts" />
+		<classes>
+			<class name="testcases.CreateEstimate" />
+			<!-- <class name="testcases.TestingReport"/> -->
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
