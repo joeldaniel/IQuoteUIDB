@@ -23,6 +23,7 @@ import pages.Desktop;
 import pages.Estimate;
 import pages.IquoteLogin;
 import pages.JobPage;
+import pages.Negotiation;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
@@ -105,8 +106,10 @@ public class CreateEstimate extends Testbase {
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
 		test.log(Status.INFO, "New Estimate Number is : "+newest);
-		String Actualname= Estimate.NegotiaionAndPrint(filename,value);
-		Estimate.VerifyNegotiation(Actualname,value);
+		//String Actualname= Estimate.NegotiaionAndPrint(filename,value);
+		//Estimate.VerifyNegotiation(Actualname,value);
+		
+		Negotiation.VerifyHeader("HubLabels","iquotedbdbqry", "iquoteuiautodb71", value, newest);
 		
 		
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");

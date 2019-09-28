@@ -10,7 +10,7 @@ public class DBUtil {
 
 	Connection con;
 	
-	public void Createconnection(String url, String user, String password) {
+	public Connection Createconnection(String url, String user, String password) {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (ClassNotFoundException e) {
@@ -24,7 +24,8 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 		System.out.println(url +" : "+ user +" : "+ password);
-		System.out.println("Connected to sql db");	
+		System.out.println("Connected to sql db");
+		return con;	
 	}
 	
 	

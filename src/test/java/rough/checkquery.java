@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import base.DBUtil;
 import base.Testbase;
+import pages.Negotiation;
 
 public class checkquery  {
 	public static Properties Query = new Properties();
@@ -24,26 +25,29 @@ public class checkquery  {
 	
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
-		fis = new FileInputStream(
+		/*fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphPackagingStrapping.properties");
 		Query.load(fis);
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\PremierPress.properties");
 		Config.load(fis);
-		HashMap<Integer, HashMap<String, String>> EstQTYPage = new HashMap<Integer, HashMap<String, String>>();
+		HashMap<Integer, HashMap<String, String>> EstQTYPage = new HashMap<Integer, HashMap<String, String>>();*/
+		
 		
 		HashSet<Integer> HS=new HashSet<>();
 		
 		ResultSet rs;
-		String Query1=Query.getProperty("Query");
+		//String Query1=Query.getProperty("Query");
+		String Query1=Negotiation.RaghavHeader("hublabels");
 		// opening database connection to MySQL server
 		DBUtil iqdb=new DBUtil();
-		iqdb.Createconnection("jdbc:sqlserver://monarchqa18:1433;databaseName=iQuote", "sa", "efi@India");
+		iqdb.Createconnection("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=HubLabels", "iquote", "1quot3p@ss");
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=PremierPress", "iquote", "1quot3p@ss");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
-		rs=iqdb.RunQuery(Query1.replace("##Estimate##", estimate).replace("##IdItemOption##", Option).replace("##CompOrder##", comp).replace("##CharteristicDescp##", chare));
+		//rs=iqdb.RunQuery(Query1.replace("##Estimate##", estimate).replace("##IdItemOption##", Option).replace("##CompOrder##", comp).replace("##CharteristicDescp##", chare));
+		rs=iqdb.RunQuery(Query1);
 		while(rs.next()){
 			
 			
@@ -66,12 +70,12 @@ public class checkquery  {
 					EstQtyPageData.put(QtyComponentName, QTYPageQty);
 					
 	            }
-	            EstQTYPage.put(h1, EstQtyPageData);
+	        //    EstQTYPage.put(h1, EstQtyPageData);
 	            
 	      }
 	
 		
-		System.out.println(EstQTYPage);
+		//System.out.println(EstQTYPage);
 	}
 }
 

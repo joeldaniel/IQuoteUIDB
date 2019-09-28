@@ -1,11 +1,15 @@
 package utilities;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +33,7 @@ public class CommonFunctions extends Testbase {
 	public static final int midWait = 20;
 	public static final int maxWait = 30;
 	private static SecureRandom random = new SecureRandom();
+	public static Properties prop;
 	public static boolean isElementPresent(WebDriver driver, By by)
 	{
 		try
@@ -41,6 +46,22 @@ public class CommonFunctions extends Testbase {
 			driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
 			return false;
 		}
+	}
+	public static Properties initialize_properties(String file) {
+
+		prop = new Properties();
+
+		try {
+			FileInputStream ip = new FileInputStream(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\Negotiation\\"+file+".properties");
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return prop;
 	}
 	public static String unique6LengthNumeric()
 	{
