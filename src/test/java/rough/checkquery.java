@@ -38,7 +38,7 @@ public class checkquery  {
 		
 		ResultSet rs;
 		//String Query1=Query.getProperty("Query");
-		String Query1=Negotiation.RaghavHeader("hublabels");
+		String Query1="Fse";
 		// opening database connection to MySQL server
 		DBUtil iqdb=new DBUtil();
 		iqdb.Createconnection("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=HubLabels", "iquote", "1quot3p@ss");

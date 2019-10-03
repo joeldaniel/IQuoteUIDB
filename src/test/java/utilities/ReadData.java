@@ -706,7 +706,7 @@ public class ReadData extends Testbase{
 			e.printStackTrace();
 			System.out.println("failed");
 		}
-		test.log(Status.INFO, "Options for Estimate are : "+Options);
+		
 		return Options;
 	}
 	

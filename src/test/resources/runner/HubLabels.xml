@@ -2,12 +2,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Iquote TEST-HL">
 
-
+	
 	<test name="Test-HL">
 		<parameter name="propertyfile" value="HubLabels" />
+
 		<classes>
 			<class name="testcases.CreateEstimate" />
-			<!-- <class name="testcases.TestingReport"/> -->
+		
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

@@ -16,9 +16,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.aventstack.extentreports.Status;
 
 import base.Testbase;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import pages.Desktop;
 import pages.Estimate;
 import pages.IquoteLogin;
@@ -27,6 +29,7 @@ import pages.Negotiation;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
+
 
 @Listeners(utilities.ListenerUtils.class)
 public class CreateEstimate extends Testbase {
@@ -37,7 +40,7 @@ public class CreateEstimate extends Testbase {
 		Thread.sleep(2000);
 		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");*/
 		if (Config.getProperty("browser").equals("chrome")) {
-
+			
 			System.setProperty("webdriver.chrome.driver",
 					System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
 			
@@ -52,17 +55,16 @@ public class CreateEstimate extends Testbase {
 		}
 	}
 	
-	@Test(dataProvider = "dp")
+	@Test(dataProvider = "dp",priority=1,description="Creating an estimate from base estimate")
+	@Severity(SeverityLevel.BLOCKER)
+	@Description("Creating an estimate from base estimate")
 	public void createestimate(String value) throws Exception {
 		
-		 test = extent.createTest("Creating Estimate for : "+value,"This test creates an estimate from base estimate");
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
-		
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
 		int Optionnum=1;
 		String newest="";
 		String CutomerPONum="PO"+CommonFunctions.randInt(1000, 9999);
-		String filename="NEG"+value;
 		System.out.println("Base Est : " +value);
 		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
@@ -105,14 +107,9 @@ public class CreateEstimate extends Testbase {
 		Estimate.VerifyQty(value);
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-		test.log(Status.INFO, "New Estimate Number is : "+newest);
-		//String Actualname= Estimate.NegotiaionAndPrint(filename,value);
-		//Estimate.VerifyNegotiation(Actualname,value);
-		
-		Negotiation.VerifyHeader("HubLabels","iquotedbdbqry", "iquoteuiautodb71", value, newest);
-		
-		
+			
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		Negotiation.VerifyNegotiationReport(value,newest.replace(",", ""));
 		Estimate.CloseEstimateTab();
 		//Job Verification Starts
 		JobPage.NavigateToJobPage();
@@ -127,17 +124,17 @@ public class CreateEstimate extends Testbase {
 		JobPage.CloseJobTab();
 		if(JobPage.VerifyJobPlanning(value, "Planning")) {
 			System.out.println("Pass");
-			test.log(Status.PASS, "Job Planning data is verified");
+			
 		}else {
 			System.out.println("Fail");
-			test.log(Status.FAIL, "Job Planning verification failed");
+			
 		}
 		if(JobPage.VerifyJobMaterial(value, "Material")) {
 			System.out.println("Pass");
-			test.log(Status.PASS, "Job Material data is verified");
+			
 		}else {
 			System.out.println("Fail");
-			test.log(Status.FAIL, "Job Material verification failed");
+			
 		}
 		Optionqty=0;
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 

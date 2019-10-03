@@ -8,10 +8,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.aventstack.extentreports.Status;
 
 import base.Testbase;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import utilities.CommonFunctions;
 
 public class IquoteLogin extends Testbase{
-	
+	@Step("Logging into iquote application with username : {0}")
 	public static void Login(String UserName,String Password) throws Exception {
 
 		
@@ -52,6 +54,8 @@ public class IquoteLogin extends Testbase{
 			{
 				System.out.println("Login To Iquote Successfull");
 				//test.log(Status.PASS, "Login To Iquote Successfull");
+				Allure.step("Login To Iquote Successfull");
+				
 			}
 			else
 			{

@@ -6,18 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -27,14 +20,13 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import org.openqa.selenium.JavascriptExecutor;
+import org.apache.log4j.Logger;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestContext;
+
 import org.testng.ITestResult;
 public class Testbase {
 
@@ -50,6 +42,7 @@ public class Testbase {
     public static Actions actions;
     public static int Optionqty=0;
     public static  Robot robot;
+    
     
     protected static DBUtil iqdb = new DBUtil();
 	
@@ -156,7 +149,10 @@ public class Testbase {
         fr.close();
         System.out.println("After saving properties: " + p);
     }
-	@AfterMethod
+	public static synchronized WebDriver getdriver() {
+		return driver;
+	}
+	/*@AfterMethod
     public void getResult(ITestResult result)
     {
         if(result.getStatus() == ITestResult.FAILURE)
@@ -174,7 +170,7 @@ public class Testbase {
             test.skip(result.getThrowable());
         }
        
-    }
+    }*/
 	@AfterTest
 	public void tearDown() throws SQLException {
 		if(driver!=null) {
@@ -182,7 +178,7 @@ public class Testbase {
 			
 		}
 		 iqdb.Closeconnection();
-		 extent.flush();
+		
 		
 	}
 	

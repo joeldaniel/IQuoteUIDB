@@ -813,7 +813,7 @@ public class JobPage extends Testbase{
     			HTMLF.addrow("Comment","Job Creation" , "", "", "", "",Config.getProperty("EstimateIDs")+".html");
           		String CustomerID= driver.findElement(By.xpath("//label[text()='Customer']/parent::span//input[1]")).getAttribute("value");
           		System.out.println("Job Number and customerID : "+Jobnum+","+CustomerID);
-          		test.log(Status.INFO, "Job Number# is : "+Jobnum);
+          		
     		}
           else
           {
@@ -829,8 +829,8 @@ public class JobPage extends Testbase{
     	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx";
     	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx";
     	
-    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx'>JobPlanning Actual Report</a>");
-    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx'>JobPlanning Base Report</a>");
+    	//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobPlanning.xlsx'>JobPlanning Actual Report</a>");
+    	//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobPlanning.xlsx'>JobPlanning Base Report</a>");
     	
 	      boolean Comp1 = false;
 	      try {
@@ -1005,8 +1005,8 @@ public class JobPage extends Testbase{
     	String ExcelSheetPath1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx";
     	String ExcelSheetPath2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx";
     	
-    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx'>JobMaterial Actual Report</a>");
-    	test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx'>JobMaterial Base Report</a>");
+    	//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\JobMaterial.xlsx'>JobMaterial Actual Report</a>");
+    	//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\JobMaterial.xlsx'>JobMaterial Base Report</a>");
     	
 	      boolean Comp1 = false;
 	      try {
@@ -1201,14 +1201,14 @@ public class JobPage extends Testbase{
 		BufferedImage actualImage = screenshot.getImage();
 		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png";
 		
-		test.log(Status.INFO,"Job_ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png", "Actual");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png'>Job_ENG Actual Image</a>");
+		//test.log(Status.INFO,"Job_ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png", "Actual");
+		//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\Job_ENG.png'>Job_ENG Actual Image</a>");
 		
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png"));
 		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png";
 		
-		test.log(Status.INFO,"Job_ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png", "Base");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png'>Job_ENG Base Image</a>");
+		//test.log(Status.INFO,"Job_ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png", "Base");
+		//test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\Job_ENG.png'>Job_ENG Base Image</a>");
 		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
@@ -1218,14 +1218,14 @@ public class JobPage extends Testbase{
     	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png"));
          System.out.println("Job_ENG Images are Not Same");
-         test.log(Status.FAIL, "Job_ENG Images are Not Same");
-         test.log(Status.INFO,"Job_ENG Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png", "Difference");
-         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png'>Job_ENG Diff Image</a>");
+//         test.log(Status.FAIL, "Job_ENG Images are Not Same");
+//         test.log(Status.INFO,"Job_ENG Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png", "Difference");
+//         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\Job_ENG_Diff.png'>Job_ENG Diff Image</a>");
         }
         else {
     	 
           System.out.println("Job_ENG Images are Same");
-          test.log(Status.PASS, "Job_ENG Images are  Same");
+          //test.log(Status.PASS, "Job_ENG Images are  Same");
         }
         String status =diff.hasDiff()? "PASS" : "FAIL";
     	HTMLF.addrow("Step 6", "Job Engineering  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");

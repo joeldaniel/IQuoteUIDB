@@ -35,6 +35,7 @@ import com.aventstack.extentreports.Status;
 import base.Testbase;
 import de.redsix.pdfcompare.PageArea;
 import de.redsix.pdfcompare.PdfComparator;
+import io.qameta.allure.Step;
 import ru.yandex.qatools.ashot.Screenshot;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
@@ -51,7 +52,7 @@ public class Estimate extends Testbase{
 	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	static ReadData val = new ReadData();
 	
-	
+	@Step("Clicking on new estimate link")
 	public static void ClickonNewEstimate()throws Exception
 	{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_Estimatepage_Dropdown")));
@@ -65,12 +66,12 @@ public class Estimate extends Testbase{
 		if (val>0)
 		{
 			System.out.println("New Estimate Page successfully loaded");
-			test.log(Status.PASS, "New Estimate Page successfully loaded");
+			
 		}
 		else
 		{
 			System.err.println("New Estimate Page not loaded");
-			test.log(Status.FAIL, "New Estimate Page not loaded");
+			
 
 		}
 		
@@ -194,7 +195,7 @@ public class Estimate extends Testbase{
 	}
 	public static void SaveEstimate() throws Exception
 	{
-		test.log(Status.INFO, "Saving Estimate");
+		
 		if(driver.findElements(By.xpath("//div[@class='wv']//button[2]")).size()>0)
 		{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
@@ -220,7 +221,7 @@ public class Estimate extends Testbase{
 	
 	}
 	public static void VerifyEngineering(String EstimateID) throws Exception {
-		test.log(Status.INFO, "Verifying Engineering Diagrams");
+		
 		
 		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "ENG", "",EstimateID);
 		if(!Actualname.isEmpty()) {
@@ -239,8 +240,8 @@ public class Estimate extends Testbase{
 		//Screenshot screenshot = new AShot().takeScreenshot(driver, webElement);
 		ImageIO.write(screenshot.getImage(),"PNG",new File(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png"));
 		
-		test.log(Status.INFO,"ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png", "Actual");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png'>ENG Actual Image</a>");
+		/*test.log(Status.INFO,"ENG Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png", "Actual");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png'>ENG Actual Image</a>");*/
 		
 		BufferedImage actualImage = screenshot.getImage();
 		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\ENG.png";
@@ -248,8 +249,8 @@ public class Estimate extends Testbase{
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png"));
 		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png";
 		
-		test.log(Status.INFO,"ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png", "Base");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png'>ENG Base Image</a>");
+		/*test.log(Status.INFO,"ENG Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png", "Base");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\ENG.png'>ENG Base Image</a>");*/
 		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
@@ -259,14 +260,14 @@ public class Estimate extends Testbase{
     	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png"));
          System.out.println("ENG Images are Not Same");
-         test.log(Status.FAIL, "ENG Images are Not Same");
+         /*test.log(Status.FAIL, "ENG Images are Not Same");
          test.log(Status.INFO,"ENG Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png", "Difference");
-         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png'>ENG Diff Image</a>");
+         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\ENG_Diff.png'>ENG Diff Image</a>");*/
         }
         else {
         	
              System.out.println("ENG Images are Same");
-             test.log(Status.PASS, "ENG Images are Same");
+             
           }
         String status =diff.hasDiff()? "PASS" : "FAIL";
     	HTMLF.addrow("Step 6", "Estimate Engineering  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
@@ -292,15 +293,15 @@ public class Estimate extends Testbase{
 		
 		BufferedImage actualImage = screenshot.getImage();
 		String Actual=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png";
-		
+		/*
 		test.log(Status.INFO,"QTY Actual Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png", "Actual");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png'>QTY Actual Image</a>");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Actual\\QTY.png'>QTY Actual Image</a>");*/
 		
 		BufferedImage expectedImage = ImageIO.read(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png"));
 		String Base=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png";
 		
-		test.log(Status.INFO,"QTY Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png", "Base");
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png'>QTY Base Image</a>");
+		/*test.log(Status.INFO,"QTY Base Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png", "Base");
+		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Base\\QTY.png'>QTY Base Image</a>");*/
 		
 		ImageDiffer imgDiff = new ImageDiffer();
         ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
@@ -310,14 +311,14 @@ public class Estimate extends Testbase{
     	 BufferedImage diffImage = diff.getMarkedImage();
          ImageIO.write(actualImage, "PNG", new File(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png"));
          System.out.println("QTY Images are Not Same");
-         test.log(Status.FAIL, "QTY Images are Not Same");
+         /*test.log(Status.FAIL, "QTY Images are Not Same");
          test.log(Status.INFO,"QTY Diff Image").addScreenCaptureFromPath(System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png", "Difference");
-         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png'>QTY Diff Image</a>");
+         test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+EstimateID+"\\Difference\\QTY_Diff.png'>QTY Diff Image</a>");*/
         }
         else {
     	
          System.out.println("QTY Images are Same");
-         test.log(Status.PASS, "QTY Images are  Same");
+         
         }
         String status =diff.hasDiff()? "PASS" : "FAIL";
         HTMLF.addrow("Step ", "Estimate Quantiy  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
@@ -326,29 +327,29 @@ public class Estimate extends Testbase{
 	public static void VerifyNegotiation(String Actualfile,String Estimate) throws IOException {
 		 
 		String file1=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile;
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Actual\\"+Actualfile+"'>NEG Actual PDF</a>");
+		
 		String file2=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf";
-		test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Base\\NEG.pdf'>NEG Base PDF</a>");
+		
 		String diff=System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput";
 		boolean isEquals = new PdfComparator(file1, file2).with(new PageArea(1, 1407, 58, 2277, 363)).with(new PageArea(1,1798,483,1856,501)).compare().writeTo(diff);
 		//boolean isEquals = new PdfComparator(file1, file2).compare().writeTo(diff);
 		String status =isEquals? "PASS" : "FAIL";
 		if (!isEquals) {
 		    System.out.println("Differences found in PDF's!");
-		    test.log(Status.FAIL, "Differences found in PDF's!");
-		    test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput.pdf'>NEG Diff Report</a>");
+		    /*test.log(Status.FAIL, "Differences found in PDF's!");
+		    test.log(Status.INFO, "<a href='file:///"+System.getProperty("user.dir") +"\\src\\test\\resources\\Documents\\"+Estimate+"\\Difference\\diffOutput.pdf'>NEG Diff Report</a>");*/
 		}
 		if (isEquals) {
 		    System.out.println("No Differences found in PDF's!");
-		    test.log(Status.PASS, "No Differences found in PDF's!");
+		    
 		}
 		HTMLF.addrow("Step 4", "Estimate Negotiation PDF Validation", file2, file1, "", status,Config.getProperty("EstimateIDs")+".html");
-		test.log(Status.INFO, "Creation Of estimate ends");
+		
 	}
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
 			
-			test.log(Status.INFO, "Creating Option : "+Option);
+			
 			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
 		   	 Thread.sleep(3000);
@@ -404,7 +405,7 @@ public class Estimate extends Testbase{
 	}
 	public static void CalculateEstimate() throws Exception
 	{
-		test.log(Status.INFO, "Calculating Estimate");
+		
 		System.out.println("Calculating Estimate");
 		//Thread.sleep(40000);
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
@@ -726,7 +727,7 @@ public class Estimate extends Testbase{
 				for(String s:RemoveCharacteristicsList)
 				{
 					System.out.println("Remove Characteristics :- "+s.trim());
-					test.log(Status.INFO, "Characteristics removed are :- "+s.trim());
+					
 					String RemoveChar=s.trim();
 					String rCharxpath="//label[text()='"+RemoveChar+"']/ancestor::header[@class='layout-header']/button/div";
 					driver.findElement(By.xpath(rCharxpath)).click();
@@ -788,7 +789,7 @@ public class Estimate extends Testbase{
 		}
 
 		System.out.println("All the Charaecteristic to be added :- "+AddCharacteristicsList);
-		test.log(Status.INFO, "Charaecteristics to be added :- "+AddCharacteristicsList);
+		
 		for(String s:AddCharacteristicsList)
 
 		{	
@@ -949,12 +950,18 @@ public class Estimate extends Testbase{
 		
 			//////Enter the Product
 			System.out.println("Product name is "+ProdLine);
-			test.log(Status.INFO, "Product name is "+ProdLine);
+			
 			///// Enter The Customer
 			CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Estimate_Customer")), CustCode);
 			driver.findElement(By.xpath(OR.getProperty("Estimate_Customer"))).sendKeys(Keys.TAB);
 			
+			/////////Enter Project COde
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(OR.getProperty("Ne_Projectcode"))));
+				CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("Ne_Projectcode")), ProjCode);
+				driver.findElement(By.xpath(OR.getProperty("Ne_Projectcode"))).sendKeys(Keys.TAB);
+				
 		   //SelectContact
+			
 			CommonFunctions.Iquote_SelectFromDropdown(driver, "//label[text()='Contact']/following-sibling::span/span/label", ContName);
 		  
 			/////////Enter Salesperson
@@ -1029,12 +1036,12 @@ public class Estimate extends Testbase{
 			if (vale>0)
 			{
 				System.out.println("Estimate Creation done");
-				test.log(Status.PASS, "Estimate Creation done");
+				
 			}
 			else
 			{
 				System.err.println("Failed to create Estimate");
-				test.log(Status.FAIL, "Failed to create Estimate");
+				
 		
 			}
 		
@@ -1085,7 +1092,7 @@ public class Estimate extends Testbase{
 	}
 	
 	public static void CreateProduct_and_Components(String EstimateID,String IdItemOption) throws Exception {
-		test.log(Status.INFO, "Creating Product and components");
+		
 		//Renaming Existing Products
 		RenameExistingProductsandComponents();
 		ReadData val = new ReadData();
@@ -1133,7 +1140,7 @@ public class Estimate extends Testbase{
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), "To be renamed");
 				Thread.sleep(2000);
 				CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), childMap.get("ComponentDescription"));
-				test.log(Status.INFO, "Component type has been added and named as : "+childMap.get("ComponentDescription"));
+				
 				
 				Thread.sleep(3000);
 	        }
@@ -1198,7 +1205,7 @@ public class Estimate extends Testbase{
 	}
 	
 	public static void ParentChildCombination(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException {
-		test.log(Status.INFO, "Parent child combination");
+		
 		Thread.sleep(5000);
 		//DeleteRenamedProductsandComponents();
 		ReadData val = new ReadData();
@@ -1226,7 +1233,7 @@ public class Estimate extends Testbase{
 						int totalrow=totalcells/6;
 						int nextrow=totalrow;
 		                System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
-		                test.log(Status.INFO, "Parent Component : "+childMap.get("ParentComponent")+" is linked to : "+childMap.get("ChildComponent"));
+		              
 						int valuepresent=driver.findElements(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid']//span[text()='"+childMap.get("ChildComponent")+"']")).size();
 						String valuepresentStr=Integer.toString(valuepresent);
 						System.out.println("Element Present is :- "+valuepresentStr);
@@ -1256,7 +1263,7 @@ public class Estimate extends Testbase{
 	public static void AddQuantity(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException
 	{
 		Thread.sleep(2000);
-		test.log(Status.INFO, "Adding Quantity");
+		
 		ReadData val = new ReadData();
 		
 		try
@@ -1268,7 +1275,7 @@ public class Estimate extends Testbase{
 			LinkProductandComp=val.QtyForEst(EstimateId, Option);
 			System.out.println(LinkProductandComp.size());
 			String s="Option,Component and Quanity :"+LinkProductandComp.size();
-			test.log(Status.INFO, s);
+			
 			Thread.sleep(2000);
 			//int i=1;
 			 int j=0;
@@ -1394,7 +1401,7 @@ public class Estimate extends Testbase{
 	}
 	public static void ComponentandCharacteristics_ForPaperSpec(String EstimateId,String IdItemOption)
 	{
-		test.log(Status.INFO, "Adding characteristics for components");
+		
 		Estimatepage_Characteristics EPC = new Estimatepage_Characteristics();
 		try {
 			
@@ -1414,7 +1421,7 @@ public class Estimate extends Testbase{
 
 				Characteristicsforcomp.clear();
 				System.out.println("Component order is  :- "+Comporderval);
-				test.log(Status.INFO, "Component order is  :- "+Comporderval);
+				
 				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
 				String XpathForComponent="//label[text()='"+CompDescp+"']";
@@ -1435,7 +1442,7 @@ public class Estimate extends Testbase{
 					FixedCharComponents.add(fChar);
 				}
 				System.out.println("Fixed Characteristics Value are :- "+FixedCharComponents);
-				test.log(Status.INFO, "Fixed Characteristics Value are :- "+FixedCharComponents);
+				
 				//Removing and adding the characteristics Starts
 				Estimate.UncheckUnwantedCharacteristics(FixedCharComponents);
 				Estimate.AddCharacteristics(FixedCharComponents, CompDescp);
@@ -1446,21 +1453,21 @@ public class Estimate extends Testbase{
 					String FixedCharDescp=Characteristicsforcomp.get(Characteristic).get("FixedCharacteristicDesc");
 
 					System.out.println("Fixed Characteristic Description is :- "+FixedCharDescp);
-					test.log(Status.INFO, "Characteristic filling for : "+Characteristic+" using the description "+FixedCharDescp);
+					
 					switch(FixedCharDescp)
 					{
 					
 					case "qttCModelGraphCarac.qttCPGraphMedia":
 						EPC.Charactertics_CPGraphMedia(EstimateId,IdItemOption, Comporderval);	
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;			
 					case "qttCModelGraphCarac.qttCPGraphBindStitch":
 						EPC.Charactertics_CPGraphBindStitch(EstimateId, IdItemOption,Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphColorVanish":
 						EPC.Charactertics_CPGraphColorVanish(EstimateId, IdItemOption,Comporderval);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverFormat":
 					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
@@ -1469,121 +1476,121 @@ public class Estimate extends Testbase{
 					case "qttCModelGraphCarac.qttCPGraphEndSheetFormat":	
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverOpenFormat":
 						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphHotStamping":
 						EPC.Charactertics_CPGraphHotStamping(EstimateId, IdItemOption,Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBindGlue":
 						EPC.Charactertics_CPGraphBindGlue(EstimateId, IdItemOption,Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPPlant":
 						EPC.Charactertics_CPPlant(EstimateId, IdItemOption,Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPGenericCPOptionDesc":
 					case "qttCModelPS.qttCPGenericCPOptionValues":
 						EPC.Charactertics_CPGenericCPOptionDesc(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPNote":
 						EPC.Charactertics_CPNote(EstimateId, IdItemOption,Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
 					case "qttCModelGraphCarac.qttCPAGraphPageProof2":
 					case "qttCModelGraphCarac.qttCPAGraphPageProof3":
 						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPValue":
 						EPC.Charactertics_CPValue(EstimateId,IdItemOption, Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPASimpleQty":
 					case "qttCModelPS.qttCPASimple":
 						EPC.Charactertics_CPASimpleQty(EstimateId,IdItemOption, Comporderval, Characteristic);
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphFiber":
 						EPC.Charactertics_CPGraphFiber(EstimateId, IdItemOption,Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphPackagingBox":
 						EPC.Charactertics_CPGraphPackBox(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelPS.qttCPFileList":
 						//EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphLargeFormat":
 						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphGiantCoupling":
 						//EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBleed":
 						EPC.Charactertics_CPGraphBleed(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphUnfinishedFormat":
                         EPC.Charactertics_CPGraphUnfinishedFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
-                        test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+                       
                         break;                        
                   case "qttCModelGraphCarac.qttCPGraphLaminating":
                         EPC.Charactertics_CPGraphInitialLaminating(EstimateId,IdItemOption, Comporderval, Characteristic);
-                        test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+                      
                         break;
                   case "qttCModelGraphCarac.qttCPGraphHardCover":
   						EPC.Charactertics_CPGraphHardCover(EstimateId, IdItemOption,Comporderval, Characteristic) ;    
-  						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  						
 	  					break;
                   case "qttCModelGraphCarac.qttCPGraphMaxMultiline":
 	  					EPC.Charactertics_CPGraphMaxMultiLine(EstimateId, IdItemOption,Comporderval, Characteristic);
-	  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+	  					
 	  					break;
                   case "qttCModelGraphCarac.qttCPGraphPackagingPallet":
   						EPC.Charactertics_CPGraphPackPallet(EstimateId,IdItemOption, Comporderval, Characteristic) ; 
-  						test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  						
   						break;
                   case "qttCModelGraphCarac.qttCPGraphPrintType":	
   					EPC.Charactertics_CPGraphPrintType(EstimateId,IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelGraphCarac.qttCPGraphPackagingStrapping":
                 	 EPC.Charactertics_CPGraphPackagingStrapping(EstimateId,IdItemOption, Comporderval, Characteristic);
-                	 test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+                	
                 	  break;
                   case "qttCModelGraphCarac.qttCPGraphGIrregFormat":
   					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelGraphCarac.qttCPGraphLabelFormat":
   					EPC.Charactertics_CPGraphLabelFormat(EstimateId, IdItemOption,Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelPS.qttCPGenericCPOption":
   					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelPS.qttCPAOptionQty":
   					EPC.Charactertics_CPAOptionQty(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelGraphCarac.qttCPGraphDieCut":
   					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelGraphCarac.qttCPGraphWireOBind":
   					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
                   case "qttCModelPS.qttCPGenericRawMaterialValue":
   					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					test.log(Status.INFO, Characteristic+"  filled for values : Estimate : "+EstimateId+" with Option : "+IdItemOption+" having  Component order :"+Comporderval);
+  					
   					break;
 
 					default:
@@ -1726,13 +1733,13 @@ public class Estimate extends Testbase{
 		if (StatusChange.contains(ValidateStatus))
 		{
 			System.out.println("Status Changed Successfully ");
-			test.log(Status.INFO, "Estimate released to production");
+			
 		}
 
 		else
 		{
 			System.err.println("Status not Changed Successfully");
-			test.log(Status.INFO, "Estimate not able release to production");
+			
 		}
 		
 		return ScreenShotStatusChange;

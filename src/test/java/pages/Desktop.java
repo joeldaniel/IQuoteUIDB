@@ -9,13 +9,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.aventstack.extentreports.Status;
 
 import base.Testbase;
+import io.qameta.allure.Step;
 import utilities.CommonFunctions;
 
 public class Desktop extends Testbase {
 	
+	@Step("Navigating to estimate page...")
 	public static void NavigateToEstimatePage()throws Exception
 	{
-		test.log(Status.INFO, "Creating of Estimate Started");
+		
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Desktop_Label")));
 		Thread.sleep(2000);
 		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Sales']")); 
@@ -37,12 +39,12 @@ public class Desktop extends Testbase {
 		if (val>0)
 		{
 			System.out.println("Navigation to Estimate Page Successfull");
-			test.log(Status.PASS, "Navigation to Estimate Page Successfull");
+			
 		}
 		else
 		{
 			System.err.println("Navigation to Estimate Page Failed");
-			test.log(Status.FAIL, "Navigation to Estimate Page Failed");
+			
 
 		}
 
