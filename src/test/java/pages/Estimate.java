@@ -104,7 +104,7 @@ public class Estimate extends Testbase{
 			
 		}
 	}
-
+	@Step("Navigating to Quantity Tab")
 	public static Boolean NavigateToQtyPriceTab()throws Exception
 	{
 		
@@ -193,6 +193,7 @@ public class Estimate extends Testbase{
 		}
 	
 	}
+	@Step("Saving the Estimate")
 	public static void SaveEstimate() throws Exception
 	{
 		
@@ -220,6 +221,7 @@ public class Estimate extends Testbase{
 		//	TakeScreenShot.ScreenShotWindow(driver,"NegotiationPageEstimateNumber");  
 	
 	}
+	@Step("Verifying the Engineering Diagram for Estimate : {0}")
 	public static void VerifyEngineering(String EstimateID) throws Exception {
 		
 		
@@ -272,6 +274,7 @@ public class Estimate extends Testbase{
         String status =diff.hasDiff()? "PASS" : "FAIL";
     	HTMLF.addrow("Step 6", "Estimate Engineering  Validation", Base, Actual, "", status,Config.getProperty("EstimateIDs")+".html");
 	}
+	@Step("Verifying the Quantity for Estimate : {0}")
 	public static void VerifyQty(String EstimateID) throws Exception {
 
 		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//label[text()='Option']/parent::span/parent::div/ancestor::div[@class='grid__box']/ancestor::div[@class='wizard']"), "QTY", "",EstimateID);
@@ -346,6 +349,7 @@ public class Estimate extends Testbase{
 		HTMLF.addrow("Step 4", "Estimate Negotiation PDF Validation", file2, file1, "", status,Config.getProperty("EstimateIDs")+".html");
 		
 	}
+	@Step("Creating new Option : {0}")
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
 			
@@ -403,6 +407,7 @@ public class Estimate extends Testbase{
 		
 		
 	}
+	@Step("Calculating the estimate")
 	public static void CalculateEstimate() throws Exception
 	{
 		
@@ -430,10 +435,12 @@ public class Estimate extends Testbase{
 		}
 
 	} 
+	@Step("Closing Estimate tab")
 	public static void CloseEstimateTab() {
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']"), 180);
 		driver.findElement(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).click();
 	}
+	@Step("Navigating to the Engineering Tab")
 	public static Boolean NavigateToEngineeringTab()throws Exception
 	{
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Engineering_Tab")),180);
@@ -454,7 +461,7 @@ public class Estimate extends Testbase{
 		}
 
 	}
-	
+	@Step("Navigating to the Negotiation Tab")
 	public static Boolean NavigateToNegotiationTab()throws Exception
 	{
 		
@@ -477,6 +484,7 @@ public class Estimate extends Testbase{
 		}
 
 	}
+	@Step("Saving the newly generated Estimate Number")
 	public static String SaveEstimateNumber()throws Exception
 
 	{
@@ -918,6 +926,7 @@ public class Estimate extends Testbase{
 			Assert.fail("Failed while entering Quatity in Quantity page");
 		}
 	}
+	@Step("Creating an estimate with base details of estimate number : {0}")
 	public static void CreateNewEstimate(String EstimateId)throws Exception
 	{ 
 		try
@@ -1091,6 +1100,7 @@ public class Estimate extends Testbase{
 	    }
 	}
 	
+	@Step("Creating Product and Components for an Estimate  : {0} having OptionID: {1}")
 	public static void CreateProduct_and_Components(String EstimateID,String IdItemOption) throws Exception {
 		
 		//Renaming Existing Products
@@ -1203,7 +1213,7 @@ public class Estimate extends Testbase{
 		}
 		
 	}
-	
+	@Step("Linking Product and Child for an Estimate  : {0} having OptionID: {1}")
 	public static void ParentChildCombination(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException {
 		
 		Thread.sleep(5000);
@@ -1260,6 +1270,7 @@ public class Estimate extends Testbase{
 		
 	
 	}
+	@Step("Adding Quantity for an Estimate  : {0} having OptionID: {1}")
 	public static void AddQuantity(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException
 	{
 		Thread.sleep(2000);
@@ -1399,7 +1410,8 @@ public class Estimate extends Testbase{
 		}
 	
 	}
-	public static void ComponentandCharacteristics_ForPaperSpec(String EstimateId,String IdItemOption)
+	@Step("Adding Component Charateristics for an Estimate  : {0} having OptionID: {1}")
+	public static void ComponentandCharacteristics(String EstimateId,String IdItemOption)
 	{
 		
 		Estimatepage_Characteristics EPC = new Estimatepage_Characteristics();
@@ -1658,6 +1670,7 @@ public class Estimate extends Testbase{
 		
 	}
 	
+	@Step("Changing Estimate status to {0} and validating the status : {1}")
 	public static String StatusChangeTo(String EstimateStatus, String ValidateStatus, String CutomerPONum, String Inventory ) throws Exception
 	{
 

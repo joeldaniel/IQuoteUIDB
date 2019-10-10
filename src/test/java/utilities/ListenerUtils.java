@@ -2,6 +2,11 @@ package utilities;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
@@ -22,6 +27,8 @@ public class ListenerUtils extends TestListenerAdapter implements IRetryAnalyzer
 	int reTrycount=0 ;
 	int reTryLimit ;
 	public static Logger Log = Logger.getLogger("devpinoyLogger");
+	public String messageBody;
+
 	
 
 
@@ -89,6 +96,7 @@ public class ListenerUtils extends TestListenerAdapter implements IRetryAnalyzer
 		Log.info("Number of Passed Tests: " + context.getPassedTests().getAllMethods().size());
 		Log.info("Failed Tests: " + context.getFailedTests().getAllMethods());
 		Log.info("Skipped Tests: " + context.getSkippedTests().getAllMethods());
+		
 	}
 
 	@Attachment(value = "Screenshot of {0} ", type = "image/png")

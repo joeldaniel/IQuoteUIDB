@@ -15,13 +15,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import base.Testbase;
+import io.qameta.allure.Step;
 import utilities.CommonFunctions;
 import utilities.ReadData;
 
 public class Estimatepage_Characteristics extends Testbase {
 	
 	ReadData name = new ReadData();
-	private Object valueofClosedWidth;
+	
+	@Step("Adding CPGraphMedia Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2}")
 	public void Charactertics_CPGraphMedia(String Estimateid,String IdItemOption, String Comporderval) throws ClassNotFoundException, IOException, SQLException
 	{
 		HashMap<String, HashMap<String, String>> EstPageSpec = new HashMap<String, HashMap<String, String>>();
@@ -126,6 +128,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			e.printStackTrace();
 		}
 	}
+	@Step("Adding CPGraphBindStitch Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphBindStitch(String Estimateid, String IdItemOption,String Comporderval, String CharteristicDescp) throws Exception
 	{
 		
@@ -196,6 +199,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPGraphColorVanish Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2}")
 	public void Charactertics_CPGraphColorVanish(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, IOException, SQLException {
 
 		try
@@ -477,7 +481,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 			
 	}
-	
+	@Step("Adding CPGraphRegularFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2}")
 	public void Charactertics_CPGraphRegularFormat(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
 
 		HashMap<String, HashMap<String, String>> EstPageFormat = new HashMap<String, HashMap<String, String>>();
@@ -584,7 +588,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
-	
+	@Step("Adding CPGraphHotStamping Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphHotStamping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 
@@ -691,7 +695,7 @@ public class Estimatepage_Characteristics extends Testbase {
 	
 		
 	}
-	
+	@Step("Adding CPPlant Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPPlant(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPPlant = new HashMap<String, String>();
@@ -709,7 +713,7 @@ public class Estimatepage_Characteristics extends Testbase {
     		
 	
 	}
-	
+	@Step("Adding CPGenericCPOptionDesc Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGenericCPOptionDesc(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPGenericCPOptionDesc = new HashMap<String, String>();
@@ -744,6 +748,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPNote Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPNote(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPNote = new HashMap<String, String>();
@@ -761,6 +766,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPAGraphPageProof Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPAGraphPageProof(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPAGraphPageProof	 = new HashMap<String, String>();
@@ -847,7 +853,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			e.printStackTrace();
 		}
 	}
-	
+	@Step("Adding CPValue Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPValue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPvalue = new HashMap<String, String>();
@@ -865,6 +871,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPASimpleQty Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPASimpleQty(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPASimpleQty = new HashMap<String, String>();
@@ -897,6 +904,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			e.printStackTrace();
 		}
 	}
+	@Step("Adding CPGraphFiber Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphFiber(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPGraphFiber = new HashMap<String, String>();
@@ -917,6 +925,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPGraphPackBox Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphPackBox(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 		
 		JavascriptExecutor js = (JavascriptExecutor)driver;
@@ -977,12 +986,13 @@ public class Estimatepage_Characteristics extends Testbase {
 			e.printStackTrace();
 		}
 	}
+	@Step("Adding CPFileList Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPFileList(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CPFileList = new HashMap<String, String>();
 		CPFileList=name.CPFileList(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
 		String CPFileList_file=CPFileList.get("Files");
-		String CPFileList_notes=CPFileList.get("Notes");
+		//String CPFileList_notes=CPFileList.get("Notes");
 		
 		//write code to take files dont know how to write
 		if(CPFileList_file!=null) {
@@ -992,6 +1002,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			System.out.println("No files to upload");
 		}
 	}
+	@Step("Adding CPGraphLargeFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphLargeFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 		HashMap<String, String> CPGraphLargeFormat = new HashMap<String, String>();
 		CPGraphLargeFormat=name.CPGraphLargeFormat(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -1003,14 +1014,14 @@ public class Estimatepage_Characteristics extends Testbase {
 		String IrregularFit=CPGraphLargeFormat.get("IrregularFit");
 		String IrregularFitCB=CPGraphLargeFormat.get("IrregularFitCB");
 		
-		String TopMargin=CPGraphLargeFormat.get("TopMargin");
+		/*String TopMargin=CPGraphLargeFormat.get("TopMargin");
 		String BottomMargin=CPGraphLargeFormat.get("BottomMargin");
 		String LeftMargin=CPGraphLargeFormat.get("LeftMargin");
 		String RightMargin=CPGraphLargeFormat.get("RightMargin");
 		String TopBleed=CPGraphLargeFormat.get("TopBleed");
 		String BottomBleed=CPGraphLargeFormat.get("BottomBleed");
 		String LeftBleed=CPGraphLargeFormat.get("LeftBleed");
-		String RightBleed=CPGraphLargeFormat.get("RightBleed");
+		String RightBleed=CPGraphLargeFormat.get("RightBleed");*/
 		String Splicing=CPGraphLargeFormat.get("Splicing");
 		String SplicingBleed=CPGraphLargeFormat.get("SplicingBleed");
 		String LayoutWidht=CPGraphLargeFormat.get("LayoutWidht");
@@ -1083,10 +1094,11 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 		
 	}
+	@Step("Adding CPGraphGiantCoupling Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void charactertics_CPGraphGiantCoupling(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 		
 	}
-	
+	@Step("Adding CPGraphBindGlue Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphBindGlue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
 
 		HashMap<String, String> CharCPGraphBindGlue = new HashMap<String, String>();
@@ -1121,6 +1133,7 @@ public class Estimatepage_Characteristics extends Testbase {
 
 	
 	}
+	@Step("Adding CPGraphUnfinishedFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphUnfinishedFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
 	{
 		HashMap<String, String> CharCPGraphUnfinishedFormat = new HashMap<String, String>();
@@ -1131,7 +1144,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphUnfinishedFormatThickness=CharCPGraphUnfinishedFormat.get("Thickness");
 		String CPGraphUnfinishedFormatWeight=CharCPGraphUnfinishedFormat.get("Weight");
 		String CPGraphUnfinishedFormatInventoryItemCode=CharCPGraphUnfinishedFormat.get("InventoryItemCode");
-		String CPGraphUnfinishedFormatInventoryItemDescription=CharCPGraphUnfinishedFormat.get("InventoryItemDescription");
+		//String CPGraphUnfinishedFormatInventoryItemDescription=CharCPGraphUnfinishedFormat.get("InventoryItemDescription");
 		String CPGraphUnfinishedFormatQuantity=CharCPGraphUnfinishedFormat.get("Quantity");
 		String CPGraphUnfinishedFormatNote=CharCPGraphUnfinishedFormat.get("Note");
 
@@ -1176,6 +1189,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 
 	}
+	@Step("Adding CPGraphBleed Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphBleed(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws ClassNotFoundException, IOException, SQLException, InterruptedException
 	{
 		HashMap<String, String> CharCPGraphBleed= new HashMap<String, String>();
@@ -1199,7 +1213,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 		
 	}
-	
+	@Step("Adding CPGraphInitialLaminating Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphInitialLaminating(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
 	{
 		HashMap<String, String> CharCPGraphInitialLaminating = new HashMap<String, String>();
@@ -1260,6 +1274,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 
 	}
+	@Step("Adding CPGraphHardCover Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphHardCover(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 
 		HashMap<String, String> CharCPGraphHardCover = new HashMap<String, String>();
@@ -1359,6 +1374,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPGraphMaxMultiLine Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphMaxMultiLine(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 
 		HashMap<String, String> CharCPGraphMaxMultiLine = new HashMap<String, String>();
@@ -1373,6 +1389,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	
 	}
+	@Step("Adding CPGraphPackPallet Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphPackPallet(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 
 		HashMap<String, String> CharCPGraphPackPallet = new HashMap<String, String>();
@@ -1411,6 +1428,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			e.printStackTrace();
 		}
 	}
+	@Step("Adding CPGraphPrintType Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphPrintType(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 
 		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
@@ -1432,7 +1450,8 @@ public class Estimatepage_Characteristics extends Testbase {
 
 	
 	}
-public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	@Step("Adding CPGraphPackagingStrapping Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
+	public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
 		
 		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
 		CharCPGraphPrintType=name.CPGraphPackagingStrapping(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -1471,8 +1490,9 @@ public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String I
 		
 
 	}
-public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
-{
+	@Step("Adding CPGraphGIrregFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
+	public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 
 	HashMap<String, HashMap<String, String>> CharCPGraphGIrregFormat= new HashMap<String, HashMap<String, String>>();
 	CharCPGraphGIrregFormat=name.CPGraphGIrregFormat(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -1595,6 +1615,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		}
 	
 	}
+	@Step("Adding CPGraphLabelFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphLabelFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
 	{
 
@@ -1681,6 +1702,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 	 			 			 
 	
 	}
+	@Step("Adding CPGenericCPOption Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGenericCPOption(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
 	{
 
@@ -1714,6 +1736,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 
 	
 	}
+	@Step("Adding CPAOptionQty Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPAOptionQty(String Estimateid, String IdItemOption,String Comporderval, String CharteristicDescp) throws Exception
 	{
 
@@ -1754,6 +1777,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 			e.printStackTrace();
 		}
 	}
+	@Step("Adding CPGraphDieCut Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphDieCut(String Estimateid, String IdItemOption,String Comporderval, String CharteristicDescp) throws Exception
 	{
 
@@ -1860,7 +1884,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 			e.printStackTrace();
 		}
 	}
-	
+	@Step("Adding CPGraphWireOBind Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGraphWireOBind(String Estimateid, String IdItemOption, String Comporderval,String CharteristicDescp) throws Exception
 	{
 
@@ -1934,7 +1958,7 @@ public void Charactertics_CPGraphGIrregFormat(String Estimateid,  String IdItemO
 		}
 	
 	}
-	
+	@Step("Adding CPGenericRawMaterial Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
 	public void Charactertics_CPGenericRawMaterial(String Estimateid, String IdItemOption, String Comporderval, String CharteristicDescp) throws Exception
 	{
 

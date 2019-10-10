@@ -88,7 +88,7 @@ public class CreateEstimate extends Testbase {
 			
 			Estimate.ParentChildCombination(value, Option);
 			
-			Estimate.ComponentandCharacteristics_ForPaperSpec(value,Option);
+			Estimate.ComponentandCharacteristics(value,Option);
 			Estimate.NavigateToQtyPriceTab();
 			
 			Estimate.AddQuantity(value, Option);

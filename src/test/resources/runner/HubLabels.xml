@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Iquote TEST-HL">
+<suite name="Suite-HubLabels">
 
 	
-	<test name="Test-HL">
+	<test name="Test-HubLabels">
 		<parameter name="propertyfile" value="HubLabels" />
 
 		<classes>

@@ -14,6 +14,7 @@ import java.util.Set;
 import com.aventstack.extentreports.Status;
 
 import base.Testbase;
+import io.qameta.allure.Step;
 
 public class ReadData extends Testbase{
 	public static Properties Query = new Properties();
@@ -681,7 +682,7 @@ public class ReadData extends Testbase{
 		
 		return ProQty;
 	}
-
+	@Step("Number of options for estimateID  : {0}")
 	public HashSet<String> NoOfOptions(String EstimateId) throws IOException, ClassNotFoundException, SQLException{
 		Options.clear();
 		

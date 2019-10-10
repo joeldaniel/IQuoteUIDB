@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Iquote TEST-RRD">
+<suite name="Suite-RRD">
 
 
-	<test name="For RRD">
+	<test name="Test-RRD">
 		<parameter name="propertyfile" value="RRD" />
 		<classes>
 			<class name="testcases.CreateEstimate" />

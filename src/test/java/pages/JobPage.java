@@ -25,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import com.aventstack.extentreports.Status;
 
 import base.Testbase;
+import io.qameta.allure.Step;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
@@ -41,7 +42,7 @@ public class JobPage extends Testbase{
 	
 	static HTML_File_Creator HTMLF= new HTML_File_Creator();
 	
-      
+	@Step("Navigating to Job Page")
       public  static void NavigateToJobPage()throws Exception
       {
     	    CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Desktop_Label")));
@@ -111,7 +112,7 @@ public class JobPage extends Testbase{
     	  
       }
       
-      
+      @Step("Searching Job with estimate number : {0}")
       public static void searchJobWithEstimateNumber (String eEstimateNumber)throws Exception
       {
     	  Thread.sleep(15000);
@@ -172,7 +173,7 @@ public class JobPage extends Testbase{
 //            
 //      }
       //Author Sonali
-   
+      @Step("Navigating to Job Materials Page")
       public  static void NavigateToJobMaterials()throws Exception
       {
            
@@ -314,6 +315,7 @@ public class JobPage extends Testbase{
 			System.out.println("JOb Save Fail");
 		}
 	}
+	@Step("Navigating to Job Planning Page")
 	public static void NavigateToJobPlanning()throws Exception
 	{
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Nav_PlanningTab")));
@@ -331,7 +333,7 @@ public class JobPage extends Testbase{
 
 		}
 	}
-	
+	@Step("Pushing job planning data for verification")
 	public static void PushPlanningData(String Estimate,String Sheetname) throws Exception {
 		Estimate=Estimate.replace(",", "");
 		//CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Component']"));
@@ -415,7 +417,7 @@ public class JobPage extends Testbase{
 		
 	
 	}
-	
+	@Step("Pushing Job Material Data to Excel")
 	public static void PushMaterialData(String Estimate,String Sheetname) throws Exception {
 		
 		Estimate=Estimate.replace(",", "");
@@ -797,7 +799,7 @@ public class JobPage extends Testbase{
           return JobNum;
     }
 
-
+    @Step("Navigating to Job General Page")
     public static void NavigateToJobGeneral()throws Exception
     {//Author Sonali
           CommonFunctions.ClickElement(driver, By.xpath("//div[@class='wizard']/nav[@class='wizard__nav']//label[text()='General'] "));
@@ -823,6 +825,7 @@ public class JobPage extends Testbase{
             
      //  TakeScreenShot.ScreenShotWindow(driver,"JobMaterials");            
     }
+    @Step("Verifying Job Planning")
     public static boolean VerifyJobPlanning(String Estimate,String SheetName1) {
     	
     	Estimate=Estimate.replace(",", "");
@@ -999,6 +1002,7 @@ public class JobPage extends Testbase{
 	      
 	
     }
+    @Step("Verifying Job Material")
     public static boolean VerifyJobMaterial(String Estimate,String SheetName1) {
     	
     	Estimate=Estimate.replace(",", "");
@@ -1174,13 +1178,15 @@ public class JobPage extends Testbase{
 	      
 	
     }
+    @Step("Closing Job Page")
     public static void CloseJobTab() {
     	driver.findElement(By.xpath("//span[@class='app__tab__close']")).click();
     }
-    
+    @Step("Navigating to Job Engineering Page")
     public static void NavigateToJobEngineering() {
     	driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[4]")).click();
     }
+    @Step("Verifying Job Engineering Page")
     public static void VerifyJobEngineering(String Estimate) throws Exception {
     	Estimate=Estimate.replace(",", "");
 		/*String Actualname=ScreenShot.ScreenShotRegion_withPath(driver, By.xpath("//div[@class='eng-di__cont']//div[@class='diagram__cont']"), "Job_ENG", "",Estimate);
