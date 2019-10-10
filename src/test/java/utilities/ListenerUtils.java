@@ -56,14 +56,14 @@ public class ListenerUtils extends TestListenerAdapter implements IRetryAnalyzer
 		System.out.println("****************************************************************************************");
 	}
 
-	@Step("Test failed. Please take a look at the attachments:")
+	@Step("Test failed")
 	@Override
 	public void onTestFailure(ITestResult result) {
 		System.out.println("X");
 		System.out.println("X");
 		System.out.println(
 				"XXXXXXXXXXXXXXXXXXXXXX    " + "TEST CASE FAILED:" + result.getName() + "    XXXXXXXXXXXXXXXXXXXXXX");
-		takeScreenShot(result.getName());
+		//takeScreenShot(result.getName());
 		System.out.println(
 				"XXXXXXXXXXXXXXXXXXXXXXX             " + "-E---N---D-" + "             XXXXXXXXXXXXXXXXXXXXXX");
 		System.out.println("****************************************************************************************");

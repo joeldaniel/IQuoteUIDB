@@ -1,17 +1,12 @@
 package testcases;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.HashSet;
 
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -26,6 +21,7 @@ import pages.Estimate;
 import pages.IquoteLogin;
 import pages.JobPage;
 import pages.Negotiation;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
@@ -39,6 +35,7 @@ public class CreateEstimate extends Testbase {
 		/*Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
 		Thread.sleep(2000);
 		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");*/
+		
 		if (Config.getProperty("browser").equals("chrome")) {
 			
 			System.setProperty("webdriver.chrome.driver",
@@ -51,7 +48,7 @@ public class CreateEstimate extends Testbase {
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
 					TimeUnit.SECONDS);
 			 wait = new WebDriverWait(driver, 300);
-			 IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+			IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		}
 	}
 	
@@ -60,6 +57,7 @@ public class CreateEstimate extends Testbase {
 	@Description("Creating an estimate from base estimate")
 	public void createestimate(String value) throws Exception {
 		
+		AllureLogger.startTest();
 		HTML_File_Creator HTMLF= new HTML_File_Creator();
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
 		int Optionnum=1;
@@ -107,8 +105,9 @@ public class CreateEstimate extends Testbase {
 		Estimate.VerifyQty(value);
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-			
+		
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
+		//String newest="1193";
 		Negotiation.VerifyNegotiationReport(value,newest.replace(",", ""));
 		Estimate.CloseEstimateTab();
 		//Job Verification Starts
@@ -139,7 +138,7 @@ public class CreateEstimate extends Testbase {
 		Optionqty=0;
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
 		System.out.println("HTML File generated path is :- "+HTMLfilepath);
-		
+		AllureLogger.endTest();
 
 	}
 	@DataProvider(name = "dp")

@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import base.DBUtil;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 
 public class Negotiation extends CommonFunctions{
@@ -97,6 +98,7 @@ public class Negotiation extends CommonFunctions{
 	}
 	@Step("Verifying the base estimate negotiation report with : {0} actual estimate : {1}")
 	public static void VerifyNegotiationReport(String BaseEstimate,String ActualEstimate) {
+		 AllureLogger.logStep("Verifying the negotiation report");
 		String [] fields = {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost"};
 		for(String field:fields) {
 			Properties prop=initialize_properties(field);
@@ -112,8 +114,12 @@ public class Negotiation extends CommonFunctions{
 				
 				flag=DBUtil.compareResultSets(rs1,rs2);
 				System.out.println(flag?"Pass for : "+field:"Fail for : "+field);
-				Allure.step(flag?"Pass for : "+field:"Fail for : "+field);
-				
+				//Allure.step(flag?"Pass for : "+field:"Fail for : "+field);
+				if(flag)
+					
+					AllureLogger.markStepAsPassed("Pass for : "+field);
+				else
+					AllureLogger.markStepAsFailed("Fail for : "+field);
 			}
 			catch(Exception e) {
 				

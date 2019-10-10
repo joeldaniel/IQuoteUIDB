@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 import io.qameta.allure.Allure;
+import utilities.AllureLogger;
 
 public class DBUtil {
 
@@ -49,6 +50,7 @@ public class DBUtil {
 	public static boolean compareResultSets(ResultSet rs1, ResultSet rs2)
     {
           
+		AllureLogger.logStep("Comparing Results Sets");
         boolean result = true;
         boolean dataExists = false;
          
@@ -86,7 +88,8 @@ public class DBUtil {
                                         if(!(columnValue1==null && columnValue2==null) ) {
 	                                        if(!(columnValue1.equals(columnValue2))) {
 	                                        	System.out.println("Row " + rowCount + ":  Column Name: "+columnName);
-	                                        	Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                        	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                        	AllureLogger.markStepAsFailed("Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	result = false;
 	                                        }
                                         }
@@ -97,7 +100,8 @@ public class DBUtil {
                                          Long columnValue2 = rs2.getLong(columnCount);  
                                          if(!(columnValue1.equals(columnValue2))) {
                                         	 System.out.println("Row " + rowCount + ":  Column Name: "+columnName);
-                                        	 Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                        	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                        	 AllureLogger.markStepAsFailed("Row " + rowCount + ":  Column Name: "+columnName);
                                            	result = false; 
                                          }
  
@@ -108,7 +112,8 @@ public class DBUtil {
                                      Double columnValue2 = rs2.getDouble(columnCount);
                                      if(!(columnValue1.equals(columnValue2))) {
                                     	 System.out.println("Row " + rowCount + ":  Column Name: "+columnName);
-                                    	 Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                    	 AllureLogger.markStepAsFailed("Row " + rowCount + ":  Column Name: "+columnName);
                                        result = false;
                                      }
                                  }  
@@ -118,7 +123,8 @@ public class DBUtil {
                                          Timestamp columnValue2 = rs2.getTimestamp(columnCount);  
                                          if(!(columnValue1.equals(columnValue2))) {
                                         	 System.out.println("Row " + rowCount + ":  Column Name: "+columnName);
-                                        	 Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                        	// Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                        	 AllureLogger.markStepAsFailed("Row " + rowCount + ":  Column Name: "+columnName);
                                            result = false; 
                                          }
                                           
@@ -139,7 +145,8 @@ public class DBUtil {
             }
             catch(Exception e)
             {
-               e.getMessage();
+               //e.getMessage();
+               e.printStackTrace();
  
             }
          //System.out.println(result);

@@ -20,6 +20,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import org.openqa.selenium.WebDriver;
@@ -138,6 +139,7 @@ public class Testbase {
 	        htmlReporter.config().setTheme(Theme.STANDARD);
 	       robot = new Robot();
 	        iqdb.Createconnection(Config.getProperty("DBUrl"), Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"));
+	        BasicConfigurator.configure();
 	       
 	  //  }	
 

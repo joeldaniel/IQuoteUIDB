@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Iquote TEST">
+<suite name="Iquote TEST Automation Suite">
+
 	<suite-files>
+
+		<suite-file	path="src\test\resources\runner\JohnRoberts.xml" />
 		<suite-file path="src\test\resources\runner\HubLabels.xml" />
-		<suite-file path="src\test\resources\runner\JohnRoberts.xml" />
 		<suite-file path="src\test\resources\runner\RRD.xml" />
 	</suite-files>
 
-	
 </suite> <!-- Suite -->

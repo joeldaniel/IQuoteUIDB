@@ -21,7 +21,7 @@ public class Desktop extends Testbase {
 		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Desktop_Label")));
 		Thread.sleep(2000);
 		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='Sales']")); 
-		Thread.sleep(1000);// Click on Sales tab
+		Thread.sleep(2000);// Click on Sales tab
 		CommonFunctions.ClickElement(driver, By.xpath("//label[text()='IQuote']")); //Click on Iquote text
 		CommonFunctions.ClickElement(driver, By.xpath("//div[@class='drop-down']//label[text()='Estimate']"));// Click on Estimate from the dropdown
 
