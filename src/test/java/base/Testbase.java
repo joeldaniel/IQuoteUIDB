@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -24,7 +26,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import org.openqa.selenium.WebDriver;
-
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -78,37 +80,33 @@ public class Testbase {
 			fis = new FileInputStream(
 					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\OR.properties");
 			OR.load(fis);
-			if(System.getenv("browser")!=null && !System.getenv("browser").isEmpty()){
+			if (Config.getProperty("browser").equals("chrome")) {
 				
-				browser = System.getenv("browser");
-			}else{
+				System.setProperty("webdriver.chrome.driver",
+						System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
 				
-				browser = Config.getProperty("browser");
+				driver = new ChromeDriver();
+				driver.get(Config.getProperty("testsiteurl"));
 				
+				driver.manage().window().maximize();
+				driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
+						TimeUnit.SECONDS);
+				
+				wait = new WebDriverWait(driver, 300);
 			}
-			
-			Config.setProperty("browser", browser);
-			System.out.println("The browser selected : "+browser);
-			
-		
 			/*if (Config.getProperty("browser").equals("firefox")) {
-
 				// System.setProperty("webdriver.gecko.driver", "gecko.exe");
 				driver = new FirefoxDriver();
-
 			} else if (Config.getProperty("browser").equals("chrome")) {
-
 				System.setProperty("webdriver.chrome.driver",
 						System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
 				
 				driver = new ChromeDriver();
 				
 			} else if (Config.getProperty("browser").equals("ie")) {
-
 				System.setProperty("webdriver.ie.driver",
 						System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\IEDriverServer.exe");
 				driver = new InternetExplorerDriver();
-
 			}*/
 			
 			

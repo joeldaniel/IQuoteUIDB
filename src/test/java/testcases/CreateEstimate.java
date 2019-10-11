@@ -13,7 +13,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import base.CapabilityFactory;
+
 import base.Testbase;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -32,31 +32,22 @@ import utilities.ReadData;
 @Listeners(utilities.ListenerUtils.class)
 public class CreateEstimate extends Testbase {
 	
-	@BeforeClass
-	public void launchbrowser() throws Exception {
-		/*Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
-		Thread.sleep(2000);
-		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");*/
-		 	
-		
-		if (Config.getProperty("browser").equals("chrome")) {
-			
-			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
-			
-			driver = new ChromeDriver();
-			driver.get(Config.getProperty("testsiteurl"));
-			
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
-					TimeUnit.SECONDS);
-			
-			wait = new WebDriverWait(driver, 300);
+	
+	@Test(priority=1,description="Login to Application")
+	@Severity(SeverityLevel.NORMAL)
+	@Description("Login to Application")
+	public void logintoiquote() {
+		AllureLogger.startTest();
+		try {
 			IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+		} catch (Exception e) {
+			
+			e.printStackTrace();
 		}
+		AllureLogger.endTest();
 	}
 	
-	@Test(dataProvider = "dp",priority=1,description="Creating an estimate from base estimate")
+	@Test(dataProvider = "dp",priority=2,description="Creating an estimate from base estimate")
 	@Severity(SeverityLevel.BLOCKER)
 	@Description("Creating an estimate from base estimate")
 	public void createestimate(String value) throws Exception {
