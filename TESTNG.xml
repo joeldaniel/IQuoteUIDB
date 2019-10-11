@@ -2,11 +2,23 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Iquote TEST Automation Suite">
 
-	<suite-files>
-
-		<suite-file	path="src\test\resources\runner\JohnRoberts.xml" />
-		<suite-file path="src\test\resources\runner\HubLabels.xml" />
-		<suite-file path="src\test\resources\runner\RRD.xml" />
-	</suite-files>
-
+	<test name="Test-HubLabels">
+		<parameter name="propertyfile" value="HubLabels" />
+		<classes>
+			<class name="testcases.CreateEstimate" />
+		</classes>
+	</test>
+	<test name="Test-JohnRoberts">
+		<parameter name="propertyfile" value="JohnRoberts" />
+		<classes>
+			<class name="testcases.CreateEstimate" />
+		</classes>
+	</test>
+	<test name="Test-RRD">
+		<parameter name="propertyfile" value="RRD" />
+		<classes>
+			<class name="testcases.CreateEstimate" />
+		</classes>
+	</test>
+	
 </suite> <!-- Suite -->

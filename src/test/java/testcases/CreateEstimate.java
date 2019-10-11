@@ -1,17 +1,19 @@
 package testcases;
 
 
+import java.net.URL;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-
+import base.CapabilityFactory;
 import base.Testbase;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -35,6 +37,7 @@ public class CreateEstimate extends Testbase {
 		/*Runtime.getRuntime().exec("TASKKILL /IM chrome.exe /F");
 		Thread.sleep(2000);
 		Runtime.getRuntime().exec("TASKKILL /IM chromedriver.exe /F");*/
+		 	
 		
 		if (Config.getProperty("browser").equals("chrome")) {
 			
@@ -47,7 +50,8 @@ public class CreateEstimate extends Testbase {
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Config.getProperty("implicit.wait")),
 					TimeUnit.SECONDS);
-			 wait = new WebDriverWait(driver, 300);
+			
+			wait = new WebDriverWait(driver, 300);
 			IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		}
 	}
