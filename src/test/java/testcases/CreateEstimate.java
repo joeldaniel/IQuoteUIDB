@@ -1,19 +1,10 @@
 package testcases;
 
 
-import java.net.URL;
 import java.util.HashSet;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-
 import base.Testbase;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -31,9 +22,8 @@ import utilities.ReadData;
 
 @Listeners(utilities.ListenerUtils.class)
 public class CreateEstimate extends Testbase {
-	
-	
-	@Test(priority=1,description="Login to Application")
+		
+	/*@Test(priority=1,description="Login to Application")
 	@Severity(SeverityLevel.NORMAL)
 	@Description("Login to Application")
 	public void logintoiquote() {
@@ -45,7 +35,7 @@ public class CreateEstimate extends Testbase {
 			e.printStackTrace();
 		}
 		AllureLogger.endTest();
-	}
+	}*/
 	
 	@Test(dataProvider = "dp",priority=2,description="Creating an estimate from base estimate")
 	@Severity(SeverityLevel.BLOCKER)
@@ -63,6 +53,7 @@ public class CreateEstimate extends Testbase {
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
 		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
 		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Difference\\");
+		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		Desktop.NavigateToEstimatePage();
 		
 		
@@ -105,7 +96,7 @@ public class CreateEstimate extends Testbase {
 		//String newest="1193";
 		Negotiation.VerifyNegotiationReport(value,newest.replace(",", ""));
 		Estimate.CloseEstimateTab();
-		//Job Verification Starts
+		
 		JobPage.NavigateToJobPage();
 		JobPage.searchJobWithEstimateNumber(newest);
 		JobPage.NavigateToJobGeneral();

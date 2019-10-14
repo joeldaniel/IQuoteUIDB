@@ -10,6 +10,7 @@ import com.aventstack.extentreports.Status;
 import base.Testbase;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 
 public class IquoteLogin extends Testbase{
@@ -60,7 +61,7 @@ public class IquoteLogin extends Testbase{
 			else
 			{
 				System.out.println("Failed to Login To Iquote");
-				//test.log(Status.FAIL, "Login To Iquote Successfull");
+				AllureLogger.markStepAsFailed(driver, "Login to application failed");
 				
 			}
 		
