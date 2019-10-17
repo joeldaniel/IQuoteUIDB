@@ -13,9 +13,11 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import base.Testbase;
 import io.qameta.allure.Step;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 import utilities.ReadData;
 
@@ -74,7 +76,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			//int Grammage= Integer.parseInt(PageGrammage);
 
 			String Grammage1= PageGrammage.replace(".0", "");
-			System.out.println("Grammage is :- "+Grammage1);
+			//System.out.println("Grammage is :- "+Grammage1);
 			/*driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).click();
 			//CommonFunctions.SendValueWithoutClear(driver, By.xpath(OR.getProperty("NE_Grammage")), Grammage1);
 			 driver.findElement(By.xpath(OR.getProperty("NE_Grammage"))).sendKeys(Grammage1);
@@ -106,7 +108,7 @@ public class Estimatepage_Characteristics extends Testbase {
 
 			if (driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
 			{   CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input"), 180);
-				System.out.println("Details page is displayed");
+				//System.out.println("Details page is displayed");
 				String SFFinishedFormat=PageFormatWidth+" x "+PageFormatHeight;
 				driver.findElement(By.xpath("//label[text()='Format']/parent::span//span[@class='ltv__itemcont ltv_']/input")).sendKeys(SFFinishedFormat+Keys.TAB);
 				driver.findElement(By.xpath("//label[text()='Grain Direction']/parent::span//span[@class='ltv__itemcont ltv_']/span[@class='input-wraper simple-lookup2']")).click();
@@ -125,7 +127,11 @@ public class Estimatepage_Characteristics extends Testbase {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPGraphBindStitch Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
@@ -195,12 +201,16 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPGraphColorVanish Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2}")
-	public void Charactertics_CPGraphColorVanish(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, IOException, SQLException {
+	public void Charactertics_CPGraphColorVanish(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, IOException, SQLException
+	{
 
 		try
 		{
@@ -227,15 +237,16 @@ public class Estimatepage_Characteristics extends Testbase {
 				ListFront.add(s);
 		}
 		Collections.sort(ListFront);
-		System.out.println("Front value available are as follows :- "+ListFront);
-		System.out.println(ListFront.size());
-		System.out.println("Total number of components are "+listCompDesc.size());
+		//System.out.println("Front value available are as follows :- "+ListFront);
+		//System.out.println(ListFront.size());
+		//System.out.println("Total number of components are "+listCompDesc.size());
 		if (ListFront.size()>0)
 		{
 			//				String xpathForProduct= "//label[text()='"+CompDesc.trim()+"']";	
 			//				driver.findElement(By.xpath(xpathForProduct)).click();
 			//				Thread.sleep(5000);
 			driver.findElement(By.xpath("//label[text()='Colors']/parent::span//span[@class='ltv__item ltv_'][1]//img")).click();
+			
 			//for (int i=1;i<=ListFront.size();i++)
 			//{
 			
@@ -315,7 +326,7 @@ public class Estimatepage_Characteristics extends Testbase {
 				ListBack.add(t);
 		}
 		Collections.sort(ListBack);
-		System.out.println("Back value available are as follows :- "+ListBack);
+		//System.out.println("Back value available are as follows :- "+ListBack);
 
 		if (ListBack.size()>0)
 		{
@@ -399,7 +410,7 @@ public class Estimatepage_Characteristics extends Testbase {
 						VarnishList.add(varnishval);
 				}
 				Collections.sort(VarnishList);
-				System.out.println("Varnish value available are :- "+VarnishList);
+				//System.out.println("Varnish value available are :- "+VarnishList);
 			      for (String CloredvalinDB:VarnishList)
 			      {
 			    	  
@@ -473,16 +484,24 @@ public class Estimatepage_Characteristics extends Testbase {
 		{
 			System.out.println("Color and varnish Failed for Estimate :- "+ Estimateid);
 			e.printStackTrace();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 			
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 			
 	}
 	@Step("Adding CPGraphRegularFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2}")
-	public void Charactertics_CPGraphRegularFormat(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
+	public void Charactertics_CPGraphRegularFormat(String Estimateid,  String IdItemOption,String Comporderval) throws ClassNotFoundException, SQLException, IOException, InterruptedException 
+	{
 
 		HashMap<String, HashMap<String, String>> EstPageFormat = new HashMap<String, HashMap<String, String>>();
 		try {
@@ -493,7 +512,7 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 		
 
-		System.out.println("Component is "+Comporderval);
+		//System.out.println("Component is "+Comporderval);
 		String OptDescp= EstPageFormat.get(Comporderval).get("OptionDescription");
 		String CompDescp= EstPageFormat.get(Comporderval).get("ComponentDescription");
 		String CompFinal= EstPageFormat.get(Comporderval).get("ComponentFinal");
@@ -584,12 +603,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPGraphHotStamping Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphHotStamping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPGraphHotStamping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 
 		HashMap<String, HashMap<String, String>> CharCPGraphStampingItem = new HashMap<String, HashMap<String, String>>();
@@ -614,7 +638,7 @@ public class Estimatepage_Characteristics extends Testbase {
 				String CPGraphStampingItemInputNumber=CharCPGraphStampingItem.get(Embval).get("InputNumber");
 				String CPGraphStampingItemNote=CharCPGraphStampingItem.get(Embval).get("Note");
 				
-				System.out.println(CPGraphStampingItemType+" "+CPGraphStampingItemHeight+" "+CPGraphStampingItemWidth+" "+CPGraphStampingItemTypeSurface+" "+CPGraphStampingItemInputNumber+" "+CPGraphStampingItemNote);
+				//System.out.println(CPGraphStampingItemType+" "+CPGraphStampingItemHeight+" "+CPGraphStampingItemWidth+" "+CPGraphStampingItemTypeSurface+" "+CPGraphStampingItemInputNumber+" "+CPGraphStampingItemNote);
 
 
 				String XpathWitCPGraphStampingItemAddButton="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//div[@class='listtb']//button[1]";
@@ -686,7 +710,11 @@ public class Estimatepage_Characteristics extends Testbase {
 					}
 				}
 				catch(Exception e) {
-					e.printStackTrace();
+					System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+					e.getMessage();
+					AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+					Estimate.CloseEstimateTab();
+					Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 				}
 
 			}
@@ -696,7 +724,8 @@ public class Estimatepage_Characteristics extends Testbase {
 		
 	}
 	@Step("Adding CPPlant Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPPlant(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPPlant(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPPlant = new HashMap<String, String>();
 		CharCPPlant=name.CPPlant(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -708,13 +737,18 @@ public class Estimatepage_Characteristics extends Testbase {
     	CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWithCPPlantPlant, CPPlantPlant);
     	}
     	catch(Exception e) {
-    		e.printStackTrace();
+    		System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
     	}
     		
 	
 	}
 	@Step("Adding CPGenericCPOptionDesc Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGenericCPOptionDesc(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPGenericCPOptionDesc(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPGenericCPOptionDesc = new HashMap<String, String>();
 		//String newCharteristicDescp=CharteristicDescp.replace("'", "''");
@@ -744,12 +778,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPNote Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPNote(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPNote(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPNote = new HashMap<String, String>();
 		CharCPNote=name.CPNote(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -762,12 +801,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			Thread.sleep(2000);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPAGraphPageProof Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPAGraphPageProof(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPAGraphPageProof(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPAGraphPageProof	 = new HashMap<String, String>();
 		CharCPAGraphPageProof=name.CPAGraphPageProof(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -850,11 +894,16 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(XpathForNotes)).sendKeys(CPAGraphPageProofNotes);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPValue Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPValue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPValue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPvalue = new HashMap<String, String>();
 		CharCPvalue=name.CPValueQTY(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -867,12 +916,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(XpathForComponent)).sendKeys(Cpvalue);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPASimpleQty Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPASimpleQty(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPASimpleQty(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPASimpleQty = new HashMap<String, String>();
 		CharCPASimpleQty=name.CPASimpleQty(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -901,7 +955,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPGraphFiber Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
@@ -921,12 +979,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			Thread.sleep(2000);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPGraphPackBox Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphPackBox(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPGraphPackBox(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 		
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		HashMap<String, String> CharCPGraphPackBox = new HashMap<String, String>();
@@ -983,7 +1046,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPFileList Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
@@ -1003,7 +1070,8 @@ public class Estimatepage_Characteristics extends Testbase {
 		}
 	}
 	@Step("Adding CPGraphLargeFormat Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphLargeFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPGraphLargeFormat(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 		HashMap<String, String> CPGraphLargeFormat = new HashMap<String, String>();
 		CPGraphLargeFormat=name.CPGraphLargeFormat(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
 		String FinishedFormatWidth=CPGraphLargeFormat.get("FinishedFormatWidth");
@@ -1090,7 +1158,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 		
 	}
@@ -1099,7 +1171,8 @@ public class Estimatepage_Characteristics extends Testbase {
 		
 	}
 	@Step("Adding CPGraphBindGlue Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphBindGlue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception {
+	public void Charactertics_CPGraphBindGlue(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception 
+	{
 
 		HashMap<String, String> CharCPGraphBindGlue = new HashMap<String, String>();
 		CharCPGraphBindGlue=name.CPGraphBindGlue(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -1118,7 +1191,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			// for Glue Type
 	//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).clear(); 
 	//		driver.findElement(By.xpath(XpathWitCPGraphBindGlueGlueType)).sendKeys(CPGraphBindGlueGlueType+Keys.TAB); 
-			System.out.println("Glue Type is :- "+CPGraphBindGlueGlueType);
+			//System.out.println("Glue Type is :- "+CPGraphBindGlueGlueType);
 			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphBindGlueGlueType, CPGraphBindGlueGlueType);
 	
 			// for ISSewn
@@ -1128,7 +1201,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(XpathWitCPGraphBindGlueNote)).sendKeys(CPGraphBindGlueNote+Keys.TAB);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 
 	
@@ -1184,7 +1261,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(XpathWitCPGraphUnfinishedFormatNote)).sendKeys(CPGraphUnfinishedFormatNote+Keys.TAB);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 			
 		}
 
@@ -1209,7 +1290,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 		
 	}
@@ -1249,7 +1334,7 @@ public class Estimatepage_Characteristics extends Testbase {
 			driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingDetails)).click();
 			if(driver.findElements(By.xpath("//header[text()='Details']")).size()>0)
 			{
-				System.out.println("Details page is displayed");
+				//System.out.println("Details page is displayed");
 	
 				//products roll width front format
 				driver.findElement(By.xpath(XpathWitCPGraphInitialLaminatingRollWidthFront)).clear(); 
@@ -1270,12 +1355,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 
 	}
 	@Step("Adding CPGraphHardCover Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphHardCover(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	public void Charactertics_CPGraphHardCover(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 
 		HashMap<String, String> CharCPGraphHardCover = new HashMap<String, String>();
 		CharCPGraphHardCover=name.CPGraphHardCover(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -1302,8 +1392,8 @@ public class Estimatepage_Characteristics extends Testbase {
 	
 			Thread.sleep(2000);
 			String XpathForSewn="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Sewn']/parent::button/div";
-			System.out.println("Xpath For Sewn:- "+XpathForSewn);
-			System.out.println("CPGraphPackSewn is :"+CPGraphPackSewn);
+			//System.out.println("Xpath For Sewn:- "+XpathForSewn);
+			//System.out.println("CPGraphPackSewn is :"+CPGraphPackSewn);
 			if (!CPGraphPackSewn.equals("0"))
 			{
 				driver.findElement(By.xpath(XpathForSewn)).click();
@@ -1370,12 +1460,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPGraphMaxMultiLine Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphMaxMultiLine(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	public void Charactertics_CPGraphMaxMultiLine(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 
 		HashMap<String, String> CharCPGraphMaxMultiLine = new HashMap<String, String>();
 		CharCPGraphMaxMultiLine=name.CPGraphCollection(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -1385,12 +1480,17 @@ public class Estimatepage_Characteristics extends Testbase {
 			CommonFunctions.Iquote_EnterDataintoTextfield(driver, XpathForCPGraphMaxMultiLineMaximum, CPGraphMaxMultiLineMaximum);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
 	@Step("Adding CPGraphPackPallet Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphPackPallet(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	public void Charactertics_CPGraphPackPallet(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 
 		HashMap<String, String> CharCPGraphPackPallet = new HashMap<String, String>();
 		CharCPGraphPackPallet=name.CPGraphPackPallet(Estimateid, IdItemOption,Comporderval, CharteristicDescp);
@@ -1425,18 +1525,23 @@ public class Estimatepage_Characteristics extends Testbase {
 			Thread.sleep(2000);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPGraphPrintType Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphPrintType(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	public void Charactertics_CPGraphPrintType(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 
 		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
 		CharCPGraphPrintType=name.CPGraphPrintType(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
 
 
 		String CPGraphPrintTypePrintingProcess=CharCPGraphPrintType.get("PrintingProcess");
-        System.out.println("Printing Process Value is :- "+CPGraphPrintTypePrintingProcess);  
+       // System.out.println("Printing Process Value is :- "+CPGraphPrintTypePrintingProcess);  
 
 		String XpathWitCPGraphPrintTypePrintingProcess="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Printing process']/parent::span/span[@class='ltv__itemcont ltv_']/span/label ";
 
@@ -1445,13 +1550,18 @@ public class Estimatepage_Characteristics extends Testbase {
 			CommonFunctions.Iquote_SelectFromDropdown(driver, XpathWitCPGraphPrintTypePrintingProcess, CPGraphPrintTypePrintingProcess);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 
 	
 	}
 	@Step("Adding CPGraphPackagingStrapping Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
-	public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception{
+	public void Charactertics_CPGraphPackagingStrapping(String Estimateid,  String IdItemOption,String Comporderval,String CharteristicDescp) throws Exception
+	{
 		
 		HashMap<String, String> CharCPGraphPrintType = new HashMap<String, String>();
 		CharCPGraphPrintType=name.CPGraphPackagingStrapping(Estimateid,IdItemOption, Comporderval, CharteristicDescp);
@@ -1484,7 +1594,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
          
 		
@@ -1547,12 +1661,12 @@ public class Estimatepage_Characteristics extends Testbase {
 	
 					if(driver.findElements(By.xpath("//header[text()='Fit options']")).size()>0)
 					{
-						System.out.println("Fit Option Window is displayed");
+						//System.out.println("Fit Option Window is displayed");
 						Thread.sleep(3000);
 						driver.findElement(By.xpath("//label[text()='New']/parent::button")).click();
 						if(driver.findElements(By.xpath("//label/b[text()='New']")).size()>0)
 						{
-							System.out.println("New Window is displayed");
+							//System.out.println("New Window is displayed");
 							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Fit format (wxh)']/parent::span/span/div//input", ValueforSize);
 							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[contains(text(),'Die cutter length')]/parent::span/span//input", IrregFormatDieCutterLength);
 							CommonFunctions.Iquote_EnterDataintoTextfield(driver, "//label[text()='Number Up']/parent::span/span//input", IrregFormatNumberUp);
@@ -1608,7 +1722,11 @@ public class Estimatepage_Characteristics extends Testbase {
 					}
 				}
 				catch(Exception e) {
-					e.printStackTrace();
+					System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+					e.getMessage();
+					AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+					Estimate.CloseEstimateTab();
+					Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 				}
 			}
 
@@ -1697,7 +1815,11 @@ public class Estimatepage_Characteristics extends Testbase {
 				CommonFunctions.Iquote_SelectCheckbox(driver, XpathforTrimmargin, CPGraphLabelFormatTrimmargin);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	 			 			 
 	
@@ -1731,7 +1853,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 
 	
@@ -1774,7 +1900,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPGraphDieCut Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
@@ -1881,7 +2011,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	}
 	@Step("Adding CPGraphWireOBind Charateristics of an Estimate  : {0} having OptionID: {1} for the component : {2} with Description : {3}")
@@ -1954,7 +2088,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	}
@@ -1981,7 +2119,11 @@ public class Estimatepage_Characteristics extends Testbase {
 			Thread.sleep(2000);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
+			e.getMessage();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
 	
 	

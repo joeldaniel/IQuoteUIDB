@@ -35,8 +35,10 @@ import com.aventstack.extentreports.Status;
 import base.Testbase;
 import de.redsix.pdfcompare.PageArea;
 import de.redsix.pdfcompare.PdfComparator;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import ru.yandex.qatools.ashot.Screenshot;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadData;
@@ -85,13 +87,12 @@ public class Estimate extends Testbase{
 		{
 			int i=1;
 			//int size;
-			System.out.println("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]");
-			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
+			//System.out.println("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]");
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")));
+			WebElement ele=driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]"));
+			ele.click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
-			Thread.sleep(4000);
-			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")).click();
-			
+			ele.click();
 			if(driver.findElements(By.xpath("//span[text()='Delete Component Set']")).size()>0)
 			{
 				driver.findElement(By.xpath("//span[text()='Delete Component Set']")).click();
@@ -668,10 +669,10 @@ public class Estimate extends Testbase{
 			    
 			    for(String HYPChar:HyperLinkCharacteristicsList)
 			    {
-			    	System.out.println("Hyper Link Charateristic is :- "+HYPChar);
+			    	//System.out.println("Hyper Link Charateristic is :- "+HYPChar);
 			    	driver.findElement(By.xpath("//label[text()='"+HYPChar+"']")).click();
 			        int NoofHyperlinkoptions=driver.findElements(By.xpath("//ul[@class='select islookup--header__select']/li")).size();
-			    	System.out.println("Number of Hyper links are :- "+NoofHyperlinkoptions);
+			    	//System.out.println("Number of Hyper links are :- "+NoofHyperlinkoptions);
 			        for(int x=1;x<=NoofHyperlinkoptions;x++)
 			    	{
 			    		String getSelectOption=driver.findElement(By.xpath("//ul[@class='select islookup--header__select']/li["+x+"]//label")).getText();
@@ -710,10 +711,10 @@ public class Estimate extends Testbase{
 		}
 
 		System.out.println("All the Characteristics in Screen are :- "+CharacteristicsList);
-
+		Allure.step("All the Characteristics in Screen are :- "+CharacteristicsList);
 		if (CharacteristicsList.size()==CharonScreensize)
 		{
-			System.out.println("Characters on screen is :- "+CharonScreensize);
+			//System.out.println("Characters on screen is :- "+CharonScreensize);
 
 			for(int k=0;k<CharacteristicsList.size();k++)
 			{
@@ -784,7 +785,7 @@ public class Estimate extends Testbase{
 
 		if (CharacteristicsList.size()==CharonScreensize)
 		{
-			System.out.println("Characters on screen is :- "+CharonScreensize);
+			//System.out.println("Characters on screen is :- "+CharonScreensize);
 
 			for(int k=0;k<listCharname.size();k++)
 			{
@@ -796,18 +797,18 @@ public class Estimate extends Testbase{
 			}
 		}
 
-		System.out.println("All the Charaecteristic to be added :- "+AddCharacteristicsList);
-		
+		//System.out.println("All the Charaecteristic to be added :- "+AddCharacteristicsList);
+		Allure.step("All the Characteristics in Screen are :- "+AddCharacteristicsList);
 		for(String s:AddCharacteristicsList)
 
 		{	
-			System.out.println("Current Characteristic is :- "+AddCharacteristicsList);
+			//System.out.println("Current Characteristic is :- "+AddCharacteristicsList);
 
 			driver.findElement(By.xpath("//span[@title='Add Characteristic']")).click();
 			Thread.sleep(8000);
 
 			int tabCounts=driver.findElements(By.xpath("//span[contains(text(),'"+Compdescp+"')]/ancestor::span[@class='ltv__item ltv_']/following-sibling::span//span[contains(@class,'tabs__tab ')]")).size();
-			System.out.println("Seraching For Char:-"+s);
+			//System.out.println("Seraching For Char:-"+s);
 
 			int p=0;
 			for(int l=1;l<=tabCounts;l++)
@@ -818,7 +819,7 @@ public class Estimate extends Testbase{
 					break;
 				}
 				String Tabname=driver.findElement(By.xpath("//span[contains(text(),'"+Compdescp+"')]/ancestor::span[@class='ltv__item ltv_']/following-sibling::span//span[contains(@class,'tabs__tab ')]["+l+"]//span")).getText();
-				System.out.println("Clicking on Tab:- "+Tabname);
+				//System.out.println("Clicking on Tab:- "+Tabname);
 				driver.findElement(By.xpath("//span[text()='"+Tabname+"']")).click();
 
 				Thread.sleep(15000);
@@ -861,7 +862,7 @@ public class Estimate extends Testbase{
 			driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label")).click();
 			Thread.sleep(2000);
 			CommonFunctions.SendValue(driver, By.xpath("//label[text()='Component']/parent::span/following-sibling::span/input"), Descp);
-		Thread.sleep(2000);
+			Thread.sleep(2000);
 		}
 
 		//Renaming Child Component 
@@ -1040,8 +1041,8 @@ public class Estimate extends Testbase{
 			}catch(Exception e) {
 				e.toString();
 			}
-			
-			int vale =driver.findElements(By.xpath(OR.getProperty("NewEstimate_Spec"))).size();
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Product']")));
+			int vale =driver.findElements(By.xpath("//label[text()='Product']")).size();
 			if (vale>0)
 			{
 				System.out.println("Estimate Creation done");
@@ -1059,7 +1060,9 @@ public class Estimate extends Testbase{
 		catch(Exception e)
 		{
 			System.err.println("Failed in the Estimate Creation page");
-			e.printStackTrace();
+			e.getMessage();
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in the Estimate Creation page", "New Etimate Page error");
 			
 		}
 	}
@@ -1121,7 +1124,7 @@ public class Estimate extends Testbase{
 				driver.findElement(By.xpath("//span[@title='Add Component']")).click();
 				Thread.sleep(5000);
 				String xpathforComp="//ul[@class='select ']//span[@class='renderer inline-img' and text()='"+childMap.get("ComponentTypeDesc")+"']";
-				System.out.println(xpathforComp);
+				//System.out.println(xpathforComp);
 				int beforesize=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
 				int aftersize;
 				driver.findElement(By.xpath(xpathforComp)).click();
@@ -1132,18 +1135,27 @@ public class Estimate extends Testbase{
 				
 				
 				int sizeval=driver.findElements(By.xpath("//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']")).size();
-				Thread.sleep(3000);
+				Thread.sleep(2000);
 				String xpathval="//span[@class='diagram']/span[@class='diagram__item ps--item ps--product']["+sizeval+"]/label";
-				System.out.println("Xpath is :- "+xpathval);
-				Thread.sleep(3000);
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathval)));
 				try {
 					driver.findElement(By.xpath(xpathval)).click();
 				}
 				catch(WebDriverException e) {
-					e.printStackTrace();
+					System.out.println("Exception occured, below is the message");
+					e.getMessage();
 				}
 				finally {
-					driver.findElement(By.xpath(xpathval)).click();
+					try {
+						driver.findElement(By.xpath(xpathval)).click();
+					}
+					catch(Exception e) {
+						System.out.println("Failed in Adding components so exiting");
+						e.printStackTrace();
+						AllureLogger.markStepAsFailed(driver, "Unable to click on xpath in finally block : "+xpathval);
+						Estimate.CloseEstimateTab();
+						Assert.assertEquals("Failed in Adding components so exiting", "Unable to click on xpath in finally block : "+xpathval);
+					}
 				}
 				 
 				Thread.sleep(2000);
@@ -1188,10 +1200,10 @@ public class Estimate extends Testbase{
 
 						int totalrow=totalcells/6;
 						int nextrow=totalrow;
-		                System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
+		                //System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
 						int valuepresent=driver.findElements(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid']//span[text()='"+childMap.get("ChildComponent")+"']")).size();
 						String valuepresentStr=Integer.toString(valuepresent);
-						System.out.println("Element Present is :- "+valuepresentStr);
+						//System.out.println("Element Present is :- "+valuepresentStr);
 						if (valuepresentStr.equals("0"))
 						{
 							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div/span/div/div/div/button[1]")).click();
@@ -1199,7 +1211,7 @@ public class Estimate extends Testbase{
 							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid'][2]//span[@data-index='"+nextrow+"/0']")).click();
 							Thread.sleep(2000);
 							String Level1SelectChild="//b[text()='Composition']/ancestor::div[@class='popup__portal program__popup']/following-sibling::div//li/label[text()='"+childMap.get("ChildComponent")+"']";
-							System.out.println(Level1SelectChild);
+							//System.out.println(Level1SelectChild);
 							driver.findElement(By.xpath(Level1SelectChild)).click();
 							Thread.sleep(2000);
 					
@@ -1284,7 +1296,7 @@ public class Estimate extends Testbase{
 			 int g = 1;
 			HashMap<Integer, HashMap<String, String>> LinkProductandComp = new HashMap<Integer, HashMap<String, String>>();
 			LinkProductandComp=val.QtyForEst(EstimateId, Option);
-			System.out.println(LinkProductandComp.size());
+			//System.out.println(LinkProductandComp.size());
 			String s="Option,Component and Quanity :"+LinkProductandComp.size();
 			
 			Thread.sleep(2000);
@@ -1311,9 +1323,9 @@ public class Estimate extends Testbase{
 				    	
 			            for (int q=0;q<Qtyval.size();q++) {
 			            	
-					    	 System.out.println("//span[contains(text(),'"+Name.get(q)+"')]//..//following-sibling::div//input");
+					    	// System.out.println("//span[contains(text(),'"+Name.get(q)+"')]//..//following-sibling::div//input");
 					    	 String proname=Name.get(q);
-					    	 System.out.println("//span[contains(text(),'"+proname+"')]//..//following-sibling::div//input");
+					    	// System.out.println("//span[contains(text(),'"+proname+"')]//..//following-sibling::div//input");
 					    	 List<WebElement> qty=driver.findElements(By.xpath("//span[contains(text(),'"+proname+"')]//..//following-sibling::div//input"));
 					    	String temp=Qtyval.get(q);
 					    	temp.replace(".0", "");
@@ -1348,57 +1360,66 @@ public class Estimate extends Testbase{
 		
 			String OptionName=val.ReturnOptionDesForEstandOption(EstimateId, Option);
 			System.out.println(OptionName);
+			Allure.step("OptionName is :- "+OptionName);
 			/*if(!OptionName.equalsIgnoreCase("Option")) {
 				driver.findElement(By.xpath("//div[@class='ReactVirtualized__Grid__innerScrollContainer']//span[@data-index='"+Optionqty+"/0']//span[contains(text(),'Option')]")).click();
 				Thread.sleep(5000);
 				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
 				Optionqty+=1;
 			}*/
-			
-			List <WebElement> options = driver.findElements(By.xpath("//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span"));
-			int size=options.size();
-			String xpath;
-			if(size==0) {
-				 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)";
-			}else {
-				 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)["+size+"]";
-			}
-			
-			/*for(WebElement option:options) {
-				if(option.getAttribute("textContent")!=null)  {
-					if(option.getAttribute("textContent").contains("Option")) {
-						option.click();
-						Thread.sleep(5000);
-						option.sendKeys(OptionName+Keys.TAB);
-						break;
+			try {
+				List <WebElement> options = driver.findElements(By.xpath("//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span"));
+				int size=options.size();
+				String xpath;
+				if(size==0) {
+					 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)";
+				}else {
+					 xpath="(//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span)["+size+"]";
+				}
+				
+				/*for(WebElement option:options) {
+					if(option.getAttribute("textContent")!=null)  {
+						if(option.getAttribute("textContent").contains("Option")) {
+							option.click();
+							Thread.sleep(5000);
+							option.sendKeys(OptionName+Keys.TAB);
+							break;
+							
+						}
 						
 					}
-					
+				}*/
+				driver.findElement(By.xpath(xpath)).click();
+				Thread.sleep(5000);
+				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
+				
+				//write save and handle the exception
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title=' ']")));
+				Thread.sleep(5000);
+				if(driver.findElements(By.xpath("//button[@class='lkv' and @title=' ']")).size()>0){
+					driver.findElement(By.xpath("//button[@class='lkv' and @title=' ']")).click();
+					//Thread.sleep(10000);
+					Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//button[@class='lkv' and @title=' ']"), "disabled", "true"));
+					if(driver.findElements(By.xpath("//button[@class='lkv' and @title='OK']")).size()>0){
+						Thread.sleep(2000);
+						driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
+						
+						
+					}
 				}
-			}*/
-			driver.findElement(By.xpath(xpath)).click();
-			Thread.sleep(5000);
-			driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
-			
-			//write save and handle the exception
-			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title=' ']")));
-			Thread.sleep(5000);
-			if(driver.findElements(By.xpath("//button[@class='lkv' and @title=' ']")).size()>0){
-				driver.findElement(By.xpath("//button[@class='lkv' and @title=' ']")).click();
-				//Thread.sleep(10000);
-				Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//button[@class='lkv' and @title=' ']"), "disabled", "true"));
-				if(driver.findElements(By.xpath("//button[@class='lkv' and @title='OK']")).size()>0){
-					Thread.sleep(2000);
-					driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
-					
-					
+				else {
+					System.out.println("Save is not enable to click to overcome the freeze issue");
 				}
-			}
-			else {
-				System.out.println("Save is not enable to click to overcome the freeze issue");
+				
 			}
 			
-			
+			catch(Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("Not able to Enter Quantity in Quantity tab");
+				e.getMessage();
+				Estimate.CloseEstimateTab();
+				Assert.assertEquals("Not able to Enter Quantity in Quantity tab", "Failed after adding quantity tab");
+			}
 			
 			 	
 		}
@@ -1415,6 +1436,7 @@ public class Estimate extends Testbase{
 	{
 		
 		Estimatepage_Characteristics EPC = new Estimatepage_Characteristics();
+		String FixedCharDescp = null;
 		try {
 			
 			HashMap<String, HashMap<String, String>> CreateProductandComp = new HashMap<String, HashMap<String, String>>();
@@ -1425,14 +1447,14 @@ public class Estimate extends Testbase{
 			// List<String> CharacterCompCharacterComp = new ArrayList<String>();
 			Collections.sort(listCompOrder);
 
-			System.out.println("All the Component order are :- "+listCompOrder);
+			//System.out.println("All the Component order are :- "+listCompOrder);
 
 			for(int i=0;i<listCompOrder.size();i++)
 			{
 				String Comporderval= listCompOrder.get(i);
 
 				Characteristicsforcomp.clear();
-				System.out.println("Component order is  :- "+Comporderval);
+				//System.out.println("Component order is  :- "+Comporderval);
 				
 				Characteristicsforcomp=val.CharacteristicForEachComponent(EstimateId,IdItemOption, Comporderval);
 				String CompDescp= CreateProductandComp.get(Comporderval).get("ComponentDescription");
@@ -1445,7 +1467,7 @@ public class Estimate extends Testbase{
 				driver.findElement(By.xpath("//label[text()='Component']")).click();
 				List<String> CharacterCompCharacterComp = new ArrayList<String>(Characteristicsforcomp.keySet());
 				Collections.sort(CharacterCompCharacterComp);
-				System.out.println(CharacterCompCharacterComp);
+				//System.out.println(CharacterCompCharacterComp);
 
 				List<String> FixedCharComponents= new ArrayList<String>();
 				for (String FixedChar:CharacterCompCharacterComp)
@@ -1462,9 +1484,10 @@ public class Estimate extends Testbase{
 				{
 					System.out.println("Characteristic is :- "+Characteristic);
 					
-					String FixedCharDescp=Characteristicsforcomp.get(Characteristic).get("FixedCharacteristicDesc");
+					 FixedCharDescp=Characteristicsforcomp.get(Characteristic).get("FixedCharacteristicDesc");
 
-					System.out.println("Fixed Characteristic Description is :- "+FixedCharDescp);
+					//System.out.println("Fixed Characteristic Description is :- "+FixedCharDescp);
+					 
 					
 					switch(FixedCharDescp)
 					{
@@ -1604,7 +1627,10 @@ public class Estimate extends Testbase{
   					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
   					
   					break;
-
+                  case "qttCModelPS.qttCP":
+                	  
+                	  break;
+                	  
 					default:
 						System.out.println("Characteristic that is not present : "+FixedCharDescp);
 						
@@ -1616,8 +1642,14 @@ public class Estimate extends Testbase{
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
+			
+			System.out.println("Failed in characteristics adding so exiting"+FixedCharDescp);
 			e.printStackTrace();
+			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+FixedCharDescp);
+			Estimate.CloseEstimateTab();
+			Assert.assertEquals("Failed in characteristics adding so exiting", FixedCharDescp);
 		}
+		
 	}
 
 	public static void AddQtyForProductForOption(HashMap<String,HashMap<String,HashSet<Double>>> Quantities,String EstimateID) throws Exception {

@@ -798,7 +798,7 @@ public class ReadData extends Testbase{
 		fis = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\CharacteristicsQueries\\CPGraphColorVanish.properties");
 		Query.load(fis);
-		System.out.println("To remove");
+		//System.out.println("To remove");
 		String Query1=Query.getProperty("Query");
 		// opening database connection to MySQL server
 		

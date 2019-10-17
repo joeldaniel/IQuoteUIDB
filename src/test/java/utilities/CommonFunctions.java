@@ -53,7 +53,7 @@ public class CommonFunctions extends Testbase {
 
 		try {
 			FileInputStream ip = new FileInputStream(
-					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\Negotiation\\"+file+".properties");
+					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Updated\\VerificationQueries\\"+file+".properties");
 			prop.load(ip);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -144,10 +144,7 @@ public class CommonFunctions extends Testbase {
 			{
 				driver.findElement(By.xpath(XpathForLocator)).click();
 			}
-			else
-			{
-				System.out.println("Checkbox status is False");
-			}
+			
 
 		}
 		else if(CheckBoxState.equals("1"))
@@ -156,10 +153,7 @@ public class CommonFunctions extends Testbase {
 			{
 				driver.findElement(By.xpath(XpathForLocator)).click();
 			}
-			else
-			{
-				System.out.println("Checkbox status is true");
-			}
+			
 		}
 
 	}
@@ -299,7 +293,7 @@ public class CommonFunctions extends Testbase {
 		String Selectedval= driver.findElement(By.xpath(XpathForLocator)).getText();
 		if (Selectedval.contains(Fieldvalue))
 		{
-			System.out.println("Selected from dropdown : "+Selectedval);
+			//System.out.println("Selected from dropdown : "+Selectedval);
 		}
 		else
 		{
@@ -320,7 +314,7 @@ public class CommonFunctions extends Testbase {
           String Selectedval= driver.findElement(By.xpath(XpathForLocator)).getAttribute("value");
           if (Selectedval.equals(Fieldvalue))
           {
-                System.out.println("Selected from dropdown : "+Selectedval);
+           //     System.out.println("Selected from dropdown : "+Selectedval);
           }
           else
           {

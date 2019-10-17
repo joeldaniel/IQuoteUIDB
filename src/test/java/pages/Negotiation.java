@@ -73,9 +73,7 @@ public class Negotiation extends CommonFunctions{
 	}
 	
 	
-	public void headercompare() {
-		VerifyNegotiationReport("1076","1181");
-	}
+	
 	
 	public static void VerifyHeaderResults(String BaseEstimate,String ActualEstimate) {
 		Properties prop=initialize_properties("TransformationCost");
@@ -89,43 +87,61 @@ public class Negotiation extends CommonFunctions{
 			rs1=iqdb.RunQuery(base);
 			rs2=iqdb.RunQuery(Actual);
 			
-			flag=DBUtil.compareResultSets(rs1,rs2);
+			flag=DBUtil.compareResultSets(rs1,rs2,"");
 			
 		}
 		catch(Exception e) {
 			
 		}
 	}
-	@Step("Verifying the base estimate negotiation report with : {0} actual estimate : {1}")
-	public static void VerifyNegotiationReport(String BaseEstimate,String ActualEstimate) {
-		 AllureLogger.logStep("Verifying the negotiation report");
-		String [] fields = {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost"};
+	@Step("Verifying the base estimate reports with : {0} actual estimate : {1}")
+	public static void VerifyActualvsBase(String BaseEstimate,String ActualEstimate,String [] fields) throws ClassNotFoundException, SQLException
+	{
+		 AllureLogger.logStep("Verifying report for "+fields);
+		//String [] fields = {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost","JobPlanning","JobMaterial"};
 		for(String field:fields) {
 			Properties prop=initialize_properties(field);
-			String query=prop.getProperty("Query");
-			String base=query.replace("##Estimate##", BaseEstimate);
-			String Actual=query.replace("##Estimate##", ActualEstimate);
-			boolean flag=false;
-			try {
+			String cquery=prop.getProperty("RowCountQuery");
+			rs1=iqdb.RunQuery(cquery.replace("##Estimate##", BaseEstimate));
+			rs2=iqdb.RunQuery(cquery.replace("##Estimate##", ActualEstimate));
+			  while (rs1.next() && rs2.next()) 
+	          {
+				  if(rs1.getString("rows").equals(rs2.getString("rows"))) {
+					    rs1.close();
+						rs2.close();
+						String query=prop.getProperty("Query");
+						String base=query.replace("##Estimate##", BaseEstimate);
+						String Actual=query.replace("##Estimate##", ActualEstimate);
+						boolean flag=false;
+						try {
+							
+						
+							rs1=iqdb.RunQuery(base);
+							rs2=iqdb.RunQuery(Actual);
+							
+							flag=DBUtil.compareResultSets(rs1,rs2,field);
+							System.out.println(flag?"Pass for : "+field:"Fail for : "+field);
+							//Allure.step(flag?"Pass for : "+field:"Fail for : "+field);
+							if(flag)
+								
+								AllureLogger.markStepAsPassed("Pass for : "+field);
+							else
+								AllureLogger.markStepAsFailed("Fail for : "+field);
+				  
+						  }
+							catch(Exception e) {
+								
+							}
+				  }else {
+					  AllureLogger.markStepAsFailed("Base Table row count is : "+rs1.getString("rows")+" Actual Table row count is : "+rs2.getString("rows"));
+					  AllureLogger.markStepAsFailed("Fail for : "+field);
+				  }
 				
-			
-				rs1=iqdb.RunQuery(base);
-				rs2=iqdb.RunQuery(Actual);
 				
-				flag=DBUtil.compareResultSets(rs1,rs2);
-				System.out.println(flag?"Pass for : "+field:"Fail for : "+field);
-				//Allure.step(flag?"Pass for : "+field:"Fail for : "+field);
-				if(flag)
-					
-					AllureLogger.markStepAsPassed("Pass for : "+field);
-				else
-					AllureLogger.markStepAsFailed("Fail for : "+field);
 			}
-			catch(Exception e) {
-				
-			}
-		}
-	}
+	
 
 	
+		}
+	}
 }

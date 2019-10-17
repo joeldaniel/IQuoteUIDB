@@ -56,8 +56,22 @@ public class Testbase {
 			fis = new FileInputStream(
 					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\OR.properties");
 			OR.load(fis);
-			if (Config.getProperty("browser").equals("chrome")) {
+			
+			if(portNO!=null && Config.getProperty("browser").equals("chrome"))
+			{
+				nodeURL = "http://danieljio-w10lt:4547/wd/hub";
+				System.out.println("Chrome Browser Test Environment created");
+				DesiredCapabilities cap1 = DesiredCapabilities.chrome();			
+				cap1.setBrowserName("chrome");
+				//cap1.setPlatform(Platform.WINDOWS);
 				
+				driver = new RemoteWebDriver(new URL(nodeURL),cap1);			
+				driver.manage().window().maximize();
+				driver.navigate().to(Config.getProperty("testsiteurl"));
+				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+				wait = new WebDriverWait(driver, 300);
+			}
+			else if(portNO==null && Config.getProperty("browser").equals("chrome")) {
 				System.setProperty("webdriver.chrome.driver",
 						System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
 				
@@ -70,20 +84,6 @@ public class Testbase {
 				
 				wait = new WebDriverWait(driver, 300);
 			}
-		/*	if(portNO.equalsIgnoreCase("4546"))
-			{
-				nodeURL = "http://192.168.43.233:4546/wd/hub";
-				System.out.println("Chrome Browser Test Environment created");
-				DesiredCapabilities cap1 = DesiredCapabilities.chrome();			
-				cap1.setBrowserName("chrome");
-				//cap1.setPlatform(Platform.WINDOWS);
-				
-				driver = new RemoteWebDriver(new URL(nodeURL),cap1);			
-				driver.manage().window().maximize();
-				driver.navigate().to(Config.getProperty("testsiteurl"));
-				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-				wait = new WebDriverWait(driver, 300);
-			}*/
 		    robot = new Robot();
 	        iqdb.Createconnection(Config.getProperty("DBUrl"), Config.getProperty("DBUsername"), Config.getProperty("DBPassWord"));
 	        BasicConfigurator.configure();

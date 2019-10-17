@@ -63,7 +63,7 @@ public class ListenerUtils extends TestListenerAdapter implements IRetryAnalyzer
 		System.out.println("X");
 		System.out.println(
 				"XXXXXXXXXXXXXXXXXXXXXX    " + "TEST CASE FAILED:" + result.getName() + "    XXXXXXXXXXXXXXXXXXXXXX");
-		//takeScreenShot(result.getName());
+		takeScreenShot(result.getName());
 		System.out.println(
 				"XXXXXXXXXXXXXXXXXXXXXXX             " + "-E---N---D-" + "             XXXXXXXXXXXXXXXXXXXXXX");
 		System.out.println("****************************************************************************************");

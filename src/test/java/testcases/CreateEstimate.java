@@ -1,7 +1,11 @@
 package testcases;
 
 
+import java.sql.SQLException;
 import java.util.HashSet;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -22,8 +26,13 @@ import utilities.ReadData;
 
 @Listeners(utilities.ListenerUtils.class)
 public class CreateEstimate extends Testbase {
+	
+	HashSet<String> Options=new HashSet<>();
+	ReadData name = new ReadData();
+	String [] Negotiationfields= {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost"};
+	String [] Jobfields= {"JobPlanning","JobMaterial"};
 		
-	/*@Test(priority=1,description="Login to Application")
+	@BeforeClass
 	@Severity(SeverityLevel.NORMAL)
 	@Description("Login to Application")
 	public void logintoiquote() {
@@ -35,7 +44,7 @@ public class CreateEstimate extends Testbase {
 			e.printStackTrace();
 		}
 		AllureLogger.endTest();
-	}*/
+	}
 	
 	@Test(dataProvider = "dp",priority=2,description="Creating an estimate from base estimate")
 	@Severity(SeverityLevel.BLOCKER)
@@ -53,15 +62,14 @@ public class CreateEstimate extends Testbase {
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
 		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
 		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Difference\\");
-		IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+	
 		Desktop.NavigateToEstimatePage();
 		
 		
 		Estimate.ClickonNewEstimate();
 		Estimate.CreateNewEstimate(value);
 		
-		HashSet<String> Options=new HashSet<>();
-		ReadData name = new ReadData();
+		
 		Options=name.NoOfOptions(value);
 		
 		for(String Option:Options) {
@@ -88,40 +96,28 @@ public class CreateEstimate extends Testbase {
 		Estimate.VerifyEngineering(value);
 		
 		Estimate.NavigateToQtyPriceTab();
-		Estimate.VerifyQty(value);
+			
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
-		
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
-		//String newest="1193";
-		Negotiation.VerifyNegotiationReport(value,newest.replace(",", ""));
 		Estimate.CloseEstimateTab();
 		
-		JobPage.NavigateToJobPage();
-		JobPage.searchJobWithEstimateNumber(newest);
-		JobPage.NavigateToJobGeneral();
-		JobPage.NavigateToJobPlanning();
-		JobPage.PushPlanningData(value, "Planning");
-		JobPage.NavigateToJobMaterials();
-		JobPage.PushMaterialData(value, "Material");
-		JobPage.NavigateToJobEngineering();
-		JobPage.VerifyJobEngineering(value);
-		JobPage.CloseJobTab();
-		if(JobPage.VerifyJobPlanning(value, "Planning")) {
-			System.out.println("Pass");
+		//String newest="1234";
+		Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),Negotiationfields);
+		if (Options.size()==1) {
+			JobPage.NavigateToJobPage();
+			JobPage.searchJobWithEstimateNumber(newest);
+			JobPage.NavigateToJobGeneral();
+			JobPage.NavigateToJobPlanning();
 			
-		}else {
-			System.out.println("Fail");
-			
+			JobPage.NavigateToJobMaterials();
+			//String newest="1234";
+			Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),Jobfields);
+			JobPage.NavigateToJobEngineering();
+			JobPage.VerifyJobEngineering(value);
+			JobPage.CloseJobTab();
 		}
-		if(JobPage.VerifyJobMaterial(value, "Material")) {
-			System.out.println("Pass");
-			
-		}else {
-			System.out.println("Fail");
-			
-		}
-		Optionqty=0;
+		
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
 		System.out.println("HTML File generated path is :- "+HTMLfilepath);
 		AllureLogger.endTest();

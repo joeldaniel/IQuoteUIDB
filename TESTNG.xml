@@ -7,26 +7,26 @@
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test>
-	<test name="Test-InspirePak">
+	</test> -->
+	<!-- <test name="Test-InspirePak">
 		<parameter name="propertyfile" value="InspirePak" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test>
-	<test name="Test-LoweMartin">
+	</test> -->
+	<!-- <test name="Test-LoweMartin">
 		<parameter name="propertyfile" value="LoweMartin" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
 	</test> -->
-	<test name="Test-HubLabels">
+	<!-- <test name="Test-HubLabels">
 		<parameter name="propertyfile" value="HubLabels" />
-
+		
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test>
+	</test> -->
 	<test name="Test-JohnRoberts">
 		<parameter name="propertyfile" value="JohnRoberts" />
 
