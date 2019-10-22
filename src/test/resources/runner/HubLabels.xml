@@ -5,7 +5,7 @@
 	
 	<test name="Test-HubLabels">
 		<parameter name="propertyfile" value="HubLabels" />
-
+		<parameter name="portNO" value="4546" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		

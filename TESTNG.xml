@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Iquote TEST Automation Suite">
-	<!-- <test name="Test-PremierPress">
+	<test name="Test-PremierPress">
 		<parameter name="propertyfile" value="PremierPress" />
 		
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test> -->
-	<!-- <test name="Test-InspirePak">
+	</test>
+	<test name="Test-InspirePak">
 		<parameter name="propertyfile" value="InspirePak" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test> -->
-	<!-- <test name="Test-LoweMartin">
+	</test>
+	<test name="Test-LoweMartin">
 		<parameter name="propertyfile" value="LoweMartin" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test> -->
-	<!-- <test name="Test-HubLabels">
+	</test>
+	<test name="Test-HubLabels">
 		<parameter name="propertyfile" value="HubLabels" />
 		
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test> -->
+	</test>
 	<test name="Test-JohnRoberts">
 		<parameter name="propertyfile" value="JohnRoberts" />
 

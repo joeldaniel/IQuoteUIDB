@@ -38,7 +38,7 @@ public class CreateEstimate extends Testbase {
 	public void logintoiquote() {
 		AllureLogger.startTest();
 		try {
-			IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
+			//IquoteLogin.Login(Config.getProperty("UserName"), Config.getProperty("Password"));
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -52,7 +52,7 @@ public class CreateEstimate extends Testbase {
 	public void createestimate(String value) throws Exception {
 		
 		AllureLogger.startTest();
-		HTML_File_Creator HTMLF= new HTML_File_Creator();
+		/*HTML_File_Creator HTMLF= new HTML_File_Creator();
 		HTMLF.HTMLFileGenerator(value+".html", "IQuote Test", CommonFunctions.CurrentDateTime());
 		int Optionnum=1;
 		String newest="";
@@ -119,7 +119,7 @@ public class CreateEstimate extends Testbase {
 		}
 		
 		String HTMLfilepath=System.getProperty("user.dir")+ "\\HTMLReports\\"+value+".html"; 
-		System.out.println("HTML File generated path is :- "+HTMLfilepath);
+		System.out.println("HTML File generated path is :- "+HTMLfilepath);*/
 		AllureLogger.endTest();
 
 	}

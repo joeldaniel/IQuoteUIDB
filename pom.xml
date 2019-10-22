@@ -46,9 +46,10 @@
 					<version>2.22.0</version>
 					<configuration>
 						<suiteXmlFiles>
-							<!--<suiteXmlFile>src/test/resources/runner/${suiteXmlFile}</suiteXmlFile> -->
+							<!-- <suiteXmlFile>${suiteXmlFile}</suiteXmlFile> -->
 							<suiteXmlFile>TESTNG.xml</suiteXmlFile>
 						</suiteXmlFiles>
+
 						<argLine>
 							-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
 						</argLine>

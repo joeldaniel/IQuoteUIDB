@@ -5,7 +5,7 @@
 	
 	<test name="Test-InspirePak">
 		<parameter name="propertyfile" value="InspirePak" />
-
+		
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		

@@ -82,27 +82,41 @@ public class Estimate extends Testbase{
 	{
 		int DeleteCompCount=driver.findElements(By.xpath("//span[@class='diagram__item ps--item ps--product']/label[contains(text(),'To Be Deleted')]")).size();
 		String s=null;
-		
-		for(int j=1;j<=DeleteCompCount;j++)
-		{
-			int i=1;
-			//int size;
-			//System.out.println("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]");
-			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")));
-			WebElement ele=driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]"));
-			ele.click();
-			Thread.sleep(2000);
-			ele.click();
-			if(driver.findElements(By.xpath("//span[text()='Delete Component Set']")).size()>0)
+		try {
+			for(int j=1;j<=DeleteCompCount;j++)
 			{
-				driver.findElement(By.xpath("//span[text()='Delete Component Set']")).click();
+				int i=1;
+				//int size;
+				//System.out.println("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]");
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]")));
+				WebElement ele=driver.findElement(By.xpath("//span[@class='diagram__item ps--item ps--product']["+i+"]/label[contains(text(),'To Be Deleted')]"));
+				
+				/*List<WebElement> popup=driver.findElements(By.xpath("//span[text()='Delete Component']"));
+				do {
+					ele.click();
+				}while(popup.size()==1);*/
+				ele.click();
 
+				Thread.sleep(2000);
+				ele.click();
+				Thread.sleep(1000);
+				ele.click();
+				if(driver.findElements(By.xpath("//span[text()='Delete Component Set']")).size()>0)
+				{
+					driver.findElement(By.xpath("//span[text()='Delete Component Set']")).click();
+					Thread.sleep(3000);
+				}
+				else
+				{
+					driver.findElement(By.xpath("//span[text()='Delete Component']")).click();
+					Thread.sleep(3000);
+				}
+				
 			}
-			else
-			{
-				driver.findElement(By.xpath("//span[text()='Delete Component']")).click();
-			}
-			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("Exited in Delete Renamed products and components");
 		}
 	}
 	@Step("Navigating to Quantity Tab")
@@ -1254,11 +1268,11 @@ public class Estimate extends Testbase{
 
 						int totalrow=totalcells/6;
 						int nextrow=totalrow;
-		                System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
+		                //System.out.println("Child Component for link is :- "+childMap.get("ChildComponent"));
 		              
 						int valuepresent=driver.findElements(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid']//span[text()='"+childMap.get("ChildComponent")+"']")).size();
 						String valuepresentStr=Integer.toString(valuepresent);
-						System.out.println("Element Present is :- "+valuepresentStr);
+						//System.out.println("Element Present is :- "+valuepresentStr);
 						if (valuepresentStr.equals("0"))
 						{
 							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div/span/div/div/div/button[1]")).click();
@@ -1266,7 +1280,7 @@ public class Estimate extends Testbase{
 							driver.findElement(By.xpath("//header[text()='Composed by']/parent::div//label[text()='Component']/parent::span//ancestor::div[@class='grid__box']//div[@aria-label='grid'][2]//span[starts-with(@data-index,'"+nextrow+"/0')]")).click();
 							Thread.sleep(2000);
 							String Level1SelectChild="//b[text()='Composition']/ancestor::div[@class='popup__portal program__popup']/following-sibling::div//li/label[text()='"+childMap.get("ChildComponent")+"']";
-							System.out.println(Level1SelectChild);
+							//System.out.println(Level1SelectChild);
 							Thread.sleep(2000);
 							driver.findElement(By.xpath(Level1SelectChild)).click();
 							Thread.sleep(2000);
@@ -1367,6 +1381,14 @@ public class Estimate extends Testbase{
 				driver.findElement(By.xpath("//input[contains(@type,'text') and contains(@value,'Option')]")).sendKeys(OptionName+Keys.TAB);
 				Optionqty+=1;
 			}*/
+			
+			
+			if(driver.findElements(By.xpath("//label[text()='It is not possible to delete the \"probable deal\" option quantity.']")).size()>0){
+				
+				AllureLogger.markStepAsFailed(driver, "It is not possible to delete the \"probable deal\" option quantity.");
+				
+			}
+			
 			try {
 				List <WebElement> options = driver.findElements(By.xpath("//span[@title='Option']//..//..//following-sibling::div[@role='grid']//span[contains(@data-index,'/0')]//span"));
 				int size=options.size();
@@ -1426,8 +1448,15 @@ public class Estimate extends Testbase{
 		catch(Exception e)
 		{
 			System.err.println("Not able to Enter Quantity in Quantity tab");
-			e.printStackTrace();
 			
+			e.toString();
+			
+			driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//button[@class='lkv' and @title='Cancel']")).click();
+			Estimate.CloseEstimateTab();
+			AllureLogger.markStepAsFailed(driver, "Failed in adding quanity");
+			//Assert.assertEquals("Not able to Enter Quantity in Quantity tab", "Failed after adding quantity tab");
 		}
 	
 	}

@@ -59,7 +59,8 @@ public class Testbase {
 			
 			if(portNO!=null && Config.getProperty("browser").equals("chrome"))
 			{
-				nodeURL = "http://danieljio-w10lt:4547/wd/hub";
+				nodeURL = "http://10.210.39.240:"+portNO+"/wd/hub";
+				System.out.println(nodeURL);
 				System.out.println("Chrome Browser Test Environment created");
 				DesiredCapabilities cap1 = DesiredCapabilities.chrome();			
 				cap1.setBrowserName("chrome");
