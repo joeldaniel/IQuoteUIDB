@@ -19,6 +19,7 @@ import base.Testbase;
 import io.qameta.allure.Step;
 import utilities.AllureLogger;
 import utilities.CommonFunctions;
+import utilities.ListenerUtils;
 import utilities.ReadData;
 
 public class Estimatepage_Characteristics extends Testbase {
@@ -129,7 +130,8 @@ public class Estimatepage_Characteristics extends Testbase {
 			// TODO Auto-generated catch block
 			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
 			e.getMessage();
-			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
+			ListenerUtils.takeScreenShot("Failed while adding graph media characteristics");
+			//AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
 			Estimate.CloseEstimateTab();
 			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);
 		}
@@ -1320,10 +1322,12 @@ public class Estimatepage_Characteristics extends Testbase {
 		String XpathWitCPGraphInitialLaminatingRollWidthBack= "//header[text()='Roll Width - Back']/parent::div/span/span/input";
 		try {
 			// for Front
-			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingFront, CPGraphInitialLaminatingFront);
+			if(!CPGraphInitialLaminatingFront.isEmpty())
+				CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingFront, CPGraphInitialLaminatingFront);
 	
 			// for Back
-			CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingBack, CPGraphInitialLaminatingBack);
+			if(!CPGraphInitialLaminatingBack.isEmpty())
+				CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphInitialLaminatingBack, CPGraphInitialLaminatingBack);
 	
 	
 			// for Note
@@ -1749,6 +1753,8 @@ public class Estimatepage_Characteristics extends Testbase {
 		String CPGraphLabelFormatGapacross=CharCPGraphLabelFormat.get("Gapacross");
 		String CPGraphLabelFormatGapDown=CharCPGraphLabelFormat.get("GapDown");
 		String CPGraphLabelFormatKisscut=CharCPGraphLabelFormat.get("Kisscut");
+		String CPGraphLabelFormatRightmargin=CharCPGraphLabelFormat.get("Rightmargin");
+		String CPGraphLabelFormatLeftmargin=CharCPGraphLabelFormat.get("Leftmargin");
 		String CPGraphLabelFormatspecialdiecut=CharCPGraphLabelFormat.get("SpecialDiecut");
 		String CPGraphLabelFormatTrimmargin=CharCPGraphLabelFormat.get("Trimmargin");
 		
@@ -1758,28 +1764,22 @@ public class Estimatepage_Characteristics extends Testbase {
 
 		String XpathWitCPGraphLabelFormatSize="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Format (WxH)']/parent::span//span/input";
 		String XpathWitCPGraphLabelFormatColumn = "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Columns']/parent::span/span/input";	
-		String XpathWitCPGraphLabelFormatGapacross= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap across']/parent::span/span/input";
-		String XpathWitCPGraphLabelFormatGapDown= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap down']/parent::span/span/input";	
+		//String XpathWitCPGraphLabelFormatGapacross= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap across']/parent::span/span/input";
+		//String XpathWitCPGraphLabelFormatGapDown= "//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']//label[text()='Gap down']/parent::span/span/input";	
 		String XpathWitCPGraphLabelFormatKisscut =" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Kiss cut']";
 		String XpathforSpecialdiecutting=" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Special die cutting']";
 		String XpathforTrimmargin=" //label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Trim margin']";
-		String XpathWitCPGraphLabelFormatLabelType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Label Type']/parent::span//input";
-		String XpathWitCPGraphLabelFormatDeliverytype ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Delivery type']/parent::span//input";
+		//String XpathWitCPGraphLabelFormatLabelType="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Label Type']/parent::span//input";
+		//String XpathWitCPGraphLabelFormatDeliverytype ="//label[text()='"+CharteristicDescp+"']/ancestor::div[@class='list__item']/div//label[text()='Delivery type']/parent::span//input";
 		try {
 				
 			
-			//for LabelType
-			//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatLabelType, CPGraphLabelFormatLabelType);
 			driver.findElement(By.xpath("(//label[text()='Label Type']//following::span[1]//span//.)[3]")).click();
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatLabelType+"']")).click();
 			
 			
-			//CommonFunctions.Iquote_SelectFromDropdown_Text(driver, XpathWitCPGraphLabelFormatDeliverytype, CPGraphLabelFormatDeliverytype);
-			//driver.findElement(By.xpath("(//label[text()='Delivery type']//following::span[1]//span//.)[3]")).click();
-			//Thread.sleep(2000);
-			//driver.findElement(By.xpath("//label[text()='"+CPGraphLabelFormatDeliverytype+"']")).click();
-			
+					
 			// for Format Size
 			driver.findElement(By.xpath(XpathWitCPGraphLabelFormatSize)).click();
 			Thread.sleep(1000);
@@ -1794,11 +1794,11 @@ public class Estimatepage_Characteristics extends Testbase {
 				driver.findElement(By.xpath(XpathWitCPGraphLabelFormatColumn)).sendKeys(CPGraphLabelFormatColumns+Keys.TAB);
 			}
 			
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			// for GapAcross
-			if(driver.findElements(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).size()>0) {
-				driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).clear(); 
-				driver.findElement(By.xpath("//label[text()='Gap accross']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapacross+Keys.TAB);
+			if(driver.findElements(By.xpath("//label[text()='Gap across']//following::span[1]//input")).size()>0) {
+				driver.findElement(By.xpath("//label[text()='Gap across']//following::span[1]//input")).click();
+				driver.findElement(By.xpath("//label[text()='Gap across']//following::span[1]//input")).sendKeys(CPGraphLabelFormatGapacross+Keys.TAB);
 				Thread.sleep(2000);
 			}
 			// for GapDown
@@ -1813,10 +1813,23 @@ public class Estimatepage_Characteristics extends Testbase {
 				CommonFunctions.Iquote_SelectCheckbox(driver, XpathforSpecialdiecutting, CPGraphLabelFormatspecialdiecut);
 			if(driver.findElements(By.xpath(XpathforTrimmargin)).size()>0)
 				CommonFunctions.Iquote_SelectCheckbox(driver, XpathforTrimmargin, CPGraphLabelFormatTrimmargin);
+			
+			//Details tab
+			if(driver.findElements(By.xpath("//label[text()='Label format']//ancestor::header//following-sibling::div//button[@class='lkv']//label")).size()>0) {
+				driver.findElement(By.xpath("//label[text()='Label format']//ancestor::header//following-sibling::div//button[@class='lkv']")).click();
+				
+				driver.findElement(By.xpath("//label[text()='Right margin']/..//span//input")).sendKeys(CPGraphLabelFormatRightmargin+Keys.TAB);
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[text()='Left margin']/..//span//input")).sendKeys(CPGraphLabelFormatLeftmargin+Keys.TAB);
+				
+				driver.findElement(By.xpath("//button[@title='OK']")).click();
+			}
+			
 		}
 		catch(Exception e) {
 			System.out.println("Failed in characteristics adding so exiting"+Estimateid);
 			e.getMessage();
+			ListenerUtils.takeScreenShot("Failed in adding graph label characteristic ");
 			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+Estimateid);
 			Estimate.CloseEstimateTab();
 			Assert.assertEquals("Failed in characteristics adding so exiting", Estimateid);

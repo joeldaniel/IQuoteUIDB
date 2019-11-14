@@ -1844,6 +1844,8 @@ public class ReadData extends Testbase{
 					String CPGraphLabelFormatGapacross=rs.getString("Gapacross");
 					String CPGraphLabelFormatGapDown=rs.getString("GapDown");
 					String CPGraphLabelFormatKisscut=rs.getString("Kisscut");
+					String CPGraphLabelFormatRightmargin=rs.getString("Rightmargin");
+					String CPGraphLabelFormatLeftmargin=rs.getString("Leftmargin");
 					String CPGraphLabelFormatSpecialDiecutting=rs.getString("Specialdiecutting");
 					String CPGraphLabelFormatTrimmargin=rs.getString("Trimmargin");
 						
@@ -1865,6 +1867,8 @@ public class ReadData extends Testbase{
 					CharCPGraphLabelFormat.put("Gapacross", CPGraphLabelFormatGapacross != null ? CPGraphLabelFormatGapacross : "");
 					CharCPGraphLabelFormat.put("GapDown", CPGraphLabelFormatGapDown != null ? CPGraphLabelFormatGapDown : "");
 					CharCPGraphLabelFormat.put("Kisscut", CPGraphLabelFormatKisscut != null ? CPGraphLabelFormatKisscut : "");
+					CharCPGraphLabelFormat.put("Rightmargin", CPGraphLabelFormatRightmargin != null ? CPGraphLabelFormatRightmargin : "");
+					CharCPGraphLabelFormat.put("Leftmargin", CPGraphLabelFormatLeftmargin != null ? CPGraphLabelFormatLeftmargin : "");
 					CharCPGraphLabelFormat.put("SpecialDiecut", CPGraphLabelFormatSpecialDiecutting != null ? CPGraphLabelFormatSpecialDiecutting : "");
 					CharCPGraphLabelFormat.put("Trimmargin", CPGraphLabelFormatTrimmargin != null ? CPGraphLabelFormatTrimmargin : "");
 				

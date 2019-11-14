@@ -27,8 +27,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.w3c.dom.NamedNodeMap;
 
 import com.aventstack.extentreports.Status;
 
@@ -41,6 +43,7 @@ import ru.yandex.qatools.ashot.Screenshot;
 import utilities.AllureLogger;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
+import utilities.ListenerUtils;
 import utilities.ReadData;
 import utilities.ScreenShot; 
 import ru.yandex.qatools.ashot.AShot;
@@ -78,8 +81,21 @@ public class Estimate extends Testbase{
 		}
 		
 	}
+	@Step("Closing estimate tabs if any")
+	public static void CloseOpenedEstimateTabs() {
+		if(driver.findElements(By.xpath("//li[@class='program__context__tab inline-img' and @data-program='1']//span[@class='app__tab__close']")).size()>0) {
+			int tabcount=driver.findElements(By.xpath("//li[@class='program__context__tab inline-img' and @data-program='1']//span[@class='app__tab__close']")).size();
+			for(int i=1;i<=tabcount;i++) {
+				String xpath="(//li[@class='program__context__tab inline-img' and @data-program='1']//span[@class='app__tab__close'])["+i+"]";
+				driver.findElement(By.xpath(xpath)).click();
+			}
+			
+		}
+	}
+	
 	public static void DeleteRenamedProductsandComponents() throws InterruptedException
 	{
+		System.out.println("Deleting the products and components");
 		int DeleteCompCount=driver.findElements(By.xpath("//span[@class='diagram__item ps--item ps--product']/label[contains(text(),'To Be Deleted')]")).size();
 		String s=null;
 		try {
@@ -212,16 +228,22 @@ public class Estimate extends Testbase{
 	public static void SaveEstimate() throws Exception
 	{
 		
-		if(driver.findElements(By.xpath("//div[@class='wv']//button[2]")).size()>0)
+		if(driver.findElements(By.xpath("//span[@class='lkv__icon']//ancestor::button[@title=' ']")).size()>0)
 		{
 			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Estimate_Save")));
 			CommonFunctions.waitForPageLoad(driver);
-			WebElement ele=driver.findElement(By.xpath("//label[text()='Calculate']"));
+			
+			while(driver.findElement(By.xpath("//span[@class='lkv__icon']//ancestor::button[@title=' ']")).isEnabled()) {
+				Thread.sleep(1000);
+			}
+			
+			
+			/*WebElement ele=driver.findElement(By.xpath("//label[text()='Calculate']"));
 			CommonFunctions.waitForElement(ele, 300);
 			Thread.sleep(2000);
 			
-			int EngVisible= driver.findElements(By.xpath("//label[text()='Calculate']")).size();
-			if (EngVisible>0)
+			int EngVisible= driver.findElements(By.xpath("//label[text()='Calculate']")).size();*/
+			if (!driver.findElement(By.xpath("//span[@class='lkv__icon']//ancestor::button[@title=' ']")).isEnabled())
 			{
 				System.out.println("Estimate saved successfully");
 			}
@@ -367,52 +389,49 @@ public class Estimate extends Testbase{
 	@Step("Creating new Option : {0}")
 	public static void CreateOption(int Option) throws InterruptedException {
 		if(Option>1) {
-			
-			
-			driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-			 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-		   	 Thread.sleep(3000);
-		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Option')]")));
-		   	 driver.findElement(By.xpath("//li[contains(text(),'New Option')]")).click();
-		   	 Thread.sleep(5000);
-		   	 //Estimate.Navigate_to_ProductTab();
-		 	if (driver.findElements(By.xpath("//nav[@class='wizard__nav']//span[2]")).size()>0) {
-		   		driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[2]")).click();
-		   	}
-		 	else {
-		 		System.out.println("object not clicked to go to second option");
-		 	}
-		    Thread.sleep(1000);
-		   	// wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
-		   	 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-		   	driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
-		   	 Thread.sleep(2000);
-		   	/* System.out.println("//li[contains(text(),'Option "+(Option)+"')]//following::li"+1+"");
-		   	 try {
-		   		if (driver.findElements(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).size()>0) {
-		   			driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option-1)+"')]//following::li["+1+"]")).click();
-		   		}
-		   		else if(driver.findElements(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).size()>0) {
-		   			driver.findElement(By.xpath("//li[contains(text(),'Option "+(Option)+"')]//following::li["+1+"]")).click();
-		   		}
-		   	 }
-		   	 catch(WebDriverException e) {
-		   		 e.printStackTrace();
-		   	 }
-		   	*/
-		   	List <WebElement> options = driver.findElements(By.xpath("//li[@class='item-option-qty']"));
-			int size=options.size();
-			String xpath;
-			xpath="(//li[@class='item-option-qty'])["+size+"]";
 			try {
-				driver.findElement(By.xpath(xpath)).click();
+				driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+				 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+			   	 Thread.sleep(3000);
+			   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'New Option')]")));
+			   	 driver.findElement(By.xpath("//li[contains(text(),'New Option')]")).click();
+			   	 Thread.sleep(5000);
+			   	 //Estimate.Navigate_to_ProductTab();
+			 	if (driver.findElements(By.xpath("//nav[@class='wizard__nav']//span[2]")).size()>0) {
+			   		driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[2]")).click();
+			   	}
+			 	else {
+			 		System.out.println("object not clicked to go to second option");
+			 	}
+			    Thread.sleep(1000);
+			   	// wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='wvtb__prop']//button")));
+			   	 driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+			   	driver.findElement(By.xpath("//span[@class='wvtb__prop']//button")).click();
+			   	 Thread.sleep(2000);
+			   
+			   	List <WebElement> options = driver.findElements(By.xpath("//li[@class='item-option-qty']"));
+				int size=options.size();
+				String xpath;
+				xpath="(//li[@class='item-option-qty'])["+size+"]";
+				try {
+					driver.findElement(By.xpath(xpath)).click();
+				}
+				catch(WebDriverException e) {
+			   		 e.printStackTrace();
+			   	 }
+			   	System.out.println("Option : "+Option);
+			   	//Navigate to product screen
+			    Thread.sleep(1000);
 			}
-			catch(WebDriverException e) {
-		   		 e.printStackTrace();
-		   	 }
-		   	System.out.println("Option : "+Option);
-		   	//Navigate to product screen
-		    Thread.sleep(1000);
+			catch(Exception e) {
+				System.err.println("Not able to Add option to estimate");
+				
+				e.toString();
+				ListenerUtils.takeScreenShot("Not able to Add option to estimate");
+				Estimate.CloseEstimateTab();
+				Assert.assertEquals("Not able to Add option to estimate", "Exiting test case as we are unable to add new option to estimate");
+			}
+			
 		   
 			
 		}
@@ -428,32 +447,49 @@ public class Estimate extends Testbase{
 		
 		System.out.println("Calculating Estimate");
 		//Thread.sleep(40000);
-		CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
-		WebElement ele=driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[5]"));
-		CommonFunctions.waitForElement(ele, 300);
-		CommonFunctions.waitForPageLoad(driver);
-		Thread.sleep(3000);
-		Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//label[text()='Engineering']//parent::span"), "data-enabled", "true"));
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Engineering']")));
-		//element.click();
-		CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Engineering_Tab")),180);
-		String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
-		System.out.println("Attribute value is :"+EngVisible);
-		
-		if(EngVisible.equalsIgnoreCase("True"))
-		{
-			System.out.println("Calculation passed");
+		try {
+			CommonFunctions.ClickElement(driver, By.xpath(OR.getProperty("Calculate_Estimate")));
+			WebElement ele=driver.findElement(By.xpath("//nav[@class='wizard__nav']//span[5]"));
+			CommonFunctions.waitForElement(ele, 300);
+			CommonFunctions.waitForPageLoad(driver);
+			Thread.sleep(3000);
+			Boolean ele1=wait.until(ExpectedConditions.attributeToBe(By.xpath("//label[text()='Engineering']//parent::span"), "data-enabled", "true"));
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Engineering']")));
+			//element.click();
+			CommonFunctions.waitUntilElementisPresent(driver, By.xpath(OR.getProperty("Engineering_Tab")),180);
+			String EngVisible= driver.findElement(By.xpath("//label[text()='Engineering']/parent::span")).getAttribute("data-enabled");
+			System.out.println("Attribute value is :"+EngVisible);
+			
+			if(EngVisible.equalsIgnoreCase("True"))
+			{
+				System.out.println("Calculation passed");
+			}
+			else
+			{
+				System.out.println("Calculation Failed");
+			}
 		}
-		else
-		{
-			System.out.println("Calculation Failed");
+		catch(Exception e) {
+			System.err.println("Unable to calculate");
+			
+			e.toString();
+			ListenerUtils.takeScreenShot("Unable to calculate the estimate");
+			
+			Estimate.CloseEstimateTab();
+			//AllureLogger.markStepAsFailed(driver, "Failed in adding quanity");
+			Assert.assertEquals("Unable to calculate the estimate", "Unable to calculate estimate or timeout");
 		}
-
 	} 
 	@Step("Closing Estimate tab")
 	public static void CloseEstimateTab() {
+		if(driver.findElements(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).size()>0) {
 		CommonFunctions.waitUntilElementisPresent(driver, By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']"), 180);
-		driver.findElement(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")));
+		//if(driver.findElements(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).size()>0)
+			driver.findElement(By.xpath("//label[text()='Estimate']/parent::span/parent::li//span[@class='app__tab__close']")).click();
+		}else {
+			System.out.println("Estimate tab already closed or no sign of estimate tab");
+		}
 	}
 	@Step("Navigating to the Engineering Tab")
 	public static Boolean NavigateToEngineeringTab()throws Exception
@@ -503,9 +539,10 @@ public class Estimate extends Testbase{
 	public static String SaveEstimateNumber()throws Exception
 
 	{
-
+		 AllureLogger.logStep("Saving Estimate Number ");
 		String sEstimateNumber = driver.findElement(By.xpath("//span[@class='ltv__item__label ltv_']/label[text()='Estimate']/following-sibling::span/span")).getText();
 		System.out.println("The New Estimate Number is: "+sEstimateNumber);
+		AllureLogger.markStepAsPassed("The New Estimate Number is: "+sEstimateNumber);
 		
 		return sEstimateNumber;
 	}
@@ -868,7 +905,7 @@ public class Estimate extends Testbase{
 	{
 
 		//Renaming Parent Products
-
+		System.out.println("Renaming Existing products and componets");
 		int CountParentProducts= driver.findElements(By.xpath("//span[@class='diagram__item ps--item ps--product']")).size();
 		String Descp="To Be Deleted";
 		for(int i=1;i<=CountParentProducts;i++)
@@ -1075,6 +1112,7 @@ public class Estimate extends Testbase{
 		{
 			System.err.println("Failed in the Estimate Creation page");
 			e.getMessage();
+			ListenerUtils.takeScreenShot("Failed in the Estimate Creation page");
 			Estimate.CloseEstimateTab();
 			Assert.assertEquals("Failed in the Estimate Creation page", "New Etimate Page error");
 			
@@ -1119,7 +1157,7 @@ public class Estimate extends Testbase{
 	
 	@Step("Creating Product and Components for an Estimate  : {0} having OptionID: {1}")
 	public static void CreateProduct_and_Components(String EstimateID,String IdItemOption) throws Exception {
-		
+		System.out.println("Creating products and components");
 		//Renaming Existing Products
 		RenameExistingProductsandComponents();
 		ReadData val = new ReadData();
@@ -1242,6 +1280,7 @@ public class Estimate extends Testbase{
 	@Step("Linking Product and Child for an Estimate  : {0} having OptionID: {1}")
 	public static void ParentChildCombination(String EstimateId,String Option) throws InterruptedException, ClassNotFoundException, IOException, SQLException {
 		
+		System.out.println("Parent child combination");
 		Thread.sleep(5000);
 		//DeleteRenamedProductsandComponents();
 		ReadData val = new ReadData();
@@ -1440,7 +1479,7 @@ public class Estimate extends Testbase{
 				System.out.println("Not able to Enter Quantity in Quantity tab");
 				e.getMessage();
 				Estimate.CloseEstimateTab();
-				Assert.assertEquals("Not able to Enter Quantity in Quantity tab", "Failed after adding quantity tab");
+				Assert.assertEquals("Not able to Enter Quantity in Quantity tab, Look at screenshot attached", "Quantity Should be added and it should have proceed.");
 			}
 			
 			 	
@@ -1450,13 +1489,17 @@ public class Estimate extends Testbase{
 			System.err.println("Not able to Enter Quantity in Quantity tab");
 			
 			e.toString();
-			
+			ListenerUtils.takeScreenShot("Not able to Enter Quantity in Quantity tab");
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title='OK']")));
 			driver.findElement(By.xpath("//button[@class='lkv' and @title='OK']")).click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//button[@class='lkv' and @title='Cancel']")).click();
+			if(driver.findElements(By.xpath("//button[@class='lkv' and @title='Cancel']")).size()>0) {
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='lkv' and @title='Cancel']")));
+				driver.findElement(By.xpath("//button[@class='lkv' and @title='Cancel']")).click();
+			}
 			Estimate.CloseEstimateTab();
-			AllureLogger.markStepAsFailed(driver, "Failed in adding quanity");
-			//Assert.assertEquals("Not able to Enter Quantity in Quantity tab", "Failed after adding quantity tab");
+			
+			Assert.assertEquals("Not able to Enter Quantity in Quantity tab", "Failed after adding quantity tab");
 		}
 	
 	}
@@ -1523,15 +1566,12 @@ public class Estimate extends Testbase{
 					
 					case "qttCModelGraphCarac.qttCPGraphMedia":
 						EPC.Charactertics_CPGraphMedia(EstimateId,IdItemOption, Comporderval);	
-						
 						break;			
 					case "qttCModelGraphCarac.qttCPGraphBindStitch":
 						EPC.Charactertics_CPGraphBindStitch(EstimateId, IdItemOption,Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphColorVanish":
 						EPC.Charactertics_CPGraphColorVanish(EstimateId, IdItemOption,Comporderval);
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverFormat":
 					case "qttCModelGraphCarac.qttCPGraphRegularFormat":	
@@ -1540,69 +1580,55 @@ public class Estimate extends Testbase{
 					case "qttCModelGraphCarac.qttCPGraphEndSheetFormat":	
 					case "qttCModelGraphCarac.qttCPGraphRegularCoverOpenFormat":
 						EPC.Charactertics_CPGraphRegularFormat(EstimateId,IdItemOption, Comporderval);
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphHotStamping":
 						EPC.Charactertics_CPGraphHotStamping(EstimateId, IdItemOption,Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBindGlue":
 						EPC.Charactertics_CPGraphBindGlue(EstimateId, IdItemOption,Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelPS.qttCPPlant":
 						EPC.Charactertics_CPPlant(EstimateId, IdItemOption,Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelPS.qttCPGenericCPOptionDesc":
 					case "qttCModelPS.qttCPGenericCPOptionValues":
 						EPC.Charactertics_CPGenericCPOptionDesc(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelPS.qttCPNote":
 						EPC.Charactertics_CPNote(EstimateId, IdItemOption,Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelGraphCarac.qttCPAGraphPageProof"	:
 					case "qttCModelGraphCarac.qttCPAGraphPageProof2":
 					case "qttCModelGraphCarac.qttCPAGraphPageProof3":
 						EPC.Charactertics_CPAGraphPageProof(EstimateId,IdItemOption, Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelPS.qttCPValue":
 						EPC.Charactertics_CPValue(EstimateId,IdItemOption, Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelPS.qttCPASimpleQty":
 					case "qttCModelPS.qttCPASimple":
 						EPC.Charactertics_CPASimpleQty(EstimateId,IdItemOption, Comporderval, Characteristic);
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphFiber":
 						EPC.Charactertics_CPGraphFiber(EstimateId, IdItemOption,Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphPackagingBox":
 						EPC.Charactertics_CPGraphPackBox(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelPS.qttCPFileList":
 						//EPC.Charactertics_CPFileList(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphLargeFormat":
 						EPC.Charactertics_CPGraphLargeFormat(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphGiantCoupling":
 						//EPC.charactertics_CPGraphGiantCoupling(EstimateId,IdItemOption, Comporderval, Characteristic) ;
 						break;
 					case "qttCModelGraphCarac.qttCPGraphBleed":
 						EPC.Charactertics_CPGraphBleed(EstimateId,IdItemOption, Comporderval, Characteristic) ;
-						
 						break;
 					case "qttCModelGraphCarac.qttCPGraphUnfinishedFormat":
                         EPC.Charactertics_CPGraphUnfinishedFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
-                       
                         break;                        
                   case "qttCModelGraphCarac.qttCPGraphLaminating":
                         EPC.Charactertics_CPGraphInitialLaminating(EstimateId,IdItemOption, Comporderval, Characteristic);
@@ -1621,41 +1647,32 @@ public class Estimate extends Testbase{
   						
   						break;
                   case "qttCModelGraphCarac.qttCPGraphPrintType":	
-  					EPC.Charactertics_CPGraphPrintType(EstimateId,IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGraphPrintType(EstimateId,IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelGraphCarac.qttCPGraphPackagingStrapping":
-                	 EPC.Charactertics_CPGraphPackagingStrapping(EstimateId,IdItemOption, Comporderval, Characteristic);
-                	
-                	  break;
+	                	 EPC.Charactertics_CPGraphPackagingStrapping(EstimateId,IdItemOption, Comporderval, Characteristic);
+	                	 break;
                   case "qttCModelGraphCarac.qttCPGraphGIrregFormat":
-  					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGraphGIrregFormat(EstimateId,IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelGraphCarac.qttCPGraphLabelFormat":
-  					EPC.Charactertics_CPGraphLabelFormat(EstimateId, IdItemOption,Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGraphLabelFormat(EstimateId, IdItemOption,Comporderval, Characteristic);
+	  					break;
                   case "qttCModelPS.qttCPGenericCPOption":
-  					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
-  					
-  					break;
+	  					EPC.Charactertics_CPGenericCPOption(EstimateId, IdItemOption, Comporderval, Characteristic) ;
+	  					break;
                   case "qttCModelPS.qttCPAOptionQty":
-  					EPC.Charactertics_CPAOptionQty(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPAOptionQty(EstimateId, IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelGraphCarac.qttCPGraphDieCut":
-  					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGraphDieCut(EstimateId, IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelGraphCarac.qttCPGraphWireOBind":
-  					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGraphWireOBind(EstimateId, IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelPS.qttCPGenericRawMaterialValue":
-  					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
-  					
-  					break;
+	  					EPC.Charactertics_CPGenericRawMaterial(EstimateId, IdItemOption, Comporderval, Characteristic);
+	  					break;
                   case "qttCModelPS.qttCP":
                 	  
                 	  break;
@@ -1674,6 +1691,7 @@ public class Estimate extends Testbase{
 			
 			System.out.println("Failed in characteristics adding so exiting"+FixedCharDescp);
 			e.printStackTrace();
+			ListenerUtils.takeScreenShot("Failed in characteristics adding so exiting");
 			AllureLogger.markStepAsFailed(driver, "Failed in characteristics adding so exiting"+FixedCharDescp);
 			Estimate.CloseEstimateTab();
 			Assert.assertEquals("Failed in characteristics adding so exiting", FixedCharDescp);
@@ -1928,6 +1946,7 @@ public class Estimate extends Testbase{
           
     
     }
+    
 
 
 

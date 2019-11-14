@@ -17,8 +17,8 @@ import utilities.CommonFunctions;
 
 public class Negotiation extends CommonFunctions{
 
-	static ResultSet rs1;
-	static ResultSet rs2;
+	/*static ResultSet rs1;
+	static ResultSet rs2;*/
 	static HashMap<String,String> name = new HashMap<String,String>();
 	
 	public static void VerifyHeader(String DB,String BaseDBserver,String ActualDBserver,String BaseEstimate,String ActualEstimate) {
@@ -76,6 +76,7 @@ public class Negotiation extends CommonFunctions{
 	
 	
 	public static void VerifyHeaderResults(String BaseEstimate,String ActualEstimate) {
+		ResultSet rs1,rs2;
 		Properties prop=initialize_properties("TransformationCost");
 		String query=prop.getProperty("Query");
 		String base=query.replace("##Estimate##", BaseEstimate);
@@ -98,15 +99,19 @@ public class Negotiation extends CommonFunctions{
 	public static void VerifyActualvsBase(String BaseEstimate,String ActualEstimate,String [] fields) throws ClassNotFoundException, SQLException
 	{
 		 AllureLogger.logStep("Verifying report for "+fields);
+		 ResultSet rs1,rs2;
 		//String [] fields = {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost","JobPlanning","JobMaterial"};
 		for(String field:fields) {
 			Properties prop=initialize_properties(field);
 			String cquery=prop.getProperty("RowCountQuery");
+			
 			rs1=iqdb.RunQuery(cquery.replace("##Estimate##", BaseEstimate));
 			rs2=iqdb.RunQuery(cquery.replace("##Estimate##", ActualEstimate));
-			  while (rs1.next() && rs2.next()) 
+			while(rs1.next() && rs2.next()) 
 	          {
-				  if(rs1.getString("rows").equals(rs2.getString("rows"))) {
+				  if(rs1.getString("rows").equals(rs2.getString("rows")) && Integer.parseInt(rs1.getString("rows"))!=0) {
+					  	AllureLogger.markStepAsPassed("Base Table row count is : "+rs1.getString("rows")+" Actual Table row count is : "+rs2.getString("rows"));
+					  	System.out.println("Row Count matched");
 					    rs1.close();
 						rs2.close();
 						String query=prop.getProperty("Query");
@@ -124,17 +129,22 @@ public class Negotiation extends CommonFunctions{
 							//Allure.step(flag?"Pass for : "+field:"Fail for : "+field);
 							if(flag)
 								
-								AllureLogger.markStepAsPassed("Pass for : "+field);
+								AllureLogger.markStepAsPassed("Pass for Field : "+field.toUpperCase());
 							else
-								AllureLogger.markStepAsFailed("Fail for : "+field);
+								AllureLogger.markStepAsFailed("Fail for Field : "+field.toUpperCase());
 				  
 						  }
 							catch(Exception e) {
 								
 							}
-				  }else {
-					  AllureLogger.markStepAsFailed("Base Table row count is : "+rs1.getString("rows")+" Actual Table row count is : "+rs2.getString("rows"));
-					  AllureLogger.markStepAsFailed("Fail for : "+field);
+				  }
+				  else if(Integer.parseInt(rs1.getString("rows"))==0 && Integer.parseInt(rs2.getString("rows"))==0) {
+					  AllureLogger.markStepAsPassed("Base table row count and actual table row count is Zero");
+					  AllureLogger.markStepAsPassed("Verified for Field : "+field.toUpperCase());
+				  }
+				  else {
+						  AllureLogger.markStepAsFailed("Base Table row count is : "+rs1.getString("rows")+" Actual Table row count is : "+rs2.getString("rows"));
+						  AllureLogger.markStepAsFailed("Fail for Field : "+field.toUpperCase());
 				  }
 				
 				

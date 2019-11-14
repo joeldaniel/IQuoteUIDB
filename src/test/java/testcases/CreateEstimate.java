@@ -1,11 +1,10 @@
 package testcases;
 
 
-import java.sql.SQLException;
+
 import java.util.HashSet;
 
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -31,7 +30,9 @@ public class CreateEstimate extends Testbase {
 	ReadData name = new ReadData();
 	String [] Negotiationfields= {"ComponentDetails","Header","OtherCosts","OtherRawMaterialCost","OutSourcingCost","SalesPrice","SubstrateCost","TransformationCost"};
 	String [] Jobfields= {"JobPlanning","JobMaterial"};
-		
+	String [] EstEnggg= {"Finishing engineering query - Estimate","Press engineering query - Estimate","Raw material engineering - Estimate"};
+	String [] JobEnggg= {"Finishing engineering query - Job","Press engineering query - Job","Raw material engineering - Job"};
+	
 	@BeforeClass
 	@Severity(SeverityLevel.NORMAL)
 	@Description("Login to Application")
@@ -60,13 +61,14 @@ public class CreateEstimate extends Testbase {
 		System.out.println("Base Est : " +value);
 		HTMLF.addrow("Comment","Customer Estimate ID" , "", "", "", "",value+".html");
 		HTMLF.addrow_Twoparm("Comment","Estimate ID From Customer DB#" , "", value, "", "",value+".html");
-		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
-		Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Difference\\");
+		//Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Actual\\");
+		//Desktop.deletefilesinfolder(System.getProperty("user.dir")+"\\src\\test\\resources\\Documents\\"+value+"\\Difference\\");
 	
 		Desktop.NavigateToEstimatePage();
 		
-		
+		Estimate.CloseOpenedEstimateTabs();
 		Estimate.ClickonNewEstimate();
+				
 		Estimate.CreateNewEstimate(value);
 		
 		
@@ -81,40 +83,47 @@ public class CreateEstimate extends Testbase {
 			Estimate.ParentChildCombination(value, Option);
 			
 			Estimate.ComponentandCharacteristics(value,Option);
+			
 			Estimate.NavigateToQtyPriceTab();
 			
 			Estimate.AddQuantity(value, Option);
 			Optionnum+=1;
 		}
 		
-		Estimate.SaveEstimate();
-		
 		Estimate.CalculateEstimate();
 		
-		Estimate.NavigateToEngineeringTab();
+		Estimate.SaveEstimate();
 		
-		Estimate.VerifyEngineering(value);
+		//Estimate.NavigateToEngineeringTab();
 		
-		Estimate.NavigateToQtyPriceTab();
+		//Estimate.VerifyEngineering(value);
+		
+		
+		//Estimate.NavigateToQtyPriceTab();
 			
 		Estimate.NavigateToNegotiationTab();
 		newest=Estimate.SaveEstimateNumber();
+		//String newest="26128";
+		Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),EstEnggg);
+		
+		Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),Negotiationfields);
 		Estimate.StatusChangeTo("Release to production", "In Production",CutomerPONum,"");
 		Estimate.CloseEstimateTab();
 		
 		//String newest="1234";
-		Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),Negotiationfields);
+		
 		if (Options.size()==1) {
 			JobPage.NavigateToJobPage();
 			JobPage.searchJobWithEstimateNumber(newest);
 			JobPage.NavigateToJobGeneral();
 			JobPage.NavigateToJobPlanning();
-			
+			//Windows-ba
 			JobPage.NavigateToJobMaterials();
 			//String newest="1234";
 			Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),Jobfields);
 			JobPage.NavigateToJobEngineering();
-			JobPage.VerifyJobEngineering(value);
+			//JobPage.VerifyJobEngineering(value);
+			Negotiation.VerifyActualvsBase(value,newest.replace(",", ""),JobEnggg);
 			JobPage.CloseJobTab();
 		}
 		

@@ -9,16 +9,19 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+
 import io.qameta.allure.Allure;
 import utilities.AllureLogger;
 
-public class DBUtil {
+public class DBUtil extends Testbase{
 
 	Connection con;
 	
 	public Connection Createconnection(String url, String user, String password) {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+						
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,11 +39,19 @@ public class DBUtil {
 	
 	
 	public ResultSet RunQuery(String query) throws ClassNotFoundException, SQLException {
-		Statement stmt = con.createStatement();
-		
-		ResultSet rs=stmt.executeQuery(query);
-		return rs;
-		
+		try {
+			//Connection connection = Createconnection("jdbc:sqlserver://iquoteuiautodb71:1433;databaseName=LoweMartin", 
+				//	"sa", "Windows-ba");
+			
+			Statement stmt = con.createStatement();
+			
+			ResultSet rs=stmt.executeQuery(query);
+			
+			return rs;
+		}
+		finally {
+			//con.close();
+		}
 	}
 	
 	public void Closeconnection() throws SQLException {
@@ -87,12 +98,13 @@ public class DBUtil {
                                  {  
                                         String columnValue1 = rs1.getString(columnCount);
                                         String columnValue2 = rs2.getString(columnCount);
-                                        if(!(columnValue1==null && columnValue2==null) ) {
+                                        if(!(columnValue1==null || columnValue2==null) ) {
 	                                        if(!(columnValue1.equals(columnValue2))) {
 	                                        	System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
-	                                        	AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName);
-	                                        	result = false;
+	                                        	//AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+	                                        	AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName +" : Base Table Column Value is : " + columnValue1 + ": Actual Table Column Value is : "+columnValue2);
+	                                        	result = false; 
 	                                        	finalresult=false;
 	                                        }
 	                                        else {
@@ -102,64 +114,123 @@ public class DBUtil {
 	                                        	result = true;
 	                                        }
                                         }
+                                        else {
+                                       	 System.out.println("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                       	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                       	 AllureLogger.markStepAsFailed("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                          	result = false; 
+                                          	finalresult=false;
+                                        }
                                  }  
-                                 else if(columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT || columnType == Types.NUMERIC)  
+                                 else if(columnType == Types.INTEGER || columnType == Types.BIGINT  || columnType == Types.NUMERIC)  
                                  {  
                                          Long columnValue1 = rs1.getLong(columnCount);  
                                          Long columnValue2 = rs2.getLong(columnCount);  
-                                         if(!(columnValue1.equals(columnValue2))) {
-                                        	 System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+                                         if(!(columnValue1==null || columnValue2==null) ) {
+	                                         if(!(columnValue1.equals(columnValue2))) {
+	                                        	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName +" : Base Table Column Value is : " + columnValue1 + ": Actual Table Column Value is : "+columnValue2);
+	                                        	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                        	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName+" Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+	                                           	result = false; 
+	                                           	finalresult=false;
+	                                         }
+	                                         else {
+	                                        	 System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
+		                                        	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+		                                        	AllureLogger.markStepAsPassed("Pass for Row " + rowCount + ":  Column Name: "+columnName);
+		                                        	result = true;
+		                                        }
+                                         }
+                                         else {
+                                        	 System.out.println("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
                                         	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
-                                        	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+                                        	 AllureLogger.markStepAsFailed("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
                                            	result = false; 
                                            	finalresult=false;
                                          }
-                                         else {
-                                        	 System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
+                                 }  
+                                 else if(columnType == Types.SMALLINT)
+                                 {
+                                	  
+                                     String columnValue1 = rs1.getString(columnCount);  
+                                     String columnValue2 = rs2.getString(columnCount); 
+                                     if(!(columnValue1==null || columnValue2==null) ) {
+	                                     if(!(columnValue1.equals(columnValue2))) {
+	                                    	 System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+	                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                    	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName +" : Base Table Column Value is : " + columnValue1 + ": Actual Table Column Value is : "+columnValue2);
+	                                       	result = false; 
+	                                       	finalresult=false;
+	                                     }
+	                                     else {
+	                                    	 System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	AllureLogger.markStepAsPassed("Pass for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	result = true;
 	                                        }
- 
-                                 }  
+                                     }else {
+                                    	 System.out.println("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                    	 AllureLogger.markStepAsFailed("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                       	result = false; 
+                                       	finalresult=false;
+                                     }
+                              
+                                 }
                                  else if(columnType == Types.DECIMAL || columnType == Types.DOUBLE || columnType == Types.FLOAT || columnType == Types.REAL)  
                                  {  
                                 	 Double columnValue1 = rs1.getDouble(columnCount);
                                      Double columnValue2 = rs2.getDouble(columnCount);
-                                     if(!(columnValue1.equals(columnValue2))) {
-                                    	 System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
-                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
-                                    	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName);
-                                       result = false;
-                                       finalresult=false;
+                                     if(!(columnValue1==null || columnValue2==null) ) {
+	                                     if(!(columnValue1.equals(columnValue2))) {
+	                                    	 System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+	                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                    	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName +" : Base Table Column Value is : " + columnValue1 + ": Actual Table Column Value is : "+columnValue2);
+	                                       result = false;
+	                                       finalresult=false;
+	                                     }
+	                                     else {
+	                                    	 System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
+	                                     	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+	                                     	AllureLogger.markStepAsPassed("Pass for Row " + rowCount + ":  Column Name: "+columnName);
+	                                     	result = true;
+	                                     }
                                      }
                                      else {
-                                    	 System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
-                                     	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
-                                     	AllureLogger.markStepAsPassed("Pass for Row " + rowCount + ":  Column Name: "+columnName);
-                                     	result = true;
+                                    	 System.out.println("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                    	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                    	 AllureLogger.markStepAsFailed("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                       	result = false; 
+                                       	finalresult=false;
                                      }
                                  }  
                                  else if(columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE)  
                                  {  
                                          Timestamp columnValue1 = rs1.getTimestamp(columnCount);  
                                          Timestamp columnValue2 = rs2.getTimestamp(columnCount); 
-                                         if(!(columnValue1==null && columnValue2==null) ) {
+                                         if(!(columnValue1==null || columnValue2==null) ) {
 	                                         if(!(columnValue1.equals(columnValue2))) {
 	                                        	 System.out.println("Fail for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	// Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
-	                                        	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName);
+	                                        	 AllureLogger.markStepAsFailed("Fail for Row " + rowCount + ":  Column Name: "+columnName +" : Base Table Column Value is : " + columnValue1 + ": Actual Table Column Value is : "+columnValue2);
 	                                           result = false; 
 	                                           finalresult=false;
 	                                         }
-                                         }
+                                         
                                          else {
                                         	  System.out.println("Pass for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	//Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	AllureLogger.markStepAsPassed("Pass for Row " + rowCount + ":  Column Name: "+columnName);
 	                                        	result = true;
 	                                        }
-                                          
+                                         } 
+                                         else {
+                                        	 System.out.println("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                        	 //Allure.step("Row " + rowCount + ":  Column Name: "+columnName);
+                                        	 AllureLogger.markStepAsFailed("Base Table Column Value is : " + columnValue1 + " Actual Table Column Value is : "+columnValue2);
+                                           	result = false; 
+                                           	finalresult=false;
+                                         }
                                           
                                  }  
                                 

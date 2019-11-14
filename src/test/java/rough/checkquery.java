@@ -40,36 +40,27 @@ public class checkquery  {
 		//String Query1=Query.getProperty("Query");
 		String Query1="Fse";
 		// opening database connection to MySQL server
-		DBUtil iqdb=new DBUtil();
-		iqdb.Createconnection("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=HubLabels", "iquote", "1quot3p@ss");
+	//	DBUtil iqdb=new DBUtil();
+		//iqdb.Createconnection("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=HubLabels", "iquote", "1quot3p@ss");
 		//DBUtil iqdb=new DBUtil("jdbc:sqlserver://iquotedbdbqry:1433;databaseName=PremierPress", "iquote", "1quot3p@ss");
 		//System.out.println(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replaceAll("##Estimate##", Config.getProperty("EstimateIDs")).replaceAll("##CompOrder##", "1"));
 		//rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option));
 		//rs=iqdb.RunQuery(Query1.replace("##Estimate##", estimate).replace("##IdItemOption##", Option).replace("##CompOrder##", comp).replace("##CharteristicDescp##", chare));
-		rs=iqdb.RunQuery(Query1);
-		while(rs.next()){
+		//rs=iqdb.RunQuery(Query1);
+		/*while(rs.next()){
 			
 			
 
 			String IdItemOptionQty=rs.getString("OptionDescription");
 			HS.add(Integer.parseInt(IdItemOptionQty));
 			
-		}
+		}*/
 		System.out.println(HS);
 		for(int h1:HS) {
 			
 			HashMap<String, String> EstQtyPageData = new HashMap<String, String>();
-			 rs = iqdb.RunQuery(Query1.replace("##Estimate##", Config.getProperty("EstimateIDs")).replace("##IdItemOption##", Option)+" and  qttTMItemOptionQty.IdItemOptionQty= "+h1);
-	          
-	            while(rs.next())
-	            {
-	            	
-	            	String QtyComponentName=rs.getString("ComponentName");
-					String QTYPageQty=rs.getString("Qty");
-					EstQtyPageData.put(QtyComponentName, QTYPageQty);
-					
-	            }
+			 
 	        //    EstQTYPage.put(h1, EstQtyPageData);
 	            
 	      }

@@ -100,7 +100,7 @@ public class ListenerUtils extends TestListenerAdapter implements IRetryAnalyzer
 	}
 
 	@Attachment(value = "Screenshot of {0} ", type = "image/png")
-	private byte[] takeScreenShot(String methodName) {
+	public static byte[] takeScreenShot(String methodName) {
 
 		Log.info("SCREENSHOT of the following test is taken: " + methodName);
 		Log.info("----- ***** -----\n");

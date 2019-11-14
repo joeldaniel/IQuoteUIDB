@@ -31,6 +31,7 @@ import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
 import ru.yandex.qatools.ashot.comparison.ImageDiffer;
 import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
+import utilities.AllureLogger;
 import utilities.CommonFunctions;
 import utilities.HTML_File_Creator;
 import utilities.ReadAndUpdate;
@@ -815,6 +816,8 @@ public class JobPage extends Testbase{
     			HTMLF.addrow("Comment","Job Creation" , "", "", "", "",Config.getProperty("EstimateIDs")+".html");
           		String CustomerID= driver.findElement(By.xpath("//label[text()='Customer']/parent::span//input[1]")).getAttribute("value");
           		System.out.println("Job Number and customerID : "+Jobnum+","+CustomerID);
+          		AllureLogger.markStepAsPassed("Job Number : "+Jobnum);
+          		AllureLogger.markStepAsPassed("CustomerID : "+CustomerID);
           		
     		}
           else

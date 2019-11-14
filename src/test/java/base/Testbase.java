@@ -47,7 +47,7 @@ public class Testbase {
    
 	@BeforeTest(alwaysRun = true)
 	@Parameters({ "propertyfile" ,"portNO"})
-	public void setUp(@Optional("null") String propertyfile,@Optional("null") String portNO) throws IOException, AWTException {
+	public void setUp(@Optional("PremierPress") String propertyfile,@Optional("null") String portNO) throws IOException, AWTException {
 		
 			fis = new FileInputStream(
 					System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\"+propertyfile+".properties");
