@@ -34,12 +34,12 @@
 			<class name="testcases.CreateEstimate" />
 		</classes>
 	</test> -->
-	<!-- <test name="Test-RRD-Port-85">
+	<test name="Test-RRD-Port-85">
 		<parameter name="propertyfile" value="RRD" />
 		<classes>
 			<class name="testcases.CreateEstimate" />
 		</classes>
-	</test> -->
+	</test> 
 	
 
 </suite> <!-- Suite -->
